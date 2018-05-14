@@ -1,0 +1,20 @@
+{
+    "enable": ""
+    
+    "source_path": "",
+    "source_selection_condition": "",
+    "source_subfolder_search": "",
+    "source_filelist_shuffle": "",
+
+    "destination_path": "",
+    "destination_selection_condition": "",
+    "destination_subfolder_search": "",
+    "destination_filelist_shuffle": "",
+
+    "hierarchy_maintenance": "",
+    "left_files_deletion": "",
+    "file_override": "",
+    "size_limit": "",
+    "sync_cooldown": ""
+}
+
