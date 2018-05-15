@@ -1,0 +1,1 @@
+this log file is here just for git to include the Logs folder, that is needed for the program to execute properly
