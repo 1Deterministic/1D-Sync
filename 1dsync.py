@@ -18,7 +18,7 @@ if __name__ == "__main__":
 
     # stores the path of the current directory
     #this_path = os.path.dirname(__file__)
-    this_path = os.getcwd()
+    this_path = os.path.dirname(os.path.realpath(__file__))
 
     # repeats forever
     while True:
