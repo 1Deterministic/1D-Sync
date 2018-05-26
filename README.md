@@ -3,10 +3,10 @@
 **[English](#english)**  
 
 ## Português
-**[1D-Sync](https://github.com/1Deterministic/1D-Sync)** é uma ferramenta automatizada de "sincronização" unidirecional. Com ele é possível efetuar cópias de arquivos entre pastas em intervalos específicos de tempo, suportando diversas configurações e alguns filtros de arquivos. Foi desenvolvido como uma continuação do **[Fantastic-Five-Star-Music-Copier](https://github.com/1Deterministic/Fantastic-Five-Star-Music-Copier)** mas possui recursos extras (veja [utilização](#Utilização)).
+**[1D-Sync](https://github.com/1Deterministic/1D-Sync)** é uma ferramenta automatizada de "sincronização" unidirecional. Com ele é possível efetuar cópias de arquivos entre pastas em intervalos específicos de tempo, suportando diversas configurações e alguns filtros de arquivos. Foi desenvolvido como uma continuação do **[Fantastic-Five-Star-Music-Copier](https://github.com/1Deterministic/Fantastic-Five-Star-Music-Copier)** mas possui recursos extras (veja [utilização](#utilização)).
 
 ## Meu caso de uso
-Possuo um servidor de arquivos, um desktop e dois celulares com os quais sincronizo dados. Com o **[1D-Sync](https://github.com/1Deterministic/1D-Sync)**, faço com que o servidor de arquivos copie certos arquivos entre essas pastas automaticamente. Por exemplo, as músicas avaliadas em 5 estrelas são sempre copiadas para um telefone que uso como dispositivo de mídia e também para o telefone que uso no dia-a-dia. Entretanto, como esse segundo possui muito pouco espaço de armazenamento, faço com que o **[1D-Sync](https://github.com/1Deterministic/1D-Sync)** copie arquivos aleatórios até um certo tamanho (1.5GB) e os troque de tempo em tempo, de forma que eu não sinta tanto a falta de espaço. Também copio automaticamente as imagens de câmera e WhatsApp para a pasta sincronizada com meu desktop, entre outros.
+Possuo um servidor de arquivos, um desktop e dois celulares com os quais sincronizo dados. Com o **[1D-Sync](https://github.com/1Deterministic/1D-Sync)**, faço com que o servidor de arquivos copie certos arquivos entre essas pastas automaticamente. Por exemplo, as músicas avaliadas em 5 estrelas são sempre copiadas para um telefone que uso como dispositivo de mídia e também para o telefone que uso no dia-a-dia. Entretanto, como esse segundo possui muito pouco espaço de armazenamento, faço com que o **[1D-Sync](https://github.com/1Deterministic/1D-Sync)** copie arquivos aleatórios até um certo tamanho (1.5GB) e os troque de tempo em tempo, de forma que eu não sinta tanto a falta de espaço. Também copio automaticamente as imagens de câmera e WhatsApp para a pasta sincronizada com meu desktop, entre outros. Para sincronizar essas pastas com os dispositivos eu utilizo o **[syncthing](https://syncthing.net/)**, que já recomendei anteriormente.
 
 ## Utilização
 O executável irá rodar indefinidamente, por isso é mais apropriado configurá-lo para rodar em background. Você pode agendar a sua inicialização utilizando alguma ferramenta própria de sua distribuição ou ambiente gráfico ou ainda agendar a inicialização com o sistema utilizando o crontab. 
@@ -19,7 +19,7 @@ Não agende sua inicialização para o usuário root, isso pode afetar pastas do
 Lembre-se de dar permissão de execução para o arquivo, o que pode ser feito com
 * `chmod +x /caminho/do/executável/1dsync.exe`
 
-Edite o arquivo `Config/config.json`, editando os valores à direita de acordo com suas preferências. **Todas as opções a seguir são obrigatórias e devem ser preenchidas**:
+Edite o arquivo `Config/config.json`, editando os valores à direita de acordo com suas preferências. **Todas as opções a seguir são obrigatórias e devem ser preenchidas. Os valores devem estar entre aspas**:
 
 * `check_cooldown`: valor numérico de espera, em horas, entre as tentativas de sincronização
 
@@ -31,13 +31,13 @@ Edite o arquivo `Config/config.json`, editando os valores à direita de acordo c
 
 O arquivo `Config/control.json` armazena as datas e horários das sincronizações, não é necessário editá-lo. Entretanto, caso queira forçar uma sincronização na próxima tentativa, basta remover a(s) respectivas linhas do arquivo ou trocar sua data agendada.
 
-Utilize o arquivo `Syncs/sync.json.example` como template para criar uma sincronização. Note que o arquivo, para ser considerado, deve possuir a extensão `.json`, então você deve renomeá-lo (recomendável fazer uma cópia desse arquivo e renomear a cópia). **Todas as opções a seguir são obrigatórias e devem ser preenchidas**:
+Utilize o arquivo `Syncs/sync.json.example` como template para criar uma sincronização. Note que o arquivo, para ser considerado, deve possuir a extensão `.json`, então você deve renomeá-lo (recomendável fazer uma cópia desse arquivo e renomear a cópia). **Todas as opções a seguir são obrigatórias e devem ser preenchidas. Os valores devem estar entre aspas**:
 
 * `enable`: define se esta sincronização está ativa ou não, deve ser **True** ou **False**
 
 * `source_path`: caminho para a pasta de origem
 
-* `source_selection_condition`: condição de seleção de arquivos da pasta de origem, **veja [validações](#Validações)**
+* `source_selection_condition`: condição de seleção de arquivos da pasta de origem, **veja [validações](#validações)**
 
 * `source_subfolder_search`: define se serão procurados arquivos nas subpastas da pasta de origem, deve ser **True** ou **False**
 
@@ -45,7 +45,7 @@ Utilize o arquivo `Syncs/sync.json.example` como template para criar uma sincron
 
 * `destination_path`: caminho para a pasta de destino
 
-* `destination_selection_condition`: condição de seleção de arquivos da pasta de destino, **veja [validações](#Validações)**
+* `destination_selection_condition`: condição de seleção de arquivos da pasta de destino, **veja [validações](#validações)**
 
 * `destination_subfolder_search`: define se serão procurados arquivos nas subpastas da pasta de destino, deve ser **True** ou **False**
 
@@ -82,11 +82,11 @@ As validações atualmente disponíveis estão a seguir. Para utilizar mais de u
 ## English
 **[1D-Sync](https://github.com/1Deterministic/1D-Sync)** is an automated unidirectional "synchronization" tool. 
 With it, it's possible to do file copy operations between folders in specified time intervals, supporting various configurations and some file filters. It was developed as a continuation of 
-**[Fantastic-Five-Star-Music-Copier](https://github.com/1Deterministic/Fantastic-Five-Star-Music-Copier)** but it has some extra features (see [utilization](#Utilization)).
+**[Fantastic-Five-Star-Music-Copier](https://github.com/1Deterministic/Fantastic-Five-Star-Music-Copier)** but it has some extra features (see [utilization](#utilization)).
 
 ## My use case
 I have a domestic file server, a desktop machine and two smartphones wich I sync data. With **[1D-Sync](https://github.com/1Deterministic/1D-Sync)** I made the server copy certain files between these folders automatically. For instance, the 5 star rating musics are always copied to a phone that I use as a media device and for a phone I use as a daily driver. However, as the second one has very little storage space, I set **[1D-Sync](https://github.com/1Deterministic/1D-Sync)** 
-to copy random files until certain size (1.5GB) and change them from time to time, in a way that I don't feel the short storage space so much. I also set it to copy images from the camera and WhatsApp to the folder synchronized with my desktop, and so on.
+to copy random files until certain size (1.5GB) and change them from time to time, in a way that I don't feel the short storage space so much. I also set it to copy images from the camera and WhatsApp to the folder synchronized with my desktop, and so on. To sync the folders between those devices I use **[syncthing](https://syncthing.net/)**, wich I previously recommended.
 
 ## Utilization
 The executable will run indefinitely, so it's more apropriate to make it run in background. You can program its initialization using some tool of your distribution or desktop environment or use crontab.
@@ -100,7 +100,7 @@ Remember to give execution permission to the file, wich can be done with
 
 * `chmod +x /path/to/executable/1dsync.exe`
 
-Edit the file `Config/config.json`, changing the values on the right according to your preferences. **All the following options are required and must be filled**:
+Edit the file `Config/config.json`, changing the values on the right according to your preferences. **All the following options are required and must be filled. The values must be between quotes**:
 
 * `check_cooldown`: numerical value, in hours, between synchronization attempts.
 
@@ -113,13 +113,13 @@ Edit the file `Config/config.json`, changing the values on the right according t
 The file `Config/control.json` stores dates and times of the synchronizations, it's not necessary to change it. However, if you want to force a sync to run on the next attempt you can remove the respective line from the file or change it to some chosen date and time.
 
 Use the file `Syncs/sync.json.example` as a template 
-to create a synchronization. Note that the file, to be considered, must have the `.json` extension, so you have to rename it (recommended to duplicate this file and rename the copy). **All the following options are required and must be filled**:
+to create a synchronization. Note that the file, to be considered, must have the `.json` extension, so you have to rename it (recommended to duplicate this file and rename the copy). **All the following options are required and must be filled. The values must be between quotes**:
 
 * `enable`: sets if this sync will be active or not, must be **True** or **False**
 
 * `source_path`: path to the source folder
 
-* `source_selection_condition`: selection condition for the files in the source folder, **see [validations](#Validations)**
+* `source_selection_condition`: selection condition for the files in the source folder, **see [validations](#validations)**
 
 * `source_subfolder_search`: sets if the program will search for files in subfolders of the source folder, must be **True** or **False**
 
@@ -127,7 +127,7 @@ to create a synchronization. Note that the file, to be considered, must have the
 
 * `destination_path`: path to the destination folder
 
-* `destination_selection_condition`: selection condition for the files in the destination folder, **see [validations](#Validations)**
+* `destination_selection_condition`: selection condition for the files in the destination folder, **see [validations](#validations)**
 
 * `destination_subfolder_search`: sets if the program will search for files in subfolders of the destination folder, must be **True** or **False**
 
