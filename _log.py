@@ -15,6 +15,7 @@ class Log:
         try:
             self.file = open(self.path, "w")
             return True
+
         except:
             return False
 
@@ -28,7 +29,7 @@ class Log:
 
     # writes the list to the file and closes the file and the log
     def write(self):
-        self.file.write("        " + _about.PROGRAM_NAME + " " + _about.PROGRAM_VERSION + " " + _about.PROGRAM_BUILD_DATE + "\n\n")
+        self.file.write("        " + _about.PROGRAM_NAME + " " + _about.PROGRAM_VERSION + " build date:" + _about.PROGRAM_BUILD_DATE + "\n\n")
         for c in self.content:
             self.file.write(c + "\n")
 

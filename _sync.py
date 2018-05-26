@@ -110,7 +110,7 @@ class File_List:
             # for any file inside it
             for f in filenames:
                 # creates a file object containing some information
-                file = _file.File(dirpath + "/" + f)
+                file = _file.File(os.path.join(dirpath, f))
 
                 # if the file meets self.selection_condition
                 if file.evaluate(self.selection_condition):
@@ -171,7 +171,7 @@ class File_List:
                                 break
 
                         # if the other file is the counterpart of this file
-                        elif f_this.path == self.path + "/" + f_other.basename:
+                        elif f_this.path == os.path.join(self.path, f_other.basename):
                             # the file does not have to be deleted
                             f_this.to_delete = False
                             break
@@ -202,7 +202,7 @@ class File_List:
                         # otherwise
                         else:
                             # if the other file is the counterpart of this file
-                            if other.path + "/" + f_this.basename == f_other.path:
+                            if os.path.join(other.path, f_this.basename) == f_other.path:
                                 # this file does not need to be copied
                                 f_this.to_copy = False
                                 break
@@ -234,7 +234,8 @@ class File_List:
                 # if hierarchy_maintenance was received
                 if hierarchy_maintenance:
                     # copies the file to its respective location under the destination root
-                    if f_this.copy(destination + f_this.path.split(self.path, 1)[1].rsplit(f_this.basename, 1)[0]):
+                    if f_this.copy(os.path.split(f_this.path.replace(self.path, destination))[0]):
+                    #if f_this.copy(os.path.join(destination, f_this.path.split(self.path, 1)[1].rsplit(f_this.basename, 1)[0])):
                         self.log.report("[ OK  ] \tcopy " + f_this.path)
                     else:
                         self.log.report("[ERROR] \tcopy " + f_this.path)
