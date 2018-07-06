@@ -122,7 +122,7 @@ def validate_size_limit(value):
     except:
         return False
 
-# validates a cooldown value
+# validates a cooldown value for a sync
 def validate_sync_cooldown(cooldown):
     try:
         values = cooldown.split("-")
@@ -141,7 +141,7 @@ def validate_sync_cooldown(cooldown):
     except:
         return False
 
-
+# validates a cooldown value for the main loop
 def validate_config_cooldown(cooldown):
     try:
         cooldown = int(cooldown)

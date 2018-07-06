@@ -78,6 +78,8 @@ As validações atualmente disponíveis estão a seguir. Para utilizar mais de u
 
 * `any file`: selecionará **qualquer arquivo**
 
+* `none`: não selecionará **nenhum arquivo**. **Cuidado ao usar essa funcionalidade, pode quebrar a deleção de arquivos sobrando e a não sobrescrita de arquivos no destino, por exemplo**.
+
 
 ## English
 **[1D-Sync](https://github.com/1Deterministic/1D-Sync)** is an automated unidirectional "synchronization" tool. 
@@ -159,5 +161,7 @@ The validations currently available are as follows. To use more than one validat
 * `video`: will select video files with the extensions **mp4**, **mpeg**, **wmv**, **mkv**, **mpg** or **avi**
 
 * `any file`: will select **any file**
+
+* `none`: **will not select any file**. **Be careful when using this function, it may break left files deletion and file override (forcing override even when not asked), for instance**.
 
 ## [1Deterministic](https://github.com/1Deterministic), 2018

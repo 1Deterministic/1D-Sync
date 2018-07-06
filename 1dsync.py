@@ -1,6 +1,5 @@
 import _log
 import _sync
-import _filetypes
 import _validations
 import _email
 import _about

@@ -99,13 +99,21 @@ class File:
     def evaluate(self, filetype):
         # map with the evaluation and its test
         evaluations = {
+            # multimedia
             "audio": lambda: _filetypes.audio_extensions.__contains__(self.extension),
             "image": lambda: _filetypes.image_extensions.__contains__(self.extension),
             "video": lambda: _filetypes.video_extensions.__contains__(self.extension),
 
+            # office
+            "document": lambda: _filetypes.document_extensions.__contains__(self.extension),
+            "sheet": lambda: _filetypes.sheet_extensions.__contains__(self.extension),
+            "presentation": lambda: _filetypes.presentation_extensions.__contains__(self.extension),
+
+            # any or none
             "any file": lambda: True,
             "none": lambda: False,
 
+            # favorite audio requires a different approach
             "favorite audio": lambda: self.extension == ".mp3" and Tag(self.path).rating == 5
         }
 
