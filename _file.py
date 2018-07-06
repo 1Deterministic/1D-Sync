@@ -1,4 +1,5 @@
 import _log
+import _filetypes
 
 import os
 import shutil
@@ -96,18 +97,16 @@ class File:
 
     # returns if this file is a "filetype"
     def evaluate(self, filetype):
-        # most common extensions
-        audio_extensions = [".mp3", ".ogg", ".wma", ".wav", ".opus"]
-        image_extensions = [".jpg", ".jpeg", ".png", ".bmp"]
-        video_extensions = [".mp4", ".mpeg", ".wmv", ".mkv", ".mpg", ".avi"]
-
         # map with the evaluation and its test
         evaluations = {
-            "audio": lambda: audio_extensions.__contains__(self.extension),
-            "image": lambda: image_extensions.__contains__(self.extension),
-            "video": lambda: video_extensions.__contains__(self.extension),
+            "audio": lambda: _filetypes.audio_extensions.__contains__(self.extension),
+            "image": lambda: _filetypes.image_extensions.__contains__(self.extension),
+            "video": lambda: _filetypes.video_extensions.__contains__(self.extension),
+
             "any file": lambda: True,
-            "favorite audio": lambda: audio_extensions.__contains__(self.extension) and Tag(self.path).rating == 5
+            "none": lambda: False,
+
+            "favorite audio": lambda: self.extension == ".mp3" and Tag(self.path).rating == 5
         }
 
         # splits the conditions on ;
