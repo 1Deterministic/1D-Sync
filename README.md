@@ -68,13 +68,19 @@ Os logs serão criados dentro da pasta `Logs`, com o título sendo a data e hor�
 ## Validações
 As validações atualmente disponíveis estão a seguir. Para utilizar mais de uma validação, separe-as com um ponto-e-vírgula (`;`). O ponto-e-vírgula (`;`) é equivalente à operação lógica **OU** nas validações.
 
-* `audio`: selecionará arquivos de áudio com as extensões **mp3**, **ogg**, **wma**, **wav** ou **opus**
+* `audio`: selecionará arquivos de áudio com as extensões **mp3**, **ogg**, **flac**, **wma**, **wav** ou **opus**
 
 * `favorite audio`: selecionará arquivos de áudio com a extensão **mp3** que possuírem um **rating de 5 estrelas**
 
-* `image`: selecionará arquivos de imagem com as extensões **jpg**, **jpeg**, **png** ou **bmp**
+* `image`: selecionará arquivos de imagem com as extensões **jpg**, **jpeg**, **png**, **gif** ou **bmp**
 
 * `video`: selecionará arquivos de vídeo com as extensões **mp4**, **mpeg**, **wmv**, **mkv**, **mpg** ou **avi**
+
+* `document`: selecionará documentos com as extensões **docx**, **doc**, **rtf**, **odt**, **ott**, **pdf** ou **txt**
+
+* `sheet`: selecionará planilhas com as extensões     **xslx**, **xls**, **ods**, **ots** ou **csv**
+
+* `presentation`: selecionará apresentações com as extensões **pptx**, **pps**, **odp** ou **otp**
 
 * `any file`: selecionará **qualquer arquivo**
 
@@ -152,13 +158,19 @@ The logs will be created inside the `Logs` folder, with the file name being the 
 ## Validations
 The validations currently available are as follows. To use more than one validation, separate them with a semicolon (`;`). The semicolon (`;`) is equivalent to the logical operator **OR** on the validation.
 
-* `audio`: will select audio files with the extensions **mp3**, **ogg**, **wma**, **wav** or **opus**
+* `audio`: will select audio files with the extensions **mp3**, **ogg**, **flac**, **wma**, **wav** or **opus**
 
 * `favorite audio`: will select audio files with the **mp3** extension that have a **rating of 5 stars**
 
-* `image`: will select image files with the extensions **jpg**, **jpeg**, **png** or **bmp**
+* `image`: will select image files with the extensions **jpg**, **jpeg**, **png**, **gif** or **bmp**
 
 * `video`: will select video files with the extensions **mp4**, **mpeg**, **wmv**, **mkv**, **mpg** or **avi**
+
+* `document`: will select document files with the extensions **docx**, **doc**, **rtf**, **odt**, **ott**, **pdf** or **txt**
+
+* `sheet`: will select sheet files with the extensions     **xslx**, **xls**, **ods**, **ots** or **csv**
+
+* `presentation`: will select presentation files with the extensions **pptx**, **pps**, **odp** or **otp**
 
 * `any file`: will select **any file**
 
