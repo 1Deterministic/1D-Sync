@@ -9,7 +9,6 @@ import json
 import time
 import datetime
 import logging
-import random
 
 
 if __name__ == "__main__":
@@ -135,11 +134,7 @@ if __name__ == "__main__":
                                 email.append_message("[ OK  ] " + os.path.join(dirpath, file))
 
                                 # determines the next datetime to run this sync
-                                sync_cooldown_range = sync_properties["sync_cooldown"].split("-")
-                                cooldown = random.randint(int(sync_cooldown_range[0]), int(sync_cooldown_range[1]))
-
-                                # updates the next run datetime
-                                control[os.path.join(dirpath, file)] = (datetime.datetime.now() + datetime.timedelta(hours=cooldown)).strftime("%Y-%m-%d %H-%M-%S")
+                                control[os.path.join(dirpath, file)] = (datetime.datetime.now() + datetime.timedelta(hours=int(sync_properties["sync_cooldown"]))).strftime("%Y-%m-%d %H-%M-%S")
 
                             # if the sync is disabled
                             else:

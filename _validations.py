@@ -125,18 +125,12 @@ def validate_size_limit(value):
 # validates a cooldown value for a sync
 def validate_sync_cooldown(cooldown):
     try:
-        values = cooldown.split("-")
+        cooldown = int(cooldown)
 
-        if len(values) == 2:
-            values[0] = int(values[0])
-            values[1] = int(values[1])
-
-            if isinstance(values[0], int) and isinstance(values[1], int):
-                if values[0] > 0 and values[1] > 0:
-                    if values[1] >= values[0]:
-                        return True
-
-        return False
+        if cooldown > 0:
+            return True
+        else:
+            return False
 
     except:
         return False

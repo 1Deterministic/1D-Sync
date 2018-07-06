@@ -1,10 +1,7 @@
-import _log
 import _filetypes
 
 import os
 import shutil
-import pathlib
-
 import eyed3
 import math
 import time

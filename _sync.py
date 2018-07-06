@@ -1,4 +1,3 @@
-import _log
 import _file
 
 import os
