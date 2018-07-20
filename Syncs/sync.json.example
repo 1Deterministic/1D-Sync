@@ -1,20 +1,20 @@
 {
-    "enable": "",
+    "enable": "True",
     
-    "source_path": "",
-    "source_selection_condition": "",
-    "source_subfolder_search": "",
-    "source_filelist_shuffle": "",
+    "source_path": "/path/to/source",
+    "source_selection_condition": "any file",
+    "source_subfolder_search": "True",
+    "source_filelist_shuffle": "True",
 
-    "destination_path": "",
-    "destination_selection_condition": "",
-    "destination_subfolder_search": "",
-    "destination_filelist_shuffle": "",
+    "destination_path": "/path/to/destination",
+    "destination_selection_condition": "any file",
+    "destination_subfolder_search": "True",
+    "destination_filelist_shuffle": "False",
 
-    "hierarchy_maintenance": "",
-    "left_files_deletion": "",
-    "file_override": "",
-    "size_limit": "",
-    "sync_cooldown": ""
+    "hierarchy_maintenance": "True",
+    "left_files_deletion": "True",
+    "file_override": "False",
+    "size_limit": "0",
+    "sync_cooldown": "4"
 }
 

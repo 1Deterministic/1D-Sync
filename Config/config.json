@@ -1,6 +1,6 @@
 {
-    "check_cooldown": "",
-    "email_sender": "",
-    "email_sender_password": "",
-    "email_addressee": ""
+    "check_cooldown": "1",
+    "email_sender": "some email @gmail.com",
+    "email_sender_password": "some email password",
+    "email_addressee": "another email @any.com"
 }
