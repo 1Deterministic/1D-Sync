@@ -33,31 +33,30 @@ if __name__ == "__main__":
         try:
             config = json.loads(open(config_file, "r").read())
             control = json.loads(open(control_file, "r").read())
-
-            # checks if config.json did not pass the validation
-            if not _validations.validate_config_json(config):
-                log.report("[ERROR] config .json load"); log.report("")
-                log.open()
-                log.write()
-                raise SystemExit
-            else:
-                log.report("[ OK  ] config .json load")
-
-            # checks if control.json did not pass the validation
-            if not _validations.validate_control_json(control):
-                log.report("[ERROR] control .json load"); log.report("")
-                log.open()
-                log.write()
-                raise SystemExit
-            else:
-                log.report("[ OK  ] control .json load")
-
-        # if some other error occurred
+        # if the opening of these files failed
         except:
-            log.report("[ERROR] config/control .json load"); log.report("")
+            log.report("[ERROR] could not read config and/or control .json file(s), syntax error of missing file(s)"); log.report("")
             log.open()
             log.write()
             raise SystemExit
+
+        # checks if config.json did not pass the validation
+        if not _validations.validate_config_json(config, log):
+            log.report("[ERROR] config .json load"); log.report("")
+            log.open()
+            log.write()
+            raise SystemExit
+        else:
+            log.report("[ OK  ] config .json load")
+
+        # checks if control.json did not pass the validation
+        if not _validations.validate_control_json(control, log):
+            log.report("[ERROR] control .json load"); log.report("")
+            log.open()
+            log.write()
+            raise SystemExit
+        else:
+            log.report("[ OK  ] control .json load")
 
         # starts the email
         email = _email.Email(config["email_sender"], config["email_sender_password"], _about.EMAIL_SUBJECT, "", config["email_addressee"])
@@ -89,7 +88,7 @@ if __name__ == "__main__":
                                 continue
 
                             # tests the json read
-                            if _validations.validate_sync_json(sync_properties):
+                            if _validations.validate_sync_json(sync_properties, log):
                                 log.report("[ OK  ] .json validation")
                             else:
                                 log.report("[ERROR] .json validation"); log.report("")
