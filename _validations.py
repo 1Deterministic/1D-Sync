@@ -156,7 +156,24 @@ def validate_path(path):
 
 # validates a selection condition
 def validate_selection_condition(condition):
-    return True
+    # holds a list of supported selection conditions based on _filetypes lists
+    supported_conditions= [
+        # multimedia
+        "audio",
+        "image",
+        "video",
+
+        # office
+        "document",
+        "sheet",
+        "presentation",
+
+        # special cases
+        "favorite audio",
+        "any file",
+        "none"
+    ]
+    return condition in supported_conditions
 
 # validates a toggle
 def validate_toggle(value):
