@@ -147,6 +147,11 @@ def validate_config_json(json, log):
         log.report("[ERROR] \t\"email_addressee\" not in .json")
         return False
 
+    # post_sync_script
+    if not "post_sync_script" in json:
+        log.report("[ERROR] \t\"post_sync_script\" not in .json")
+        return False
+
     return True
 
 

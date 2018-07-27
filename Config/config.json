@@ -2,5 +2,6 @@
     "check_cooldown": "1",
     "email_sender": "some email @gmail.com",
     "email_sender_password": "some email password",
-    "email_addressee": "another email @any.com"
+    "email_addressee": "another email @any.com",
+    "post_sync_script": "echo some script"
 }

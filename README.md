@@ -29,6 +29,8 @@ Edite o arquivo `Config/config.json`, editando os valores à direita de acordo c
 
 * `email_addressee`: endereço de email para onde os relatórios são enviados
 
+* `post_sync_script`: script a ser executado após a sincronização. Rodará uma vez por loop do programa (ou seja, uma vez a cada período de tempo `check_cooldown`), imediatamente antes da gravação do log e envio do email
+
 O arquivo `Config/control.json` armazena as datas e horários das sincronizações, não é necessário editá-lo. Entretanto, caso queira forçar uma sincronização na próxima tentativa, basta remover a(s) respectivas linhas do arquivo ou trocar sua data agendada.
 
 Utilize o arquivo `Syncs/sync.json.example` como template para criar uma sincronização. Note que o arquivo, para ser considerado, deve possuir a extensão `.json`, então você deve renomeá-lo (recomendável fazer uma cópia desse arquivo e renomear a cópia). **Todas as opções a seguir são obrigatórias e devem ser preenchidas. Os valores devem estar entre aspas**:
@@ -117,6 +119,8 @@ Edit the file `Config/config.json`, changing the values on the right according t
 * `email_sender_password`: report email account password, is recommended to create an account ony for this porpose, since the password will be in plain text
 
 * `email_addressee`: email address to where the reports are sent
+
+* `post_sync_script`: script to be executed after the synchronization. It will run once per program loop (once every `check_cooldown` time period), immediately before the log write and sending the email
 
 The file `Config/control.json` stores dates and times of the synchronizations, it's not necessary to change it. However, if you want to force a sync to run on the next attempt you can remove the respective line from the file or change it to some chosen date and time.
 

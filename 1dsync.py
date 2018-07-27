@@ -5,6 +5,7 @@ import _email
 import _about
 
 import os
+import subprocess
 import json
 import time
 import datetime
@@ -146,6 +147,15 @@ if __name__ == "__main__":
                 # ignores the file if the split was wrong (maybe the file doesnt have an extension)
                 except IndexError:
                     pass
+
+        # runs the post_sync script            #os.system(config["post_sync_script"])
+        post_sync_script_subprocess = subprocess.Popen(config["post_sync_script"], stdout=subprocess.PIPE, shell=True)
+        (post_sync_script_output, error_code) = post_sync_script_subprocess.communicate()
+
+        # saves the command output in the log
+        log.report("        running post sync script...")
+        log.report("        the terminal output of the script was as follows:")
+        log.report(post_sync_script_output.decode()); log.report("")
 
         try:
             # commits the log file if needed
