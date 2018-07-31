@@ -10,26 +10,15 @@ class File:
     # creates a file object, containing some information
     def __init__(self, path):
         try:
-            # path of the file resolved (will follow a symlink)
-            #self.path = str(pathlib.Path(path).resolve())
-            # the path of the file
+            #self.path = str(pathlib.Path(path).resolve()) # path of the file resolved (will follow a symlink)
             self.path = path
-            # if this file is a symlink
             self.islink = os.path.islink(path)
-            # size of the file in megabytes
             self.size = os.path.getsize(self.path) / 1024000
-            # age of the file in days
             self.age = int(time.strftime("%d", time.gmtime(time.time() - os.path.getmtime(self.path))))
-            # basename of the file
             self.basename = os.path.basename(self.path)
-            # extension of the file
             self.extension = os.path.splitext(self.path)[1]
-
-            # assume this file have to be copied
             self.to_copy = True
-            # assume this file does not have to be copied
             self.to_delete = False
-
         except:
             # erases all properties
             self.path = ""
@@ -42,7 +31,7 @@ class File:
             self.to_delete = False
 
 
-    # copies the file to destination
+    # copies the file to the destination
     def copy(self, destination):
         # if the file was marked and its not empty
         if self.to_copy and (not self.path == ""):
@@ -56,7 +45,6 @@ class File:
                 shutil.copy(self.path, destination)
                 # if the copy was done, return success
                 return True
-
             # if something went wrong
             except:
                 # returns error
@@ -73,6 +61,7 @@ class File:
             try:
                 # removes the file from self.path
                 os.remove(self.path)
+
                 # erases all properties
                 self.path = ""
                 self.islink = False
@@ -83,7 +72,6 @@ class File:
 
                 # if all went OK, return success
                 return True
-
             # if something went wrong
             except:
                 # returns error
@@ -128,7 +116,6 @@ class File:
 
             # if no condition was validated, returns false
             return False
-
         # if the condition was not identified
         except:
             # returns false
@@ -141,20 +128,13 @@ class Tag:
     def __init__(self, path):
         # tries to read information from the file
         try:
-            # loads the file to memory
             self.file = eyed3.load(path)
-            # loads the artist
             self.artist = self.file.tag.artist
-            # loads the album
             self.album = self.file.tag.album
-            # loads the title
             self.title = self.file.tag.title
-            # loads the rating
             self.rating = math.ceil(self.file.tag.frame_set[b'POPM'][0].rating / 51)
-
         # if something went wrong
         except:
-            # erases all properties
             self.artist = "<none>"
             self.album = "<none>"
             self.title = "<none>"

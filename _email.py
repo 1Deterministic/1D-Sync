@@ -6,18 +6,13 @@ from email.message import EmailMessage
 class Email:
     # creates an email object
     def __init__(self, sender, password, subject, message, addressee):
-        # stores the server address
         self.server_address = "smtp.gmail.com: 587"
-        # stores the sender
         self.sender = sender
-        # stores the password of the sender
         self.password = password
-        # stores the subject of the message
         self.subject = subject
-        # stores the message
         self.message = message
-        # stores the addressee
         self.addressee = addressee
+
 
     # sends this email
     def send(self):
@@ -49,8 +44,11 @@ class Email:
             return False
 
 
+    # appends text to the already stored message (automatically adds a new line)
     def append_message(self, text):
         self.message += text + "\n"
 
+
+    # returns if the current text is empty
     def is_empty(self):
         return self.message == ""

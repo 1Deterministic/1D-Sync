@@ -6,50 +6,43 @@ import random
 
 
 class Sync:
-    # creates a "sync" between two folders, given the parameters
+    # creates a "sync" from the source folder to the destination folder
     def __init__(self, source_path, source_selection_condition, source_subfolder_search, source_filelist_shuffle, destination_path, destination_selection_condition, destination_subfolder_search, destination_filelist_shuffle, hierarchy_maintenance, left_files_deletion, file_override, size_limit, log):
-        # source path
+        # source parameters
         self.source_path = source_path
-        # selection condition
         self.source_selection_condition = source_selection_condition
-        # subfolder search toggle
         self.source_subfolder_search = ast.literal_eval(source_subfolder_search)
-        # filelist shuffle toggle
         self.source_filelist_shuffle = ast.literal_eval(source_filelist_shuffle)
 
-        # destination path
+        # destination parameters
         self.destination_path = destination_path
-        # selection condition
         self.destination_selection_condition = destination_selection_condition
-        # subfolder search toggle
         self.destination_subfolder_search = ast.literal_eval(destination_subfolder_search)
-        # filelist shuffle toggle
         self.destination_filelist_shuffle = ast.literal_eval(destination_filelist_shuffle)
 
-        # directory hierarchy maintenance
+        # sync parameters
         self.hierarchy_maintenance = ast.literal_eval(hierarchy_maintenance)
-        # left files deletion toggle
         self.left_files_deletion = ast.literal_eval(left_files_deletion)
-        # file override toggle
         self.file_override = ast.literal_eval(file_override)
-        # size limit
         self.size_limit = int(size_limit)
 
         # log to report to
         self.log = log
 
 
+    # performs an already initialized sync
     def run(self):
-        # file list inits
+        # initializes the file lists
         source = File_List(self.source_path, self.source_selection_condition, self.source_subfolder_search, self.source_filelist_shuffle, self.log)
         destination = File_List(self.destination_path, self.destination_selection_condition, self.destination_subfolder_search ,self.destination_filelist_shuffle, self.log)
         self.log.report("[ OK  ] file list initialize")
 
-        # fill file lists
+        # fills the file lists
         source.fill(self.size_limit)
         destination.fill(0)
         self.log.report("[ OK  ] file list fill")
 
+        # in case removing left files was received
         if self.left_files_deletion:
             # marks the files that will be removed
             destination.mark_files_to_delete_except_by(source, self.hierarchy_maintenance)
@@ -69,6 +62,7 @@ class Sync:
                 self.log.report("[ERROR] empty folders removal")
                 return False
 
+        # if the existing files will be maintained
         if not self.file_override:
             # unmarks the files that doesnt need to be copied
             source.mark_files_to_copy_except_by(destination, self.hierarchy_maintenance)
@@ -88,21 +82,16 @@ class Sync:
 class File_List:
     # creates a file list given the parameters
     def __init__(self, path, selection_condition, subfolder_search, filelist_shuffle, log):
-        # file list
         self.filelist = []
-        # path of the folder
         self.path = path
-        # selection condition
         self.selection_condition = selection_condition
-        # subflder search toggle
         self.subfolder_search = subfolder_search
-        # filelist shuffle toggle
         self.filelist_shuffle = filelist_shuffle
-        # log to report to
+
         self.log = log
 
 
-    # fills self.filelist until size_limit with files that pass self.selection_condition
+    # fills the list with files that pass the condition until the size limit is reached
     def fill(self, size_limit):
         # walks in the directory
         for (dirpath, dirnames, filenames) in os.walk(self.path):
@@ -111,9 +100,9 @@ class File_List:
                 # creates a file object containing some information
                 file = _file.File(os.path.join(dirpath, f))
 
-                # if the file meets self.selection_condition
+                # if the file meets the condition
                 if file.evaluate(self.selection_condition):
-                    # include it in self.filelist
+                    # include it in the list
                     self.filelist.append(file)
 
             # if the subfolder search is disabled
@@ -123,13 +112,12 @@ class File_List:
 
         # if filelist shuffle is enabled
         if self.filelist_shuffle:
-            # shuffles self.filelist
             random.shuffle(self.filelist)
 
         # if size_limit was received (> 0)
         if size_limit > 0:
+            # total processed size
             total_size = 0.0
-            i = 0
 
             # for every file in self.filelist
             for f in self.filelist:
@@ -152,14 +140,14 @@ class File_List:
     def mark_files_to_delete_except_by(self, other, hierarchy_maintenance):
         # for every file in this filelist
         for f_this in self.filelist:
-            # if its not empty
+            # if it's not empty
             if not f_this.path == "":
                 # suppose it has to be removed
                 f_this.to_delete = True
 
                 # for any file in the other filelist
                 for f_other in other.filelist:
-                    # if its not empty
+                    # if it's not empty
                     if not f_other.path == "":
                         # if hierarchy_maintenance was received
                         if hierarchy_maintenance:
@@ -168,8 +156,7 @@ class File_List:
                                 # the file does not have to be deleted
                                 f_this.to_delete = False
                                 break
-
-                        # if the other file is the counterpart of this file
+                        # if wasn't, check for the basename to be equal
                         elif f_this.path == os.path.join(self.path, f_other.basename):
                             # the file does not have to be deleted
                             f_this.to_delete = False
@@ -189,7 +176,7 @@ class File_List:
             if not f_this.path == "":
                 # for every file in the other filelist
                 for f_other in other.filelist:
-                    # if its not empty
+                    # if it's not empty
                     if not f_other.path == "":
                         # if hierarchy_maintenance was received
                         if hierarchy_maintenance:
@@ -198,13 +185,11 @@ class File_List:
                                 # this file does not need to be copied
                                 f_this.to_copy = False
                                 break
-                        # otherwise
-                        else:
-                            # if the other file is the counterpart of this file
-                            if os.path.join(other.path, f_this.basename) == f_other.path:
-                                # this file does not need to be copied
-                                f_this.to_copy = False
-                                break
+                        # if wasn't, check for the basename to be equal
+                        elif os.path.join(other.path, f_this.basename) == f_other.path:
+                            # this file does not need to be copied
+                            f_this.to_copy = False
+                            break
 
         return True
 
@@ -234,7 +219,6 @@ class File_List:
                 if hierarchy_maintenance:
                     # copies the file to its respective location under the destination root
                     if f_this.copy(os.path.split(f_this.path.replace(self.path, destination))[0]):
-                    #if f_this.copy(os.path.join(destination, f_this.path.split(self.path, 1)[1].rsplit(f_this.basename, 1)[0])):
                         self.log.report("[ OK  ] \tcopy " + f_this.path)
                     else:
                         self.log.report("[ERROR] \tcopy " + f_this.path)
@@ -259,7 +243,8 @@ class File_List:
             # if the current dir is the root, stops
             if dirpath == self.path:
                 break
-            # if not
+
+            # if it isn't
             else:
                 # if this dir is empty
                 if os.listdir(dirpath) == []:

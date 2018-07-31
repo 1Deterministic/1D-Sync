@@ -159,6 +159,7 @@ def validate_config_json(json, log):
 def validate_path(path):
     return os.path.isdir(path)
 
+
 # validates a selection condition
 def validate_selection_condition(condition):
     # holds a list of supported selection conditions based on _filetypes lists
@@ -180,6 +181,7 @@ def validate_selection_condition(condition):
     ]
     return condition in supported_conditions
 
+
 # validates a toggle
 def validate_toggle(value):
     return value == "True" or value == "False"
@@ -197,6 +199,7 @@ def validate_size_limit(value):
     except:
         return False
 
+
 # validates a cooldown value for a sync
 def validate_sync_cooldown(cooldown):
     try:
@@ -209,6 +212,7 @@ def validate_sync_cooldown(cooldown):
 
     except:
         return False
+
 
 # validates a cooldown value for the main loop
 def validate_config_cooldown(cooldown):
