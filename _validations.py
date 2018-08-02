@@ -132,6 +132,22 @@ def validate_config_json(json, log):
         log.report("[ERROR] \t\"check_cooldown\": invalid value")
         return False
 
+    # email_only_if_an_error_occur
+    if not "email_only_if_an_error_occur" in json:
+        log.report("[ERROR] \t\"email_only_if_an_error_occur\" not in .json")
+        return False
+    if not validate_toggle(json["email_only_if_an_error_occur"]):
+        log.report("[ERROR] \t\"email_only_if_an_error_occur\": invalid value")
+        return False
+
+    # log_only_if_an_error_occur
+    if not "log_only_if_an_error_occur" in json:
+        log.report("[ERROR] \t\"log_only_if_an_error_occur\" not in .json")
+        return False
+    if not validate_toggle(json["log_only_if_an_error_occur"]):
+        log.report("[ERROR] \t\"log_only_if_an_error_occur\": invalid value")
+        return False
+
     # email_sender
     if not "email_sender" in json:
         log.report("[ERROR] \t\"email_sender\" not in .json")

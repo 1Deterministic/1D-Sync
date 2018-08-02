@@ -23,6 +23,10 @@ Edite o arquivo `Config/config.json`, editando os valores à direita de acordo c
 
 * `check_cooldown`: valor numérico de espera, em horas, entre as tentativas de sincronização
 
+* `email_only_if_an_error_occur`: define se o email será enviado apenas quando houver um erro em alguma sincronia, deve ser **True** ou **False**
+
+* `log_only_if_an_error_occur`:  define se o log será gravado apenas quando houver um erro em alguma sincronia, deve ser **True** ou **False**
+
 * `email_sender`: endereço de email responsável pelo envio de relatórios de sincronização (somente gmail suportado até o momento, verifique as opções de conta para habilitar o acesso por SMTP)
 
 * `email_sender_password`: senha do email de relatórios, recomendável criar uma conta de email apenas para esta finalidade, uma vez que a senha ficará em texto plano
@@ -113,6 +117,10 @@ Remember to give execution permission to the file, wich can be done with
 Edit the file `Config/config.json`, changing the values on the right according to your preferences. **All the following options are required and must be filled. The values must be between quotes**:
 
 * `check_cooldown`: numerical value, in hours, between synchronization attempts.
+
+* `email_only_if_an_error_occur`: defines if the email will be sent only when a sync error happens, must be **True** or **False**
+
+* `log_only_if_an_error_occur`:  defines if the log will be written only when a sync error happens, must be **True** or **False**
 
 * `email_sender`: email address wich will send synchronization reports (only gmail is supported until now, check the account options to enable SMTP access)
 
