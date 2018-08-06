@@ -195,7 +195,18 @@ def validate_selection_condition(condition):
         "any file",
         "none"
     ]
-    return condition in supported_conditions
+
+    # splits the conditions and checks them one by one
+    conditions = condition.split(";")
+    try:
+        for c in conditions:
+            if c in supported_conditions:
+                continue
+            else:
+                return False
+        return True
+    except:
+        return False
 
 
 # validates a toggle

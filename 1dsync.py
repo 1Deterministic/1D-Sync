@@ -153,14 +153,13 @@ if __name__ == "__main__":
                 except IndexError:
                     continue
 
-        # runs the post_sync script and stores its output
+        # runs the post sync script
+        log.report("        running post sync script...")
         post_sync_script_subprocess = subprocess.Popen(config["post_sync_script"], stdout=subprocess.PIPE, shell=True)
         (post_sync_script_output, error_code) = post_sync_script_subprocess.communicate()
 
-        # saves the command output in the log
-        log.report("        running post sync script...")
-        log.report("        the terminal output of the script was as follows:"); log.report("")
-        log.report(post_sync_script_output.decode());
+        log.report("        the terminal output of the script was as follows:")
+        log.report(post_sync_script_output.decode())
 
         # sends the email if needed
         if ast.literal_eval(config["email_only_if_an_error_occur"]):
