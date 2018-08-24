@@ -54,13 +54,17 @@ if __name__ == "__main__":
             log.report("[ERROR] control .json load"); log.report("")
             log.open(); log.write(); raise SystemExit
 
-        # starts the email
-        email = _email.Email(
-            config["email_sender"],
-            config["email_sender_password"],
-            _about.EMAIL_SUBJECT,
-            "",
-            config["email_addressee"])
+        if ast.literal_eval(config["send_email"]):
+            # starts the email
+            email = _email.Email(
+                config["email_sender"],
+                config["email_sender_password"],
+                _about.EMAIL_SUBJECT,
+                "",
+                config["email_addressee"])
+        else:
+            # creates a dummy email where the messages will be written but not sent
+            email = _email.Email("", "", "", "", "")
 
         # registers error occurrence to decide if the log has to be written or the email to be send
         error_flag = False
@@ -162,26 +166,37 @@ if __name__ == "__main__":
         log.report(post_sync_script_output.decode())
 
         # sends the email if needed
-        if ast.literal_eval(config["email_only_if_an_error_occur"]):
-            if error_flag:
+        if ast.literal_eval(config["send_email"]):
+            if ast.literal_eval(config["email_only_if_an_error_occur"]):
+                if error_flag:
+                    log.report("        sending the email...")
+                    if email.send():
+                        log.report("[ OK  ] email sent")
+                    else:
+                        log.report("[ERROR] email was not sent")
+                else:
+                    log.report("        no errors occurred, the email was skipped")
+            else:
                 log.report("        sending the email...")
                 if email.send():
                     log.report("[ OK  ] email sent")
                 else:
                     log.report("[ERROR] email was not sent")
-            else:
-                log.report("        no errors occurred, the email was skipped")
-        else:
-            log.report("        sending the email...")
-            if email.send():
-                log.report("[ OK  ] email sent")
-            else:
-                log.report("[ERROR] email was not sent")
 
 
         # saves the log if needed
-        if ast.literal_eval(config["log_only_if_an_error_occur"]):
-            if error_flag:
+        if ast.literal_eval(config["save_log"]):
+            if ast.literal_eval(config["log_only_if_an_error_occur"]):
+                if error_flag:
+                    try:
+                        log.report("        closing the log file.")
+                        log.open(); log.write()
+                        with open(control_file, "w") as file_to_write:
+                            json.dump(control, file_to_write, indent=4, ensure_ascii=False)
+                    except:
+                        # Maybe send an email here
+                        raise SystemExit
+            else:
                 try:
                     log.report("        closing the log file.")
                     log.open(); log.write()
@@ -190,15 +205,6 @@ if __name__ == "__main__":
                 except:
                     # Maybe send an email here
                     raise SystemExit
-        else:
-            try:
-                log.report("        closing the log file.")
-                log.open(); log.write()
-                with open(control_file, "w") as file_to_write:
-                    json.dump(control, file_to_write, indent=4, ensure_ascii=False)
-            except:
-                # Maybe send an email here
-                raise SystemExit
 
         # resets the flag
         error_flag = False

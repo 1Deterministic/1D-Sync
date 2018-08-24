@@ -1,3 +1,4 @@
+import ast
 import os
 
 # returns if a loaded json sync is valid
@@ -132,36 +133,54 @@ def validate_config_json(json, log):
         log.report("[ERROR] \t\"check_cooldown\": invalid value")
         return False
 
-    # email_only_if_an_error_occur
-    if not "email_only_if_an_error_occur" in json:
-        log.report("[ERROR] \t\"email_only_if_an_error_occur\" not in .json")
+    # save_log
+    if not "save_log" in json:
+        log.report("[ERROR] \t\"save_log\" not in .json")
         return False
-    if not validate_toggle(json["email_only_if_an_error_occur"]):
-        log.report("[ERROR] \t\"email_only_if_an_error_occur\": invalid value")
+    if not validate_toggle(json["save_log"]):
+        log.report("[ERROR] \t\"save_log\": invalid value")
         return False
+    elif ast.literal_eval(json["save_log"]):
+        # mandatory if save_log is True
+        # log_only_if_an_error_occur
+        if not "log_only_if_an_error_occur" in json:
+            log.report("[ERROR] \t\"log_only_if_an_error_occur\" not in .json")
+            return False
+        if not validate_toggle(json["log_only_if_an_error_occur"]):
+            log.report("[ERROR] \t\"log_only_if_an_error_occur\": invalid value")
+            return False
 
-    # log_only_if_an_error_occur
-    if not "log_only_if_an_error_occur" in json:
-        log.report("[ERROR] \t\"log_only_if_an_error_occur\" not in .json")
+    # send_email
+    if not "send_email" in json:
+        log.report("[ERROR] \t\"send_email\" not in .json")
         return False
-    if not validate_toggle(json["log_only_if_an_error_occur"]):
-        log.report("[ERROR] \t\"log_only_if_an_error_occur\": invalid value")
+    if not validate_toggle(json["send_email"]):
+        log.report("[ERROR] \t\"send_email\": invalid value")
         return False
+    elif ast.literal_eval(json["send_email"]):
+        # mandatory if send_email is True
+        # email_sender
+        if not "email_sender" in json:
+            log.report("[ERROR] \t\"email_sender\" not in .json")
+            return False
 
-    # email_sender
-    if not "email_sender" in json:
-        log.report("[ERROR] \t\"email_sender\" not in .json")
-        return False
+        # email_sender_password
+        if not "email_sender_password" in json:
+            log.report("[ERROR] \t\"email_sender_password\" not in .json")
+            return False
 
-    # email_sender_password
-    if not "email_sender_password" in json:
-        log.report("[ERROR] \t\"email_sender_password\" not in .json")
-        return False
+        # email_addressee
+        if not "email_addressee" in json:
+            log.report("[ERROR] \t\"email_addressee\" not in .json")
+            return False
 
-    # email_addressee
-    if not "email_addressee" in json:
-        log.report("[ERROR] \t\"email_addressee\" not in .json")
-        return False
+        # email_only_if_an_error_occur
+        if not "email_only_if_an_error_occur" in json:
+            log.report("[ERROR] \t\"email_only_if_an_error_occur\" not in .json")
+            return False
+        if not validate_toggle(json["email_only_if_an_error_occur"]):
+            log.report("[ERROR] \t\"email_only_if_an_error_occur\": invalid value")
+            return False
 
     # post_sync_script
     if not "post_sync_script" in json:

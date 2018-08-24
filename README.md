@@ -19,53 +19,57 @@ Não agende sua inicialização para o usuário root, isso pode afetar pastas do
 Lembre-se de dar permissão de execução para o arquivo, o que pode ser feito com
 * `chmod +x /caminho/do/executável/1dsync.exe`
 
-Edite o arquivo `Config/config.json`, editando os valores à direita de acordo com suas preferências. **Todas as opções a seguir são obrigatórias e devem ser preenchidas. Os valores devem estar entre aspas**:
+Edite o arquivo `Config/config.json`, editando os valores à direita de acordo com suas preferências. **Os valores devem estar entre aspas**:
 
-* `check_cooldown`: valor numérico de espera, em horas, entre as tentativas de sincronização
+* `check_cooldown`: valor numérico de espera, em horas, entre as tentativas de sincronização - [obrigatório]
 
-* `email_only_if_an_error_occur`: define se o email será enviado apenas quando houver um erro em alguma sincronia, deve ser **True** ou **False**
+* `save_log`: define se o log será salvo, deve ser **True** ou **False** - [obrigatório]
 
-* `log_only_if_an_error_occur`:  define se o log será gravado apenas quando houver um erro em alguma sincronia, deve ser **True** ou **False**
+    * `log_only_if_an_error_occur`:  define se o log será gravado apenas quando houver um erro em alguma sincronia, deve ser **True** ou **False** - [obrigatório se `save_log` for **True**]
 
-* `email_sender`: endereço de email responsável pelo envio de relatórios de sincronização (somente gmail suportado até o momento, verifique as opções de conta para habilitar o acesso por SMTP)
+* `send_email`: define se o email será enviado, deve ser **True** ou **False** - [obrigatório]
 
-* `email_sender_password`: senha do email de relatórios, recomendável criar uma conta de email apenas para esta finalidade, uma vez que a senha ficará em texto plano
+    * `email_sender`: endereço de email responsável pelo envio de relatórios de sincronização (somente gmail suportado até o momento, verifique as opções de conta para habilitar o acesso por SMTP) - [obrigatório se `send_email` for **True**]
 
-* `email_addressee`: endereço de email para onde os relatórios são enviados
+    * `email_sender_password`: senha do email de relatórios, recomendável criar uma conta de email apenas para esta finalidade, uma vez que a senha ficará em texto plano - [obrigatório se `send_email` for **True**]
 
-* `post_sync_script`: script a ser executado após a sincronização. Rodará uma vez por loop do programa (ou seja, uma vez a cada período de tempo `check_cooldown`), imediatamente antes da gravação do log e envio do email
+    * `email_addressee`: endereço de email para onde os relatórios são enviados - [obrigatório se `send_email` for **True**]
+
+    * `email_only_if_an_error_occur`: define se o email será enviado apenas quando houver um erro em alguma sincronia, deve ser **True** ou **False** - [obrigatório se `send_email` for **True**]
+
+* `post_sync_script`: script a ser executado após a sincronização. Rodará uma vez por loop do programa (ou seja, uma vez a cada período de tempo `check_cooldown`), imediatamente antes da gravação do log e envio do email - [obrigatório]
 
 O arquivo `Config/control.json` armazena as datas e horários das sincronizações, não é necessário editá-lo. Entretanto, caso queira forçar uma sincronização na próxima tentativa, basta remover a(s) respectivas linhas do arquivo ou trocar sua data agendada.
 
-Utilize o arquivo `Syncs/sync.json.example` como template para criar uma sincronização. Note que o arquivo, para ser considerado, deve possuir a extensão `.json`, então você deve renomeá-lo (recomendável fazer uma cópia desse arquivo e renomear a cópia). **Todas as opções a seguir são obrigatórias e devem ser preenchidas. Os valores devem estar entre aspas**:
+Utilize o arquivo `Syncs/sync.json.example` como template para criar uma sincronização. Note que o arquivo, para ser considerado, deve possuir a extensão `.json`, então você deve renomeá-lo (recomendável fazer uma cópia desse arquivo e renomear a cópia). **Os valores devem estar entre aspas**:
 
-* `enable`: define se esta sincronização está ativa ou não, deve ser **True** ou **False**
+* `enable`: define se esta sincronização está ativa ou não, deve ser **True** ou **False** - [obrigatório]
 
-* `source_path`: caminho para a pasta de origem
+* `source_path`: caminho para a pasta de origem - [obrigatório]
 
-* `source_selection_condition`: condição de seleção de arquivos da pasta de origem, **veja [validações](#validações)**
+* `source_selection_condition`: condição de seleção de arquivos da pasta de origem, **veja [validações](#validações)** - [obrigatório]
 
-* `source_subfolder_search`: define se serão procurados arquivos nas subpastas da pasta de origem, deve ser **True** ou **False**
+* `source_subfolder_search`: define se serão procurados arquivos nas subpastas da pasta de origem, deve ser **True** ou **False** - [obrigatório]
 
-* `source_filelist_shuffle`: define se a lista de arquivos selecionados da origem será embaralhada, deve ser **True** ou **False**
+* `source_filelist_shuffle`: define se a lista de arquivos selecionados da origem será embaralhada, deve ser **True** ou **False** - [obrigatório]
 
-* `destination_path`: caminho para a pasta de destino
+* `destination_path`: caminho para a pasta de destino - [obrigatório]
 
-* `destination_selection_condition`: condição de seleção de arquivos da pasta de destino, **veja [validações](#validações)**
+* `destination_selection_condition`: condição de seleção de arquivos da pasta de destino, **veja [validações](#validações)** - [obrigatório]
 
-* `destination_subfolder_search`: define se serão procurados arquivos nas subpastas da pasta de destino, deve ser **True** ou **False**
+* `destination_subfolder_search`: define se serão procurados arquivos nas subpastas da pasta de destino, deve ser **True** ou **False** - [obrigatório]
 
-* `destination_filelist_shuffle`: define se a lista de arquivos selecionados do destino será embaralhada, deve ser **True** ou **False**
+* `destination_filelist_shuffle`: define se a lista de arquivos selecionados do destino será embaralhada, deve ser **True** ou **False** - [obrigatório]
 
-* `hierarchy_maintenance`: define se a hierarquia de pastas será mantida na pasta destino, deve ser **True** ou **False**
+* `hierarchy_maintenance`: define se a hierarquia de pastas será mantida na pasta destino, deve ser **True** ou **False** - [obrigatório]
 
-* `left_files_deletion`: define se os arquivos da pasta destino que não estiverem mais na pasta de origem ou não passarem na validação serão removidos, deve ser **True** ou **False**
+* `left_files_deletion`: define se os arquivos da pasta destino que não estiverem mais na pasta de origem ou não passarem na validação serão removidos, deve ser **True** ou **False** - [obrigatório]
 
-* `file_override`: define se os arquivos serão sobrescritos independetemente de já estarem presentes na pasta destino, deve ser **True** ou **False**
+* `file_override`: define se os arquivos serão sobrescritos independetemente de já estarem presentes na pasta destino, deve ser **True** ou **False** - [obrigatório]
 
-* `size_limit`: define o tamanho limite de arquivos na pasta destino, **0 significa ilimitado e o valor é em MB**
+* `size_limit`: define o tamanho limite de arquivos na pasta destino, **0 significa ilimitado e o valor é lido em MB** - [obrigatório]
 
-* `sync_cooldown`: define o intervalo de tempo no qual a sincronização ficará dormente após executar, **deve ser um valor numérico inteiro maior que zero**
+* `sync_cooldown`: define o intervalo de tempo no qual a sincronização ficará dormente após executar, **deve ser um valor numérico inteiro maior que zero** - [obrigatório]
 
 Para ter mais de uma sincronização basta criar outro arquivo dentro da pasta `Syncs`, atentando para as mesmas regras. Arquivos dentro de pastas também serão lidos, desde que sejam válidos nas mesmas regras.
 
@@ -114,54 +118,58 @@ Remember to give execution permission to the file, wich can be done with
 
 * `chmod +x /path/to/executable/1dsync.exe`
 
-Edit the file `Config/config.json`, changing the values on the right according to your preferences. **All the following options are required and must be filled. The values must be between quotes**:
+Edit the file `Config/config.json`, changing the values on the right according to your preferences. **The values must be between quotes**:
 
-* `check_cooldown`: numerical value, in hours, between synchronization attempts.
+* `check_cooldown`: numerical value, in hours, between synchronization attempts. - [required]
 
-* `email_only_if_an_error_occur`: defines if the email will be sent only when a sync error happens, must be **True** or **False**
+* `save_log`: defines if the log will be saved, must be **True** or **False** - [required]
 
-* `log_only_if_an_error_occur`:  defines if the log will be written only when a sync error happens, must be **True** or **False**
+    * `log_only_if_an_error_occur`:  defines if the log will be written only when a sync error happens, must be **True** or **False** - [required if `save_log` is **True**]
 
-* `email_sender`: email address wich will send synchronization reports (only gmail is supported until now, check the account options to enable SMTP access)
+* `send_email`: defines if the email will be sent, must be **True** or **False** - [required]
 
-* `email_sender_password`: report email account password, is recommended to create an account ony for this porpose, since the password will be in plain text
+    * `email_sender`: email address wich will send synchronization reports (only gmail is supported until now, check the account options to enable SMTP access) - [required if `send_email` is **True**]
 
-* `email_addressee`: email address to where the reports are sent
+    * `email_sender_password`: report email account password, is recommended to create an account ony for this porpose, since the password will be in plain text - [required if `send_email` is **True**]
 
-* `post_sync_script`: script to be executed after the synchronization. It will run once per program loop (once every `check_cooldown` time period), immediately before the log write and sending the email
+    * `email_addressee`: email address to where the reports are sent - [required if `send_email` is **True**]
+
+    * `email_only_if_an_error_occur`: defines if the email will be sent only when a sync error happens, must be **True** or **False** - [required if `send_email` is **True**]
+
+* `post_sync_script`: script to be executed after the synchronization. It will run once per program loop (once every `check_cooldown` time period), immediately before the log write and sending the email - [required]
 
 The file `Config/control.json` stores dates and times of the synchronizations, it's not necessary to change it. However, if you want to force a sync to run on the next attempt you can remove the respective line from the file or change it to some chosen date and time.
 
 Use the file `Syncs/sync.json.example` as a template 
-to create a synchronization. Note that the file, to be considered, must have the `.json` extension, so you have to rename it (recommended to duplicate this file and rename the copy). **All the following options are required and must be filled. The values must be between quotes**:
+to create a synchronization. Note that the file, to be considered, must have the `.json` extension, so you have to rename it (recommended to duplicate this file and rename the copy). **The values must be between quotes**:
 
-* `enable`: sets if this sync will be active or not, must be **True** or **False**
+* `enable`: sets if this sync will be active or not, must be **True** or **False** - [required]
 
-* `source_path`: path to the source folder
+* `source_path`: path to the source folder - [required]
 
-* `source_selection_condition`: selection condition for the files in the source folder, **see [validations](#validations)**
+* `source_selection_condition`: selection condition for the files in the source folder, **see [validations](#validations)** - [required]
 
-* `source_subfolder_search`: sets if the program will search for files in subfolders of the source folder, must be **True** or **False**
+* `source_subfolder_search`: sets if the program will search for files in subfolders of the source folder, must be **True** or **False** - [required]
 
-* `source_filelist_shuffle`: sets if the source file list will be shuffled, must be **True** or **False**
+* `source_filelist_shuffle`: sets if the source file list will be shuffled, must be **True** or **False** - [required]
 
 * `destination_path`: path to the destination folder
 
-* `destination_selection_condition`: selection condition for the files in the destination folder, **see [validations](#validations)**
+* `destination_selection_condition`: selection condition for the files in the destination folder, **see [validations](#validations)** - [required]
 
-* `destination_subfolder_search`: sets if the program will search for files in subfolders of the destination folder, must be **True** or **False**
+* `destination_subfolder_search`: sets if the program will search for files in subfolders of the destination folder, must be **True** or **False** - [required]
 
-* `destination_filelist_shuffle`: sets if the destination file list will be shuffled, must be **True** or **False**
+* `destination_filelist_shuffle`: sets if the destination file list will be shuffled, must be **True** or **False** - [required]
 
-* `hierarchy_maintenance`: sets if the directory hierarchy will be preserved on the destination folder for the copied files, must be **True** or **False**
+* `hierarchy_maintenance`: sets if the directory hierarchy will be preserved on the destination folder for the copied files, must be **True** or **False** - [required]
 
-* `left_files_deletion`: sets if the files on the destination folder that are not on the source file list or did not pass the chosen validation will be removed, must be **True** or **False**
+* `left_files_deletion`: sets if the files on the destination folder that are not on the source file list or did not pass the chosen validation will be removed, must be **True** or **False** - [required]
 
-* `file_override`: sets if the files will be overwritten even if they are already on the destination folder, must be **True** or **False**
+* `file_override`: sets if the files will be overwritten even if they are already on the destination folder, must be **True** or **False** - [required]
 
-* `size_limit`: sets the size limit of the destination folder, **0 means ilimited and the value is in MB**
+* `size_limit`: sets the size limit of the destination folder, **0 means ilimited and the value is read in MB** - [required]
 
-* `sync_cooldown`: sets the time interval where the sync will be sleeping after the execution, **must be an integer numerical value greater than zero**
+* `sync_cooldown`: sets the time interval where the sync will be sleeping after the execution, **must be an integer numerical value greater than zero** - [required]
 
 To have more than one sync you can just create another file inside the `Syncs` folder, paying attention to the same rules. Files inside folders will be used too, provided that they follow the same rules.
 
