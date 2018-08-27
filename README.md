@@ -37,7 +37,7 @@ Edite o arquivo `Config/config.json`, editando os valores à direita de acordo c
 
     * `email_only_if_an_error_occur`: define se o email será enviado apenas quando houver um erro em alguma sincronia, deve ser **True** ou **False** - [obrigatório se `send_email` for **True**]
 
-* `post_sync_script`: script a ser executado após a sincronização. Rodará uma vez por loop do programa (ou seja, uma vez a cada período de tempo `check_cooldown`), imediatamente antes da gravação do log e envio do email - [obrigatório]
+* `post_sync_script`: script a ser executado após a sincronização. Rodará uma vez por loop do programa (ou seja, uma vez a cada período de tempo `check_cooldown`), imediatamente antes da gravação do log e envio do email - [opcional]
 
 O arquivo `Config/control.json` armazena as datas e horários das sincronizações, não é necessário editá-lo. Entretanto, caso queira forçar uma sincronização na próxima tentativa, basta remover a(s) respectivas linhas do arquivo ou trocar sua data agendada.
 
@@ -136,7 +136,7 @@ Edit the file `Config/config.json`, changing the values on the right according t
 
     * `email_only_if_an_error_occur`: defines if the email will be sent only when a sync error happens, must be **True** or **False** - [required if `send_email` is **True**]
 
-* `post_sync_script`: script to be executed after the synchronization. It will run once per program loop (once every `check_cooldown` time period), immediately before the log write and sending the email - [required]
+* `post_sync_script`: script to be executed after the synchronization. It will run once per program loop (once every `check_cooldown` time period), immediately before the log write and sending the email - [optional]
 
 The file `Config/control.json` stores dates and times of the synchronizations, it's not necessary to change it. However, if you want to force a sync to run on the next attempt you can remove the respective line from the file or change it to some chosen date and time.
 
