@@ -10,5 +10,7 @@
         "email_addressee": "another email @any.com",
         "email_only_if_an_error_occur": "False",
     
-    "post_sync_script": "# some script"
+    "post_sync_script": "# some script",
+    
+    "logs_folder_maximum_size": "0"
 }

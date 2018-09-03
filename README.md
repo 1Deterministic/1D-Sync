@@ -39,6 +39,8 @@ Edite o arquivo `Config/config.json`, editando os valores à direita de acordo c
 
 * `post_sync_script`: script a ser executado após a sincronização. Rodará uma vez por loop do programa (ou seja, uma vez a cada período de tempo `check_cooldown`), imediatamente antes da gravação do log e envio do email - [opcional]
 
+* `logs_folder_maximum_size`: tamanho máximo que a pasta `Logs` pode ter. Se for excedido, os arquivos mais antigos serão apagados até que o tamanho máximo seja respeitado. **O critério de exclusão é baseado na data de modificação, deve ser um valor numérico inteiro maior ou igual a zero, 0 significa ilimitado e o valor é lido em MB** - [opcional]
+
 O arquivo `Config/control.json` armazena as datas e horários das sincronizações, não é necessário editá-lo. Entretanto, caso queira forçar uma sincronização na próxima tentativa, basta remover a(s) respectivas linhas do arquivo ou trocar sua data agendada.
 
 Utilize o arquivo `Syncs/sync.json.example` como template para criar uma sincronização. Note que o arquivo, para ser considerado, deve possuir a extensão `.json`, então você deve renomeá-lo (recomendável fazer uma cópia desse arquivo e renomear a cópia). **Os valores devem estar entre aspas**:
@@ -67,7 +69,7 @@ Utilize o arquivo `Syncs/sync.json.example` como template para criar uma sincron
 
 * `file_override`: define se os arquivos serão sobrescritos independetemente de já estarem presentes na pasta destino, deve ser **True** ou **False** - [obrigatório]
 
-* `size_limit`: define o tamanho limite de arquivos na pasta destino, **0 significa ilimitado e o valor é lido em MB** - [obrigatório]
+* `size_limit`: define o tamanho limite de arquivos na pasta destino, **deve ser um valor numérico inteiro maior ou igual a zero, 0 significa ilimitado e o valor é lido em MB** - [obrigatório]
 
 * `sync_cooldown`: define o intervalo de tempo no qual a sincronização ficará dormente após executar, **deve ser um valor numérico inteiro maior que zero** - [obrigatório]
 
@@ -138,6 +140,8 @@ Edit the file `Config/config.json`, changing the values on the right according t
 
 * `post_sync_script`: script to be executed after the synchronization. It will run once per program loop (once every `check_cooldown` time period), immediately before the log write and sending the email - [optional]
 
+* `logs_folder_maximum_size`: maximum size allowed for the `Logs` folder. If it's exceeded, the older files will be deleted until the maximum size is satisfied. **The exclusion criteria is based on the modified date, must be an integer numerical value greater than or equal to zero, 0 means unlimited and the value is read in MB** - [optional]
+
 The file `Config/control.json` stores dates and times of the synchronizations, it's not necessary to change it. However, if you want to force a sync to run on the next attempt you can remove the respective line from the file or change it to some chosen date and time.
 
 Use the file `Syncs/sync.json.example` as a template 
@@ -167,7 +171,7 @@ to create a synchronization. Note that the file, to be considered, must have the
 
 * `file_override`: sets if the files will be overwritten even if they are already on the destination folder, must be **True** or **False** - [required]
 
-* `size_limit`: sets the size limit of the destination folder, **0 means ilimited and the value is read in MB** - [required]
+* `size_limit`: sets the size limit of the destination folder, **must be an integer numerical value greater than or equal to zero, 0 means unlimited and the value is read in MB** - [required]
 
 * `sync_cooldown`: sets the time interval where the sync will be sleeping after the execution, **must be an integer numerical value greater than zero** - [required]
 

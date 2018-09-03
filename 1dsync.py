@@ -209,6 +209,33 @@ if __name__ == "__main__":
                     # Maybe send an email here
                     raise SystemExit
 
+
+        # deletes file in the Logs folder until the maximum size is satisfied
+        if "logs_folder_maximum_size" in config:
+            # execute only if the value is greater than zero
+            if int(config["logs_folder_maximum_size"]) > 0:
+
+                # maybe this has to be in another place
+                def get_folder_size(path):
+                    size = 0
+                    for (dirpath, dirnames, filenames) in os.walk(path):
+                        for f in filenames:
+                            size += os.path.getsize(os.path.join(dirpath, f)) / 1024000
+                    return size
+
+                # ordenated list of all files in Logs
+                path = os.path.join(this_path, "Logs")
+                # sorts the files by modified date
+                files = sorted(os.listdir(path), key=lambda x: os.stat(os.path.join(path, x)).st_mtime)
+                # for every file in the Logs folder
+                for f in files:
+                    # if the total size is greater than the maximum allowed
+                    if get_folder_size(path) > int(config["logs_folder_maximum_size"]):
+                        # removes the current file and tests again
+                        if os.path.isfile(os.path.join(path, f)): os.remove(os.path.join(path, f))
+
+
+
         # resets the flag
         error_flag = False
 

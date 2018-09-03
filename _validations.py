@@ -184,6 +184,13 @@ def validate_config_json(json, log):
 
     # post_sync_script is now optional
 
+    # logs_folder_maximum_size (optional)
+    if "logs_folder_maximum_size" in json:
+        # if present, must be >= 0
+        if not validate_size_limit(json["logs_folder_maximum_size"]):
+            log.report("[ERROR] \t\"logs_folder_maximum_size\": invalid value")
+            return False
+
     return True
 
 
