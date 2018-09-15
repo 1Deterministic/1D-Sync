@@ -106,7 +106,7 @@ if __name__ == "__main__":
                                 continue
 
                             # checks if the sync is enabled
-                            if sync_properties["enable"] == "True":
+                            if ast.literal_eval(sync_properties["enable"]):
                                 log.report("        running the sync job...")
                                 # runs the sync
                                 if _sync.Sync(sync_properties["source_path"],

@@ -5,7 +5,7 @@
     "source_selection_condition": "any file",
     "source_maximum_age": "any age",
     "source_subfolder_search": "True",
-    "source_filelist_shuffle": "True",
+    "source_filelist_shuffle": "False",
 
     "destination_path": "/path/to/destination",
     "destination_selection_condition": "any file",
@@ -14,7 +14,7 @@
     "destination_filelist_shuffle": "False",
 
     "hierarchy_maintenance": "True",
-    "left_files_deletion": "True",
+    "left_files_deletion": "False",
     "file_override": "False",
     "size_limit": "0",
     "sync_cooldown": "4"
