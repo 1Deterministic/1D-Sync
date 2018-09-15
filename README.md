@@ -51,6 +51,8 @@ Utilize o arquivo `Syncs/sync.json.example` como template para criar uma sincron
 
 * `source_selection_condition`: condição de seleção de arquivos da pasta de origem, **veja [validações](#validações)** - [obrigatório]
 
+* `source_maximum_age`: idade máxima permitida para que os arquivos sejam selecionados na pasta de origem com base na **data de modificação**, deve ser **any age**, o que permite qualquer idade, **ou um valor numérico inteiro maior que zero**, sendo lido em dias - [obrigatório]
+
 * `source_subfolder_search`: define se serão procurados arquivos nas subpastas da pasta de origem, deve ser **True** ou **False** - [obrigatório]
 
 * `source_filelist_shuffle`: define se a lista de arquivos selecionados da origem será embaralhada, deve ser **True** ou **False** - [obrigatório]
@@ -58,6 +60,8 @@ Utilize o arquivo `Syncs/sync.json.example` como template para criar uma sincron
 * `destination_path`: caminho para a pasta de destino - [obrigatório]
 
 * `destination_selection_condition`: condição de seleção de arquivos da pasta de destino, **veja [validações](#validações)** - [obrigatório]
+
+* `destination_maximum_age`: idade máxima permitida para que os arquivos sejam selecionados na pasta de destino com base na **data de modificação**, deve ser **any age**, o que permite qualquer idade, **ou um valor numérico inteiro maior que zero**, sendo lido em dias - [obrigatório]
 
 * `destination_subfolder_search`: define se serão procurados arquivos nas subpastas da pasta de destino, deve ser **True** ou **False** - [obrigatório]
 
@@ -153,6 +157,8 @@ to create a synchronization. Note that the file, to be considered, must have the
 
 * `source_selection_condition`: selection condition for the files in the source folder, **see [validations](#validations)** - [required]
 
+* `source_maximum_age`: maximum allowed age for a file to be selected in the source folder based on the **modified date**, must be **any age**, that allows for any age, **or an integer numerical value greater than zero**, read in days - [required]
+
 * `source_subfolder_search`: sets if the program will search for files in subfolders of the source folder, must be **True** or **False** - [required]
 
 * `source_filelist_shuffle`: sets if the source file list will be shuffled, must be **True** or **False** - [required]
@@ -160,6 +166,8 @@ to create a synchronization. Note that the file, to be considered, must have the
 * `destination_path`: path to the destination folder
 
 * `destination_selection_condition`: selection condition for the files in the destination folder, **see [validations](#validations)** - [required]
+
+* `destination_maximum_age`: maximum allowed age for a file to be selected in the destination folder based on the **modified date**, must be **any age**, that allows for any age, **or an integer numerical value greater than zero**, read in days - [required]
 
 * `destination_subfolder_search`: sets if the program will search for files in subfolders of the destination folder, must be **True** or **False** - [required]
 

@@ -29,6 +29,14 @@ def validate_sync_json(json, log):
         log.report("[ERROR] \t\"source_selection_condition\": invalid value")
         return False
 
+    # source_maximum_age
+    if not "source_maximum_age" in json:
+        log.report("[ERROR] \t\"source_maximum_age\" not in .json")
+        return False
+    if not validate_maximum_age(json["source_maximum_age"]):
+        log.report("[ERROR] \t\"source_maximum_age\": invalid value")
+        return False
+
     # source_subfolder_search
     if not "source_subfolder_search" in json:
         log.report("[ERROR] \t\"source_subfolder_search\" not in .json")
@@ -59,6 +67,14 @@ def validate_sync_json(json, log):
         return False
     if not validate_selection_condition(json["destination_selection_condition"]):
         log.report("[ERROR] \t\"destination_selection_condition\": invalid value")
+        return False
+
+    # destination_maximum_age
+    if not "destination_maximum_age" in json:
+        log.report("[ERROR] \t\"destination_maximum_age\" not in .json")
+        return False
+    if not validate_maximum_age(json["destination_maximum_age"]):
+        log.report("[ERROR] \t\"destination_maximum_age\": invalid value")
         return False
 
     # destination_subfolder_search
@@ -232,6 +248,16 @@ def validate_selection_condition(condition):
         return False
 
 
+# validates an age condition
+def validate_maximum_age(age):
+    if age == "any age": return True
+    else:
+        try:
+            return int(age) > 0
+        except:
+            return False
+
+
 # validates a toggle
 def validate_toggle(value):
     return value == "True" or value == "False"
@@ -239,12 +265,7 @@ def validate_toggle(value):
 # validates a size limit value
 def validate_size_limit(value):
     try:
-        value = int(value)
-
-        if value >= 0:
-            return True
-
-        return False
+        return int(value) >= 0
 
     except:
         return False
@@ -253,12 +274,7 @@ def validate_size_limit(value):
 # validates a cooldown value for a sync
 def validate_sync_cooldown(cooldown):
     try:
-        cooldown = int(cooldown)
-
-        if cooldown > 0:
-            return True
-        else:
-            return False
+        return int(cooldown) > 0
 
     except:
         return False
@@ -267,12 +283,7 @@ def validate_sync_cooldown(cooldown):
 # validates a cooldown value for the main loop
 def validate_config_cooldown(cooldown):
     try:
-        cooldown = int(cooldown)
-
-        if cooldown > 0:
-            return True
-        else:
-            return False
+        return int(cooldown) > 0
 
     except:
         return False

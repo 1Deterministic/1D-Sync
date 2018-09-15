@@ -111,12 +111,16 @@ if __name__ == "__main__":
                                 # runs the sync
                                 if _sync.Sync(sync_properties["source_path"],
                                               sync_properties["source_selection_condition"],
+                                              sync_properties["source_maximum_age"],
                                               sync_properties["source_subfolder_search"],
                                               sync_properties["source_filelist_shuffle"],
+
                                               sync_properties["destination_path"],
                                               sync_properties["destination_selection_condition"],
+                                              sync_properties["destination_maximum_age"],
                                               sync_properties["destination_subfolder_search"],
                                               sync_properties["destination_filelist_shuffle"],
+
                                               sync_properties["hierarchy_maintenance"],
                                               sync_properties["left_files_deletion"],
                                               sync_properties["file_override"],
@@ -233,7 +237,6 @@ if __name__ == "__main__":
                     if get_folder_size(path) > int(config["logs_folder_maximum_size"]):
                         # removes the current file and tests again
                         if os.path.isfile(os.path.join(path, f)): os.remove(os.path.join(path, f))
-
 
 
         # resets the flag

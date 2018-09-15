@@ -81,7 +81,7 @@ class File:
 
 
     # returns if this file is a "filetype"
-    def evaluate(self, filetype):
+    def evaluate_type(self, filetype):
         # map with the evaluation and its test
         evaluations = {
             # multimedia
@@ -121,6 +121,18 @@ class File:
             # returns false
             return False
 
+
+    # returns if this file is newer than "age"
+    def evaluate_age(self, age):
+        # any age is a special case
+        if age == "any age":
+            return True
+        # evaluate as a number
+        else:
+            try:
+                return self.age <= int(age)
+            except:
+                return False
 
 
 class Tag:

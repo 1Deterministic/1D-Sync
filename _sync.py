@@ -7,16 +7,21 @@ import random
 
 class Sync:
     # creates a "sync" from the source folder to the destination folder
-    def __init__(self, source_path, source_selection_condition, source_subfolder_search, source_filelist_shuffle, destination_path, destination_selection_condition, destination_subfolder_search, destination_filelist_shuffle, hierarchy_maintenance, left_files_deletion, file_override, size_limit, log):
+    def __init__(self, source_path, source_selection_condition, source_maximum_age, source_subfolder_search, source_filelist_shuffle,
+                destination_path, destination_selection_condition, destination_maximum_age, destination_subfolder_search, destination_filelist_shuffle,
+                 hierarchy_maintenance, left_files_deletion, file_override, size_limit, log):
+
         # source parameters
         self.source_path = source_path
         self.source_selection_condition = source_selection_condition
+        self.source_maximum_age = source_maximum_age
         self.source_subfolder_search = ast.literal_eval(source_subfolder_search)
         self.source_filelist_shuffle = ast.literal_eval(source_filelist_shuffle)
 
         # destination parameters
         self.destination_path = destination_path
         self.destination_selection_condition = destination_selection_condition
+        self.destination_maximum_age = destination_maximum_age
         self.destination_subfolder_search = ast.literal_eval(destination_subfolder_search)
         self.destination_filelist_shuffle = ast.literal_eval(destination_filelist_shuffle)
 
@@ -33,8 +38,18 @@ class Sync:
     # performs an already initialized sync
     def run(self):
         # initializes the file lists
-        source = File_List(self.source_path, self.source_selection_condition, self.source_subfolder_search, self.source_filelist_shuffle, self.log)
-        destination = File_List(self.destination_path, self.destination_selection_condition, self.destination_subfolder_search ,self.destination_filelist_shuffle, self.log)
+        source = File_List(self.source_path,
+                           self.source_selection_condition,
+                           self.source_maximum_age,
+                           self.source_subfolder_search,
+                           self.source_filelist_shuffle,
+                           self.log)
+        destination = File_List(self.destination_path,
+                                self.destination_selection_condition,
+                                self.destination_maximum_age,
+                                self.destination_subfolder_search,
+                                self.destination_filelist_shuffle,
+                                self.log)
         self.log.report("[ OK  ] file list initialize")
 
         # fills the file lists
@@ -81,10 +96,11 @@ class Sync:
 
 class File_List:
     # creates a file list given the parameters
-    def __init__(self, path, selection_condition, subfolder_search, filelist_shuffle, log):
+    def __init__(self, path, selection_condition, maximum_age, subfolder_search, filelist_shuffle, log):
         self.filelist = []
         self.path = path
         self.selection_condition = selection_condition
+        self.maximum_age = maximum_age
         self.subfolder_search = subfolder_search
         self.filelist_shuffle = filelist_shuffle
 
@@ -100,8 +116,8 @@ class File_List:
                 # creates a file object containing some information
                 file = _file.File(os.path.join(dirpath, f))
 
-                # if the file meets the condition
-                if file.evaluate(self.selection_condition):
+                # if the file meets the conditions
+                if file.evaluate_type(self.selection_condition) and file.evaluate_age(self.maximum_age):
                     # include it in the list
                     self.filelist.append(file)
 
