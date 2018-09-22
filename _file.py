@@ -1,3 +1,10 @@
+'''
+
+This stores information about a file
+Also implements every action related to files
+
+'''
+
 import _filetypes
 
 import os
@@ -7,10 +14,8 @@ import math
 import time
 
 class File:
-    # creates a file object, containing some information
-    def __init__(self, path):
+    def __init__(self, path): # reads information about the file on a given path
         try:
-            #self.path = str(pathlib.Path(path).resolve()) # path of the file resolved (will follow a symlink)
             self.path = path
             self.islink = os.path.islink(path)
             self.size = os.path.getsize(self.path) / 1024000
@@ -19,8 +24,7 @@ class File:
             self.extension = os.path.splitext(self.path)[1]
             self.to_copy = True
             self.to_delete = False
-        except:
-            # erases all properties
+        except: # erases all information in case of an error
             self.path = ""
             self.islink = False
             self.size = 0.0
@@ -30,59 +34,42 @@ class File:
             self.to_copy = False
             self.to_delete = False
 
-
-    # copies the file to the destination
-    def copy(self, destination):
-        # if the file was marked and its not empty
+    def copy(self, destination, log): # copies this file to a given target folder
         if self.to_copy and (not self.path == ""):
-            # tries to copy the file
             try:
-                # creates the receiving folder if doesnt exist yet
                 if not os.path.isdir(destination):
-                    os.makedirs(destination)
+                    os.makedirs(destination) # will build all directory tree if the destination is not a folder
 
-                # copies the file to destination
                 shutil.copy(self.path, destination)
-                # if the copy was done, return success
+
+                log.report("ok_file_copy", detail=self.path)
                 return True
-            # if something went wrong
             except:
-                # returns error
+                log.report("error_file_copy", detail=self.path)
                 return False
 
         return True
 
-
-    # removes the file
-    def delete(self):
-        # if it was marked for removal and its not empty
+    def delete(self, log): # removes this file from the filesystem
         if self.to_delete and (not self.path == ""):
-            # tries to remove the file
             try:
-                # removes the file from self.path
                 os.remove(self.path)
+                log.report("ok_file_delete", detail=self.path)
 
-                # erases all properties
                 self.path = ""
                 self.islink = False
                 self.size = 0.0
                 self.age = 0
                 self.basename = ""
                 self.extension = ""
-
-                # if all went OK, return success
                 return True
-            # if something went wrong
             except:
-                # returns error
+                log.report("error_file_delete", detail=self.path)
                 return False
 
         return True
 
-
-    # returns if this file is a "filetype"
-    def evaluate_type(self, filetype):
-        # map with the evaluation and its test
+    def evaluate_type(self, filetype): # tells if this file is a filetype (if it is an image file, an audio file, a document file...)
         evaluations = {
             # multimedia
             "audio": lambda: _filetypes.audio_extensions.__contains__(self.extension),
@@ -102,32 +89,20 @@ class File:
             "favorite audio": lambda: self.extension == ".mp3" and Tag(self.path).rating == 5
         }
 
-        # splits the conditions on ;
-        conditions = filetype.split(";")
+        conditions = filetype.split(";") # filetype can have multiple values separated by ;
 
-        # tries to run the evaluation test for this file
         try:
-            # for every condition identified
             for c in conditions:
-                # if some evaluation returns true (; = or)
-                if evaluations.get(c)():
-                    # validates the file for the given conditions
+                if evaluations.get(c)(): # if any possible type is satisfied, return True
                     return True
 
-            # if no condition was validated, returns false
             return False
-        # if the condition was not identified
         except:
-            # returns false
             return False
 
-
-    # returns if this file is newer than "age"
-    def evaluate_age(self, age):
-        # any age is a special case
+    def evaluate_age(self, age): # tells if this file is younger than the maximum age
         if age == "any age":
             return True
-        # evaluate as a number
         else:
             try:
                 return self.age <= int(age)
@@ -135,17 +110,15 @@ class File:
                 return False
 
 
-class Tag:
-    # creates a tag object containing some information
+
+class Tag: # this helps dealing with mp3 files (for the favorite audio evaluation)
     def __init__(self, path):
-        # tries to read information from the file
         try:
             self.file = eyed3.load(path)
             self.artist = self.file.tag.artist
             self.album = self.file.tag.album
             self.title = self.file.tag.title
             self.rating = math.ceil(self.file.tag.frame_set[b'POPM'][0].rating / 51)
-        # if something went wrong
         except:
             self.artist = "<none>"
             self.album = "<none>"

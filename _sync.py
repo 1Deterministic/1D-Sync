@@ -1,102 +1,322 @@
+'''
+
+This controls the sync and its options
+Also implements every action related to a sync
+
+'''
+
+
 import _file
+import _defaults
+import _validations
 
 import os
 import ast
+import json
 import random
 
 
 class Sync:
-    # creates a "sync" from the source folder to the destination folder
-    def __init__(self, source_path, source_selection_condition, source_maximum_age, source_subfolder_search, source_filelist_shuffle,
-                destination_path, destination_selection_condition, destination_maximum_age, destination_subfolder_search, destination_filelist_shuffle,
-                 hierarchy_maintenance, left_files_deletion, file_override, size_limit, log):
+    def __init__(self, path):
+        self.path = path # stores the path of the sync file (that is also its name in the schedule file)
 
-        # source parameters
-        self.source_path = source_path
-        self.source_selection_condition = source_selection_condition
-        self.source_maximum_age = source_maximum_age
-        self.source_subfolder_search = ast.literal_eval(source_subfolder_search)
-        self.source_filelist_shuffle = ast.literal_eval(source_filelist_shuffle)
+    def load(self, log): # loads the sync from its path and validates its values
+        try:
+            log.report("ok_sync_running", detail=self.path)
+            self.properties = json.loads(open(self.path, "r").read())
+        except:
+            log.report("error_sync_opening")
+            return False
 
-        # destination parameters
-        self.destination_path = destination_path
-        self.destination_selection_condition = destination_selection_condition
-        self.destination_maximum_age = destination_maximum_age
-        self.destination_subfolder_search = ast.literal_eval(destination_subfolder_search)
-        self.destination_filelist_shuffle = ast.literal_eval(destination_filelist_shuffle)
+        if not self.validate_enable(self.properties, log):
+            return False
 
-        # sync parameters
-        self.hierarchy_maintenance = ast.literal_eval(hierarchy_maintenance)
-        self.left_files_deletion = ast.literal_eval(left_files_deletion)
-        self.file_override = ast.literal_eval(file_override)
-        self.size_limit = int(size_limit)
+        if not self.validate_source_path(self.properties, log):
+            return False
 
-        # log to report to
-        self.log = log
+        if not self.validate_source_selection_condition(self.properties, log):
+            return False
+
+        if not self.validate_source_maximum_age(self.properties, log):
+            return False
+
+        if not self.validate_source_subfolder_search(self.properties, log):
+            return False
+
+        if not self.validate_source_filelist_shuffle(self.properties, log):
+            return False
+
+        if not self.validate_destination_path(self.properties, log):
+            return False
+
+        if not self.validate_destination_selection_condition(self.properties, log):
+            return False
+
+        if not self.validate_destination_maximum_age(self.properties, log):
+            return False
+
+        if not self.validate_destination_subfolder_search(self.properties, log):
+            return False
+
+        if not self.validate_destination_filelist_shuffle(self.properties, log):
+            return False
+
+        if not self.validate_hierarchy_maintenance(self.properties, log):
+            return False
+
+        if not self.validate_left_files_deletion(self.properties, log):
+            return False
+
+        if not self.validate_file_override(self.properties, log):
+            return False
+
+        if not self.validate_size_limit(self.properties, log):
+            return False
+
+        if not self.validate_sync_cooldown(self.properties, log):
+            return False
+
+        log.report("ok_sync_json_load")
+        return True
 
 
-    # performs an already initialized sync
-    def run(self):
-        # initializes the file lists
-        source = File_List(self.source_path,
-                           self.source_selection_condition,
-                           self.source_maximum_age,
-                           self.source_subfolder_search,
-                           self.source_filelist_shuffle,
-                           self.log)
-        destination = File_List(self.destination_path,
-                                self.destination_selection_condition,
-                                self.destination_maximum_age,
-                                self.destination_subfolder_search,
-                                self.destination_filelist_shuffle,
-                                self.log)
-        self.log.report("[ OK  ] file list initialize")
+    def run(self, control, log): # runs this sync if needed
+        if (self.path not in control.properties) or (control.its_time(self.path)): # will run if this sync is not scheduled or if its cooldown has ended
+            if not ast.literal_eval(self.properties["enable"]): # checks if it is disabled before start running
+                log.report("ok_sync_run_disabled")
+                return True
 
-        # fills the file lists
-        source.fill(self.size_limit)
-        destination.fill(0)
-        self.log.report("[ OK  ] file list fill")
+            # creates a list of files inside the source folder
+            source = File_List(
+                self.properties["source_path"],
+                self.properties["source_selection_condition"],
+                self.properties["source_maximum_age"],
+                ast.literal_eval(self.properties["source_subfolder_search"]),
+                ast.literal_eval(self.properties["source_filelist_shuffle"])
+            )
 
-        # in case removing left files was received
-        if self.left_files_deletion:
-            # marks the files that will be removed
-            destination.mark_files_to_delete_except_by(source, self.hierarchy_maintenance)
-            self.log.report("[ OK  ] left files identification")
+            # creates a list of files inside the destination folder
+            destination = File_List(
+                self.properties["destination_path"],
+                self.properties["destination_selection_condition"],
+                self.properties["destination_maximum_age"],
+                ast.literal_eval(self.properties["destination_subfolder_search"]),
+                ast.literal_eval(self.properties["destination_filelist_shuffle"])
+            )
 
-            # delete them
-            if destination.remove_marked_files():
-                self.log.report("[ OK  ] left files removal")
-            else:
-                self.log.report("[ERROR] left files removal")
+
+            if not source.fill(int(self.properties["size_limit"]), log): # fills the source file list with the specified size limit
                 return False
 
-            # after removing the files, also remove the empty folders
-            if destination.remove_empty_folders():
-                self.log.report("[ OK  ] empty folders removal")
-            else:
-                self.log.report("[ERROR] empty folders removal")
+            if not destination.fill(0, log): # fills the destination file list with no size limit
                 return False
 
-        # if the existing files will be maintained
-        if not self.file_override:
-            # unmarks the files that doesnt need to be copied
-            source.mark_files_to_copy_except_by(destination, self.hierarchy_maintenance)
-            self.log.report("[ OK  ] redundant files identification")
+            if ast.literal_eval(self.properties["left_files_deletion"]):
+                if not destination.mark_files_to_delete_except_by(source, ast.literal_eval(self.properties["hierarchy_maintenance"]), log): # marks files in the file list to be removed
+                    return False
 
-        # copies the marked files (all files are marked unless they were unmarked before)
-        if source.copy_marked_files(self.destination_path, self.hierarchy_maintenance):
-            self.log.report("[ OK  ] files copy")
+                if not destination.remove_marked_files(log): # removes the previously marked files
+                    return False
+
+                if not destination.remove_empty_folders(log): # removes empty folders in the destination
+                    return False
+
+            if not ast.literal_eval(self.properties["file_override"]):
+                if not source.mark_files_to_copy_except_by(destination, ast.literal_eval(self.properties["hierarchy_maintenance"]), log): # unmarks redundant files to prevent overwriting
+                    return False
+
+            if not source.copy_marked_files(self.properties["destination_path"], ast.literal_eval(self.properties["hierarchy_maintenance"]), log): # copies the marked files
+                return False
+
+            control.schedule(self.path, int(self.properties["sync_cooldown"])) # schedules the next time to run this sync again
+            log.report("ok_sync_finished")
+            return True
         else:
-            self.log.report("[ERROR] files copy")
+            log.report("ok_sync_still_in_cooldown")
+            log.report("ok_sync_finished")
+            return True
+
+    def disable(self, log): # disables this sync (useful if an error occurred)
+        try:
+            self.properties["enable"] = "False"
+
+            with open(self.path, "w") as file_to_write:
+                json.dump(self.properties, file_to_write, indent=4, ensure_ascii=False)
+                log.report("ok_sync_disable")
+                return True
+        except:
+            log.report("error_sync_disable", critical=True)
+            return False
+
+    def validate_enable(self, json, log):
+        if not "enable" in json:
+            log.report("error_sync_enable_missing") # has to be specified
+            return False
+
+        if not _validations.validate_boolean_value(json["enable"]):
+            log.report("error_sync_enable")
+            return False
+
+        return True
+
+    def validate_source_path(self, json, log):
+        if not "source_path" in json:
+            log.report("error_sync_source_path_missing") # has to be specified
+            return False
+
+        if not _validations.validate_path(json["source_path"]):
+            log.report("error_sync_source_path")
+            return False
+
+        return True
+
+    def validate_source_selection_condition(self, json, log):
+        if not "source_selection_condition" in json:
+            json["source_selection_condition"] = _defaults.default_source_selection_condition # if wasn't found in the json, use the default value
+
+        if not _validations.validate_selection_condition(json["source_selection_condition"]):
+            log.report("error_sync_source_selection_condition")
+            return False
+
+        return True
+
+    def validate_source_maximum_age(self, json, log):
+        if not "source_maximum_age" in json:
+            json["source_maximum_age"] = _defaults.default_source_maximum_age # if wasn't found in the json, use the default value
+
+        if not _validations.validate_integer_greater_than_zero(json["source_maximum_age"]):
+            if not json["source_maximum_age"] == "any age":
+                log.report("error_sync_source_maximum_age")
+                return False
+
+        return True
+
+    def validate_source_subfolder_search(self, json, log):
+        if not "source_subfolder_search" in json:
+            json["source_subfolder_search"] = _defaults.default_source_subfolder_search # if wasn't found in the json, use the default value
+
+        if not _validations.validate_boolean_value(json["source_subfolder_search"]):
+            log.report("error_sync_source_subfolder_search")
+            return False
+
+        return True
+
+    def validate_source_filelist_shuffle(self, json, log):
+        if not "source_filelist_shuffle" in json:
+            json["source_filelist_shuffle"] = _defaults.default_source_filelist_shuffle # if wasn't found in the json, use the default value
+
+        if not _validations.validate_boolean_value(json["source_filelist_shuffle"]):
+            log.report("error_sync_source_filelist_shuffle")
+            return False
+
+        return True
+
+    def validate_destination_path(self, json, log):
+        if not "destination_path" in json:
+            log.report("error_sync_destination_path_missing") # has to be specified
+            return False
+
+        if not _validations.validate_path(json["destination_path"]):
+            log.report("error_sync_destination_path")
+            return False
+
+        return True
+
+    def validate_destination_selection_condition(self, json, log):
+        if not "destination_selection_condition" in json:
+            json["destination_selection_condition"] = _defaults.default_destination_selection_condition # if wasn't found in the json, use the default value
+
+        if not _validations.validate_selection_condition(json["destination_selection_condition"]):
+            log.report("error_sync_destination_selection_condition")
+            return False
+
+        return True
+
+    def validate_destination_maximum_age(self, json, log):
+        if not "destination_maximum_age" in json:
+            json["destination_maximum_age"] = _defaults.default_destination_maximum_age # if wasn't found in the json, use the default value
+
+        if not _validations.validate_integer_greater_than_zero(json["destination_maximum_age"]):
+            if not json["destination_maximum_age"] == "any age":
+                log.report("error_sync_destination_maximum_age")
+                return False
+
+        return True
+
+    def validate_destination_subfolder_search(self, json, log):
+        if not "destination_subfolder_search" in json:
+            json["destination_subfolder_search"] = _defaults.default_destination_subfolder_search # if wasn't found in the json, use the default value
+
+        if not _validations.validate_boolean_value(json["destination_subfolder_search"]):
+            log.report("error_sync_destination_subfolder_search")
+            return False
+
+        return True
+
+    def validate_destination_filelist_shuffle(self, json, log):
+        if not "destination_filelist_shuffle" in json:
+            json["destination_filelist_shuffle"] = _defaults.default_destination_filelist_shuffle # if wasn't found in the json, use the default value
+
+        if not _validations.validate_boolean_value(json["destination_filelist_shuffle"]):
+            log.report("error_sync_destination_filelist_shuffle")
+            return False
+
+        return True
+
+    def validate_hierarchy_maintenance(self, json, log):
+        if not "hierarchy_maintenance" in json:
+            json["hierarchy_maintenance"] = _defaults.default_hierarchy_maintenance # if wasn't found in the json, use the default value
+
+        if not _validations.validate_boolean_value(json["hierarchy_maintenance"]):
+            log.report("error_sync_hierarchy_maintenance")
+            return False
+
+        return True
+
+    def validate_left_files_deletion(self, json, log):
+        if not "left_files_deletion" in json:
+            json["left_files_deletion"] = _defaults.default_left_files_deletion # if wasn't found in the json, use the default value
+
+        if not _validations.validate_boolean_value(json["left_files_deletion"]):
+            log.report("error_sync_left_files_deletion")
+            return False
+
+        return True
+
+    def validate_file_override(self, json, log):
+        if not "file_override" in json:
+            json["file_override"] = _defaults.default_file_override # if wasn't found in the json, use the default value
+
+        if not _validations.validate_boolean_value(json["file_override"]):
+            log.report("error_sync_file_override")
+            return False
+
+        return True
+
+    def validate_size_limit(self, json, log):
+        if not "size_limit" in json:
+            json["size_limit"] = _defaults.default_size_limit # if wasn't found in the json, use the default value
+
+        if not _validations.validate_integer_greater_than_or_equal_to_zero(json["size_limit"]):
+            log.report("error_sync_size_limit")
+            return False
+
+        return True
+
+    def validate_sync_cooldown(self, json, log):
+        if not "sync_cooldown" in json:
+            json["sync_cooldown"] = _defaults.default_sync_cooldown # if wasn't found in the json, use the default value
+
+        if not _validations.validate_integer_greater_than_zero(json["sync_cooldown"]):
+            log.report("error_sync_sync_cooldown")
             return False
 
         return True
 
 
 
-class File_List:
-    # creates a file list given the parameters
-    def __init__(self, path, selection_condition, maximum_age, subfolder_search, filelist_shuffle, log):
+class File_List: # creates a list of files
+    def __init__(self, path, selection_condition, maximum_age, subfolder_search, filelist_shuffle):
         self.filelist = []
         self.path = path
         self.selection_condition = selection_condition
@@ -104,172 +324,111 @@ class File_List:
         self.subfolder_search = subfolder_search
         self.filelist_shuffle = filelist_shuffle
 
-        self.log = log
 
-
-    # fills the list with files that pass the condition until the size limit is reached
-    def fill(self, size_limit):
-        # walks in the directory
+    def fill(self, size_limit, log): # fills the file list
         for (dirpath, dirnames, filenames) in os.walk(self.path):
-            # for any file inside it
             for f in filenames:
-                # creates a file object containing some information
                 file = _file.File(os.path.join(dirpath, f))
 
-                # if the file meets the conditions
                 if file.evaluate_type(self.selection_condition) and file.evaluate_age(self.maximum_age):
-                    # include it in the list
                     self.filelist.append(file)
 
-            # if the subfolder search is disabled
             if not self.subfolder_search:
-                # stops here (will stop at the first iteration)
                 break
 
-        # if filelist shuffle is enabled
-        if self.filelist_shuffle:
+        if self.filelist_shuffle: # will shuffle the file list if needed
             random.shuffle(self.filelist)
 
-        # if size_limit was received (> 0)
-        if size_limit > 0:
-            # total processed size
+        if size_limit > 0: # will trim the file list to meet the specified limit
             total_size = 0.0
 
-            # for every file in self.filelist
             for f in self.filelist:
-                # if the total size including f exceeds size_limit
                 if total_size + f.size > size_limit:
-                    # cuts the file list here
                     self.filelist = self.filelist[:self.filelist.index(f)]
-                    # breaks the loop
                     break
-                # if doesnt exceed
                 else:
-                    # udates the size and goes to the next file
                     total_size += f.size
 
-        # everything went OK, return success
+        log.report("ok_file_list_load", detail=self.path)
         return True
 
 
-    # marks the files that will be removed
-    def mark_files_to_delete_except_by(self, other, hierarchy_maintenance):
-        # for every file in this filelist
+    def mark_files_to_delete_except_by(self, other, hierarchy_maintenance, log): # marks the leftover files to be removed
         for f_this in self.filelist:
-            # if it's not empty
             if not f_this.path == "":
-                # suppose it has to be removed
                 f_this.to_delete = True
 
-                # for any file in the other filelist
                 for f_other in other.filelist:
-                    # if it's not empty
                     if not f_other.path == "":
-                        # if hierarchy_maintenance was received
                         if hierarchy_maintenance:
-                            # if both relative paths match
                             if f_this.path.split(self.path, 1)[1] == f_other.path.split(other.path, 1)[1]:
-                                # the file does not have to be deleted
                                 f_this.to_delete = False
                                 break
-                        # if wasn't, check for the basename to be equal
                         elif f_this.path == os.path.join(self.path, f_other.basename):
-                            # the file does not have to be deleted
                             f_this.to_delete = False
                             break
 
+        log.report("ok_file_list_mark_files_to_delete")
         return True
 
 
-    # marks the files that will be copied (unmarks those who wont)
-    def mark_files_to_copy_except_by(self, other, hierarchy_maintenance):
-        # for every file in source list
+    def mark_files_to_copy_except_by(self, other, hierarchy_maintenance, log): # unmarks redundant files to prevent being overwrited
         for f_this in self.filelist:
-            # suppose it have to be copied
             f_this.to_copy = True
 
-            # if its not empty
             if not f_this.path == "":
-                # for every file in the other filelist
                 for f_other in other.filelist:
-                    # if it's not empty
                     if not f_other.path == "":
-                        # if hierarchy_maintenance was received
                         if hierarchy_maintenance:
-                            # if the relative paths match
                             if f_this.path.split(self.path, 1)[1] == f_other.path.split(other.path, 1)[1]:
-                                # this file does not need to be copied
                                 f_this.to_copy = False
                                 break
-                        # if wasn't, check for the basename to be equal
                         elif os.path.join(other.path, f_this.basename) == f_other.path:
-                            # this file does not need to be copied
                             f_this.to_copy = False
                             break
 
+        log.report("ok_file_list_unmark_redundant_files")
         return True
 
 
-    # removes the previously marked files
-    def remove_marked_files(self):
-        # for every file in filelist
+    def remove_marked_files(self, log): # removes all marked files
         for f_this in self.filelist:
             if f_this.to_delete:
-                filename = f_this.path
-                # deletes the file
-                if f_this.delete():
-                    self.log.report("[ OK  ] \tdelete " + filename)
-                else:
-                    self.log.report("[ERROR] \tdelete " + filename)
+                if not f_this.delete(log):
+                    log.report("error_file_list_remove_marked_files")
                     return False
 
+        log.report("ok_file_list_remove_marked_files")
         return True
 
 
-    # copies all marked files (will skip those unmarked)
-    def copy_marked_files(self, destination, hierarchy_maintenance):
-        # for every file in filelist
+    def copy_marked_files(self, destination, hierarchy_maintenance, log): # copies all marked files to the destination folder
         for f_this in self.filelist:
             if f_this.to_copy:
-                # if hierarchy_maintenance was received
-                if hierarchy_maintenance:
-                    # copies the file to its respective location under the destination root
-                    if f_this.copy(os.path.split(f_this.path.replace(self.path, destination))[0]):
-                        self.log.report("[ OK  ] \tcopy " + f_this.path)
-                    else:
-                        self.log.report("[ERROR] \tcopy " + f_this.path)
-                        return False
+                target_path = os.path.split(f_this.path.replace(self.path, destination))[0] if hierarchy_maintenance else destination
 
-                # otherwise
-                else:
-                    # copies the file to destination root folder
-                    if f_this.copy(destination):
-                        self.log.report("[ OK  ] \tcopy " + f_this.path)
-                    else:
-                        self.log.report("[ERROR] \tcopy " + f_this.path)
-                        return False
+                if not f_this.copy(target_path, log):
+                    log.report("error_file_list_copying_files")
+                    return False
 
+        log.report("ok_file_list_copying_files")
         return True
 
 
-    # removes all left empty folders in this folder
-    def remove_empty_folders(self):
-        # iterates the directory tree from the bottom
+    def remove_empty_folders(self, log): # removes all empty folders under the path of this file list
         for (dirpath, dirnames, filenames) in os.walk(self.path, topdown=False):
-            # if the current dir is the root, stops
             if dirpath == self.path:
                 break
 
-            # if it isn't
             else:
-                # if this dir is empty
                 if os.listdir(dirpath) == []:
                     try:
-                        # removes the folder
                         os.rmdir(dirpath)
-                        self.log.report("[ OK  ] \tdelete " + dirpath + " folder")
+                        log.report("ok_file_list_remove_empty_folder", detail=dirpath)
                     except:
-                        self.log.report("[ERROR] \tdelete " + dirpath + " folder")
+                        log.report("error_file_list_remove_empty_folder", detail=dirpath)
+                        log.report("error_file_list_remove_empty_folders")
                         return False
 
+        log.report("ok_file_list_remove_empty_folders")
         return True

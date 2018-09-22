@@ -1,3 +1,9 @@
+'''
+
+This stores all possible selection conditions and its associated file extensions
+
+'''
+
 # multimedia
 audio_extensions = [
     ".mp3",

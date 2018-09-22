@@ -8,10 +8,10 @@
     "logs_folder_maximum_size": "0",
 
     "send_email": "False",
+    "email_only_if_an_error_occur": "False",
     "email_sender": "some email @gmail.com",
     "email_sender_password": "some email password",
     "email_addressee": "another email @any.com",
-    "email_only_if_an_error_occur": "False",
     
     "post_sync_script": "# some script"
 }

@@ -1,43 +1,47 @@
+'''
+
+This builds a log file to be written
+
+'''
+
 import _about
+import _paths
+import _strings
 
-# class for dealing with logs
+import os
+import time
+
 class Log:
-    def __init__(self, path):
+    def __init__(self, root): # initializes an empty log
+        self.path = os.path.join(root, _paths.logs_folder, time.strftime("%Y-%m-%d %H-%M-%S") + ".txt")
         self.content = []
-        self.path = path
-        self.file = None
 
+    def report(self, id, detail="", critical=False): # reports events in the log
+        # writes the string associated to the received id
+        # detail is used to include extra information in the message
+        # critical is used to make sure the log is written right away when a serious error occurred
+        try:
+            self.content.append(_strings.strings[id] + detail)
+        except:
+            self.content.append(id + detail)
 
-    # opens the log file for write at the path received
-    def open(self):
+        if critical:
+            return self.write()
+
+        return True
+
+    def write(self): # writes the message to the file system
         try:
             self.file = open(self.path, "w")
+            self.file.write("        " + _about.name + " " + _about.version + " \"" + _about.codename + "\" build date:" + _about.build_date + "\n\n")
+
+            for c in self.content:
+                self.file.write(c + "\n")
+
+            self.file.close()
+
             return True
         except:
             return False
 
 
-    # adds an entry on the list
-    def report(self, text):
-        self.content.append(text)
-        return True
-
-
-    # writes the list to the file and closes the file and the log
-    def write(self):
-        # writes the log header
-        self.file.write("        " + _about.PROGRAM_NAME + " " + _about.PROGRAM_VERSION + " build date:" + _about.PROGRAM_BUILD_DATE + "\n\n")
-
-        # writes the log content
-        for c in self.content:
-            self.file.write(c + "\n")
-
-        # closes the file
-        self.file.close()
-
-        # erases the properties of this object
-        self.content = []
-        self.path = ""
-        self.file = None
-
-        return True
