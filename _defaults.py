@@ -1,5 +1,6 @@
 # config.json
 default_check_cooldown = "1"
+default_startup_delay = "0"
 default_save_log = "True"
 default_log_only_if_an_error_occur = "False"
 default_logs_folder_maximum_size = "10"

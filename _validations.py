@@ -121,6 +121,7 @@ def validate_control_json(json, log):
 def validate_config_json(json, log):
     # defaults the optional values not found in the json file
     if not "check_cooldown" in json: json["check_cooldown"] = _defaults.default_check_cooldown
+    if not "startup_delay" in json: json["startup_delay"] = _defaults.default_startup_delay
     if not "save_log" in json: json["save_log"] = _defaults.default_save_log
     if not "logs_folder_maximum_size" in json: json["logs_folder_maximum_size"] = _defaults.default_logs_folder_maximum_size
     if not "send_email" in json: json["send_email"] = _defaults.default_send_email
@@ -130,6 +131,11 @@ def validate_config_json(json, log):
     # check_cooldown
     if not validate_config_cooldown(json["check_cooldown"]):
         log.report("[ERROR] \t\"check_cooldown\": invalid value")
+        return False
+
+    # startup_delay
+    if not validate_size_limit(json["startup_delay"]):
+        log.report("[ERROR] \t\"startup_delay\": invalid value")
         return False
 
     # save_log

@@ -1,6 +1,8 @@
 {
     "check_cooldown": "1",
     
+    "startup_delay": "0",
+    
     "save_log": "True",
     "log_only_if_an_error_occur": "False",
     "logs_folder_maximum_size": "0",

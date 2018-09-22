@@ -20,6 +20,9 @@ if __name__ == "__main__":
     # stores the path of the current directory
     this_path = os.path.dirname(os.path.realpath(__file__))
 
+    # controls the startup delay
+    first_run = True
+
     # runs the program loop
     while True:
         # easy access to locations of these files
@@ -65,6 +68,13 @@ if __name__ == "__main__":
         else:
             # creates a dummy email where the messages will be written but not sent
             email = _email.Email("", "", "", "", "")
+
+        # sleeps for the startup delay if needed
+        if first_run:
+            first_run = False
+            log.report("        waiting the specified startup delay..."); log.report("")
+            time.sleep(int(config["startup_delay"]) * 60)
+
 
         # registers error occurrence to decide if the log has to be written or the email to be send
         error_flag = False

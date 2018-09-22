@@ -21,7 +21,9 @@ Lembre-se de dar permissão de execução para o arquivo, o que pode ser feito c
 
 Edite o arquivo `Config/config.json`, colocando os valores à direita de acordo com suas preferências. **Os valores devem estar entre aspas**:
 
-* `check_cooldown`: valor numérico de espera, em horas, entre as tentativas de sincronização - [opcional, o valor padrão é **1**]
+* `check_cooldown`: valor numérico de espera, em horas, entre as tentativas de sincronização. **Deve ser um valor numérico inteiro maior do que zero** - [opcional, o valor padrão é **1**]
+
+* `startup_delay`: valor numérico de espera, em minutos, do início da execução antes de começar as sincronizações, sendo útil para não sobrecarregar a inicialização do sistema. **Deve ser um valor numérico inteiro maior ou igual a zero** - [opcional, o valor padrão é **0**]
 
 * `save_log`: define se o log será salvo, deve ser **True** ou **False** - [opcional, o valor padrão é **True**]
 
@@ -126,7 +128,9 @@ Remember to give execution permission to the file, wich can be done with
 
 Edit the file `Config/config.json`, changing the values on the right according to your preferences. **The values must be between quotes**:
 
-* `check_cooldown`: numerical value, in hours, between synchronization attempts. - [optional, the default value is **1**]
+* `check_cooldown`: numerical value, in hours, between synchronization attempts. **Must be an integer numerical value greater than zero** - [optional, the default value is **1**]
+
+* `startup_delay`: numerical value, in minutes, to wait before starting the synchronizations, being useful to not overload the system initialization. **Must be an integer numerical value greater than or equal to zero** - [optional, the default value is **0**]
 
 * `save_log`: defines if the log will be saved, must be **True** or **False** - [optional, the default value is **True**]
 
