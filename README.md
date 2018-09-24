@@ -35,8 +35,6 @@ Edite o arquivo `Config/config.json`, colocando os valores à direita de acordo 
 
 * `log_only_if_a_sync__occur`:  define se o log será gravado apenas quando alguma sincronia for executada, ignorando as que estão em espera. `log_only_if_an_error_occur` tem preferência sobre essa opção. Deve ser **True** ou **False** - [opcional, o valor padrão é **False**]
 
-define se o log será gravado apenas quando houver um erro em alguma sincronia, deve ser **True** ou **False** - [opcional, o valor padrão é **False**]
-
 * `logs_folder_maximum_size`: tamanho máximo que a pasta `Logs` pode ter. Se for excedido, os arquivos mais antigos serão apagados até que o tamanho máximo seja respeitado. **O critério de exclusão é baseado na data de modificação, deve ser um valor numérico inteiro maior ou igual a zero, 0 significa ilimitado e o valor é lido em MB** - [opcional, o valor padrão é **10**]
 
 * `send_email`: define se o email será enviado, deve ser **True** ou **False** - [opcional, o valor padrão é **False**]
