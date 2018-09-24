@@ -58,8 +58,11 @@ if __name__ == "__main__":
                     email.append_message("[ OK  ] " + os.path.join(dirpath, file)) # reports the sync success in the email
 
         config.run_post_sync_script(log) # runs the post sync script
+        
         config.send_email(email, error_flag, log) # sends the email, if necessary
-        control.write(log) # writes the schedule file
+
+        if not control.write(log): # writes the schedule file
+            raise SystemExit  # force close if an error occurred
 
         if not config.save_log(error_flag, log): # saves the log
             raise SystemExit # force close if an error occurred
