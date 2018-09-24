@@ -20,6 +20,7 @@ english = {
     "error_config_startup_delay": "[ERROR] \tstartup_delay: invalid value",
     "error_config_save_log": "[ERROR] \tsave_log: invalid value",
     "error_config_log_only_if_an_error_occur": "[ERROR] \tlog_only_if_an_error_occur: invalid value",
+    "error_config_log_only_if_a_sync_occur": "[ERROR] \tlog_only_if_a_sync_occur: invalid value",
     "error_config_logs_folder_maximum_size": "[ERROR] \tlogs_folder_maximum_size: invalid value",
     "error_config_send_email": "[ERROR] \tsend_email: invalid value",
     "error_config_email_only_if_an_error_occur_missing": "[ERROR] \temail_only_if_an_error_occur not in .json when send_email is True",

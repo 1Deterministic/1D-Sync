@@ -129,6 +129,7 @@ class Sync:
                 return False
 
             control.schedule(self.path, int(self.properties["sync_cooldown"])) # schedules the next time to run this sync again
+            log.sync_occurred = True
             log.report("ok_sync_finished")
             return True
         else:

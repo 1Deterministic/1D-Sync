@@ -31,7 +31,11 @@ Edite o arquivo `Config/config.json`, colocando os valores à direita de acordo 
 
 * `save_log`: define se o log será salvo, deve ser **True** ou **False** - [opcional, o valor padrão é **True**]
 
-* `log_only_if_an_error_occur`:  define se o log será gravado apenas quando houver um erro em alguma sincronia, deve ser **True** ou **False** - [opcional, o valor padrão é **False**]
+* `log_only_if_an_error_occur`:  define se o log será gravado apenas quando houver um erro, deve ser **True** ou **False** - [opcional, o valor padrão é **False**]
+
+* `log_only_if_a_sync__occur`:  define se o log será gravado apenas quando alguma sincronia for executada, ignorando as que estão em espera. `log_only_if_an_error_occur` tem preferência sobre essa opção. Deve ser **True** ou **False** - [opcional, o valor padrão é **False**]
+
+define se o log será gravado apenas quando houver um erro em alguma sincronia, deve ser **True** ou **False** - [opcional, o valor padrão é **False**]
 
 * `logs_folder_maximum_size`: tamanho máximo que a pasta `Logs` pode ter. Se for excedido, os arquivos mais antigos serão apagados até que o tamanho máximo seja respeitado. **O critério de exclusão é baseado na data de modificação, deve ser um valor numérico inteiro maior ou igual a zero, 0 significa ilimitado e o valor é lido em MB** - [opcional, o valor padrão é **10**]
 
@@ -142,7 +146,9 @@ Edit the file `Config/config.json`, changing the values on the right according t
 
 * `save_log`: defines if the log will be saved, must be **True** or **False** - [optional, the default value is **True**]
 
-* `log_only_if_an_error_occur`:  defines if the log will be written only when a sync error happens, must be **True** or **False** - [optional, the default value is **False**]
+* `log_only_if_an_error_occur`:  defines if the log will be written only when an error occurred, must be **True** or **False** - [optional, the default value is **False**]
+
+* `log_only_if_a_sync__occur`:  defines if the log will be written only if a sync was executed, ignoring the ones in cooldown. `log_only_if_an_error_occur` has preference over this option. Must be **True** or **False** - [optional, the default value is **False**]
 
 * `logs_folder_maximum_size`: maximum size allowed for the `Logs` folder. If it's exceeded, the older files will be deleted until the maximum size is satisfied. **The exclusion criteria is based on the modified date, must be an integer numerical value greater than or equal to zero, 0 means unlimited and the value is read in MB** - [optional, the default value is **10**]
 

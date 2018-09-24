@@ -40,6 +40,9 @@ class Config:
         if not self.validate_log_only_if_an_error_occur(self.properties, log):
             return False
 
+        if not self.validate_log_only_if_a_sync_occur(self.properties, log):
+            return False
+
         if not self.validate_logs_folder_maximum_size(self.properties, log):
             return False
 
@@ -102,6 +105,16 @@ class Config:
 
         if not _validations.validate_boolean_value(json["log_only_if_an_error_occur"]):
             log.report("error_config_log_only_if_an_error_occur", critical=True) # will return error if the value is invalid
+            return False
+
+        return True
+
+    def validate_log_only_if_a_sync_occur(self, json, log):
+        if not "log_only_if_a_sync_occur" in json:
+            json["log_only_if_a_sync_occur"] = _defaults.default_log_only_if_a_sync_occur # if wasn't found in the json, use the default value
+
+        if not _validations.validate_boolean_value(json["log_only_if_a_sync_occur"]):
+            log.report("error_config_log_only_if_a_sync_occur", critical=True) # will return error if the value is invalid
             return False
 
         return True
@@ -195,8 +208,15 @@ class Config:
 
     def save_log(self, log): # writes the log file
         if ast.literal_eval(self.properties["save_log"]):
-            if (ast.literal_eval(self.properties["log_only_if_an_error_occur"]) and log.error_occurred) or (not ast.literal_eval(self.properties["log_only_if_an_error_occur"])):
+            if (
+                log.error_occurred or
+                ((not ast.literal_eval(self.properties["log_only_if_an_error_occur"])) and (not ast.literal_eval(self.properties["log_only_if_a_sync_occur"]))) or
+                ((not ast.literal_eval(self.properties["log_only_if_an_error_occur"])) and log.sync_occurred)
+            ):
                 return log.write()
+
+        return True
+
 
     def run_logs_folder_maximum_size(self, root): # deletes old log files to meet the specified maximum folder size
         def get_folder_size(path):
