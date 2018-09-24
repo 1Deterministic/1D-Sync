@@ -41,10 +41,9 @@ english = {
     # Sync
     "ok_sync_json_load": "[ OK  ] sync .json loaded",
     "ok_sync_running": "[ OK  ] running sync: ",
-    "ok_sync_still_in_cooldown": "[ OK  ] did not run, still in cooldown",
-    "ok_sync_run_disabled": "[ OK  ] this sync is disabled in the .json",
-    "ok_sync_disable": "[ OK  ] this sync was disabled",
-
+    "ok_sync_still_in_cooldown": "[ OK  ] did not run, still in cooldown\n",
+    "ok_sync_run_disabled": "[ OK  ] this sync is disabled in the .json\n",
+    "ok_sync_disable": "[ OK  ] this sync was disabled\n",
     "ok_sync_finished": "[ OK  ] sync complete!\n",
     "error_sync_opening": "[ERROR] could not read the sync file, probably syntax error",
     "error_sync_enable_missing": "[ERROR] \tenable missing",
@@ -66,7 +65,7 @@ english = {
     "error_sync_file_override": "[ERROR] \tfile_override: invalid value",
     "error_sync_size_limit": "[ERROR] \tsize_limit: invalid value",
     "error_sync_sync_cooldown": "[ERROR] \tsync_cooldown: invalid value",
-    "error_sync_disable": "[ERROR] could not disable the sync, stopping the execution",
+    "error_sync_disable": "[ERROR] could not disable the sync, stopping the execution\n",
 
     # File_List
     "ok_file_list_load": "[ OK  ] file list loaded: ",

@@ -186,16 +186,16 @@ class Config:
 
         return True
 
-    def send_email(self, email, error_flag, log): # sends the email if needed
+    def send_email(self, email, log): # sends the email if needed
         if ast.literal_eval(self.properties["send_email"]):
-            if (ast.literal_eval(self.properties["email_only_if_an_error_occur"]) and error_flag) or (not ast.literal_eval(self.properties["email_only_if_an_error_occur"])):
+            if (ast.literal_eval(self.properties["email_only_if_an_error_occur"]) and log.error_occurred) or (not ast.literal_eval(self.properties["email_only_if_an_error_occur"])):
                 email.send(self.properties["email_sender"], self.properties["email_sender_password"], self.properties["email_addressee"], log)
                 # maybe pass out the email send return value
         return True
 
-    def save_log(self, error_flag, log): # writes the log file
+    def save_log(self, log): # writes the log file
         if ast.literal_eval(self.properties["save_log"]):
-            if (ast.literal_eval(self.properties["log_only_if_an_error_occur"]) and error_flag) or (not ast.literal_eval(self.properties["log_only_if_an_error_occur"])):
+            if (ast.literal_eval(self.properties["log_only_if_an_error_occur"]) and log.error_occurred) or (not ast.literal_eval(self.properties["log_only_if_an_error_occur"])):
                 return log.write()
 
     def run_logs_folder_maximum_size(self, root): # deletes old log files to meet the specified maximum folder size

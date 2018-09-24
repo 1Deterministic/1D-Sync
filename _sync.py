@@ -133,7 +133,6 @@ class Sync:
             return True
         else:
             log.report("ok_sync_still_in_cooldown")
-            log.report("ok_sync_finished")
             return True
 
     def disable(self, log): # disables this sync (useful if an error occurred)

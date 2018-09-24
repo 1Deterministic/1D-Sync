@@ -14,6 +14,8 @@ import time
 class Log:
     def __init__(self, root): # initializes an empty log
         self.path = os.path.join(root, _paths.logs_folder, time.strftime("%Y-%m-%d %H-%M-%S") + ".txt")
+        self.error_occurred = False
+        #self.sync_occurred = False  # stores wether a sync occurred or not, to help writing the log only if needed
         self.content = []
 
     def report(self, id, detail="", critical=False): # reports events in the log

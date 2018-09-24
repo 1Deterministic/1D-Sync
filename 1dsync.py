@@ -23,8 +23,6 @@ if __name__ == "__main__":
     first_run = True # helps with the startup delay
 
     while True:
-        error_flag = False
-
         log = _log.Log(root) # logs all program operations
         email = _email.Email() # email sent to the user, if asked
         config = _config.Config(root) # main configuration file
@@ -40,6 +38,7 @@ if __name__ == "__main__":
             first_run = False
             config.run_startup_delay(log)
 
+        log.report("") # indentation of the log file
         for (dirpath, dirnames, filenames) in os.walk(os.path.join(root, _paths.syncs_folder)): # runs every sync found
             for file in filenames:
                 if os.path.splitext(file)[1] == ".json":
@@ -47,7 +46,7 @@ if __name__ == "__main__":
 
                     if (not sync.load(log)) or (not sync.run(control, log)): # loads and runs the sync
                         # will enter here if any of the above operations returns an error
-                        error_flag = True
+                        log.error_occurred = True
 
                         if not sync.disable(log): # an error in trying to disable the sync will force close the program
                             raise SystemExit
@@ -58,13 +57,13 @@ if __name__ == "__main__":
                     email.append_message("[ OK  ] " + os.path.join(dirpath, file)) # reports the sync success in the email
 
         config.run_post_sync_script(log) # runs the post sync script
-        
-        config.send_email(email, error_flag, log) # sends the email, if necessary
+
+        config.send_email(email, log) # sends the email, if necessary
 
         if not control.write(log): # writes the schedule file
             raise SystemExit  # force close if an error occurred
 
-        if not config.save_log(error_flag, log): # saves the log
+        if not config.save_log(log): # saves the log
             raise SystemExit # force close if an error occurred
 
         if not config.run_logs_folder_maximum_size(root): # deletes old log files to meet the specified maximum folder size
