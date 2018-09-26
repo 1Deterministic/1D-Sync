@@ -55,6 +55,8 @@ english = {
     "error_sync_source_maximum_age": "[ERROR] \tsource_maximum_age: invalid value",
     "error_sync_source_subfolder_search": "[ERROR] \tsource_subfolder_search: invalid value",
     "error_sync_source_filelist_shuffle": "[ERROR] \tsource_filelist_shuffle: invalid value",
+    "error_sync_source_subfolder_of_destination": "[ERROR] \t source folder is the same or a subdirectory of the destination folder",
+    "error_sync_destination_subfolder_of_source": "[ERROR] \t destination folder is the same or a subdirectory of the source folder",
     "error_sync_destination_path": "[ERROR] \tdestination_path: invalid value",
     "error_sync_destination_path_missing": "[ERROR] \tdestination_path missing",
     "error_sync_destination_selection_condition": "[ERROR] \tdestination_selection_condition: invalid value",

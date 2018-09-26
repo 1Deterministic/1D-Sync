@@ -86,6 +86,14 @@ class Sync:
                 log.report("ok_sync_run_disabled")
                 return True
 
+            if self.properties["source_path"].startswith(self.properties["destination_path"]):
+                log.report("error_sync_source_subfolder_of_destination")
+                return False
+
+            if self.properties["destination_path"].startswith(self.properties["source_path"]):
+                log.report("error_sync_destination_subfolder_of_source")
+                return False
+
             # creates a list of files inside the source folder
             source = File_List(
                 self.properties["source_path"],
