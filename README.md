@@ -55,7 +55,7 @@ Utilize o arquivo `Syncs/sync.json.example` como template para criar uma sincron
 
 * `enable`: define se esta sincronização está ativa ou não, deve ser **True** ou **False** - [obrigatório]
 
-* `source_path`: caminho para a pasta de origem - [obrigatório]
+* `source_path`: caminho para a pasta de origem. Não pode ser a mesma ou uma subpasta de `destination_path` - [obrigatório]
 
 * `source_selection_condition`: condição de seleção de arquivos da pasta de origem, **veja [validações](#validações)** - [opcional, o valor padrão é **any file**]
 
@@ -65,7 +65,7 @@ Utilize o arquivo `Syncs/sync.json.example` como template para criar uma sincron
 
 * `source_filelist_shuffle`: define se a lista de arquivos selecionados da origem será embaralhada, deve ser **True** ou **False** - [opcional, o valor padrão é **False**]
 
-* `destination_path`: caminho para a pasta de destino - [obrigatório]
+* `destination_path`: caminho para a pasta de destino. Não pode ser a mesma ou uma subpasta de `source_path` - [obrigatório]
 
 * `destination_selection_condition`: condição de seleção de arquivos da pasta de destino, **veja [validações](#validações)** - [opcional, o valor padrão é **any file**]
 
@@ -169,7 +169,7 @@ to create a synchronization. Note that the file, to be considered, must have the
 
 * `enable`: sets if this sync will be active or not, must be **True** or **False** - [required]
 
-* `source_path`: path to the source folder - [required]
+* `source_path`: path to the source folder. Cannot be the same or a subdirectory of `destination_path` - [required]
 
 * `source_selection_condition`: selection condition for the files in the source folder, **see [validations](#validations)** - [optional, the default value is **any file**]
 
@@ -179,7 +179,7 @@ to create a synchronization. Note that the file, to be considered, must have the
 
 * `source_filelist_shuffle`: sets if the source file list will be shuffled, must be **True** or **False** - [optional, the default value is **False**]
 
-* `destination_path`: path to the destination folder - [required]
+* `destination_path`: path to the destination folder. Cannot be the same or a subdirectory of `source_path` - [required]
 
 * `destination_selection_condition`: selection condition for the files in the destination folder, **see [validations](#validations)** - [optional, the default value is **any file**]
 
