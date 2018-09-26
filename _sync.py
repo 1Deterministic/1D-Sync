@@ -370,17 +370,19 @@ class File_List: # creates a list of files
                     if not f_other.path == "":
                         if hierarchy_maintenance:
                             if f_this.path.split(self.path, 1)[1] == f_other.path.split(other.path, 1)[1]:
-                                f_this.to_delete = False
+                                if f_this.is_the_same_file(f_other):
+                                    f_this.to_delete = False
                                 break
                         elif f_this.path == os.path.join(self.path, f_other.basename):
-                            f_this.to_delete = False
+                            if f_this.is_the_same_file(f_other):
+                                f_this.to_delete = False
                             break
 
         log.report("ok_file_list_mark_files_to_delete")
         return True
 
 
-    def mark_files_to_copy_except_by(self, other, hierarchy_maintenance, log): # unmarks redundant files to prevent being overwrited
+    def mark_files_to_copy_except_by(self, other, hierarchy_maintenance, log): # unmarks redundant files to prevent being overwrited unnecessarily
         for f_this in self.filelist:
             f_this.to_copy = True
 
@@ -389,10 +391,12 @@ class File_List: # creates a list of files
                     if not f_other.path == "":
                         if hierarchy_maintenance:
                             if f_this.path.split(self.path, 1)[1] == f_other.path.split(other.path, 1)[1]:
-                                f_this.to_copy = False
+                                if f_this.is_the_same_file(f_other):
+                                    f_this.to_copy = False
                                 break
                         elif os.path.join(other.path, f_this.basename) == f_other.path:
-                            f_this.to_copy = False
+                            if f_this.is_the_same_file(f_other):
+                                f_this.to_copy = False
                             break
 
         log.report("ok_file_list_unmark_redundant_files")

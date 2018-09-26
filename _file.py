@@ -12,6 +12,7 @@ import shutil
 import eyed3
 import math
 import time
+import filecmp
 
 class File:
     def __init__(self, path): # reads information about the file on a given path
@@ -33,6 +34,10 @@ class File:
             self.extension = ""
             self.to_copy = False
             self.to_delete = False
+
+    def is_the_same_file(self, other):
+        return filecmp.cmp(self.path, other.path)
+
 
     def copy(self, destination, log): # copies this file to a given target folder
         if self.to_copy and (not self.path == ""):
