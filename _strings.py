@@ -28,6 +28,7 @@ english = {
     "error_config_email_sender_missing": "[ERROR] \temail_sender not in .json when send_email is True",
     "error_config_email_sender_password_missing": "[ERROR] \temail_sender_password not in .json when send_email is True",
     "error_config_email_addressee_missing": "[ERROR] \temail_addressee not in .json when send_email is True",
+    "error_config_run_post_sync_script_only_if_a_sync_occur": "[ERROR] \trun_post_sync_script_only_if_a_sync_occur: invalid value",
 
     # Control
     "ok_control_json_load": "[ OK  ] control .json loaded",

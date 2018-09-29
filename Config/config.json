@@ -14,5 +14,6 @@
     "email_sender_password": "some email password",
     "email_addressee": "another email @any.com",
     
-    "post_sync_script": "# some script"
+    "post_sync_script": "# some script",
+    "run_post_sync_script_only_if_a_sync_occur": "False"
 }

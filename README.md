@@ -49,6 +49,8 @@ Edite o arquivo `Config/config.json`, colocando os valores à direita de acordo 
 
 * `post_sync_script`: script a ser executado após a sincronização. Rodará uma vez por loop do programa (ou seja, uma vez a cada período de tempo `check_cooldown`), imediatamente antes da gravação do log e envio do email - [opcional, o valor padrão é um comando vazio]
 
+* `run_post_sync_script_only_if_a_sync_occur`: define se o script pós-sincronização rodará apenas quando alguma sincronia for executada, ignorando as que estão em espera. Deve ser **True** ou **False** - [opcional, o valor padrão é False]
+
 O arquivo `Config/control.json` armazena as datas e horários das sincronizações, não é necessário editá-lo. Entretanto, caso queira forçar uma sincronização na próxima tentativa, basta remover a(s) respectivas linhas do arquivo ou trocar sua data agendada.
 
 Utilize o arquivo `Syncs/sync.json.example` como template para criar uma sincronização. Note que o arquivo, para ser considerado, deve possuir a extensão `.json`, então você deve renomeá-lo (recomendável fazer uma cópia desse arquivo e renomear a cópia). **Os valores devem estar entre aspas**:
@@ -161,6 +163,8 @@ Edit the file `Config/config.json`, changing the values on the right according t
 * `email_only_if_an_error_occur`: defines if the email will be sent only when a sync error happens, must be **True** or **False** - [required if `send_email` is **True**, doesn't have a default value]
 
 * `post_sync_script`: script to be executed after the synchronization. It will run once per program loop (once every `check_cooldown` time period), immediately before the log write and sending the email - [optional, the default value is an empty command]
+
+* `run_post_sync_script_only_if_a_sync_occur`: defines if the post sync script will run only if a sync was executed, ignoring the ones in cooldown. Must be **True** or **False** - [optional, the default value is False]
 
 The file `Config/control.json` stores dates and times of the synchronizations, it's not necessary to change it. However, if you want to force a sync to run on the next attempt you can remove the respective line from the file or change it to some chosen date and time.
 

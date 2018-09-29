@@ -13,6 +13,7 @@ default_log_only_if_a_sync_occur = "False"
 default_logs_folder_maximum_size = "10"
 default_send_email = "False"
 default_post_sync_script = ""
+default_run_post_sync_script_only_if_a_sync_occur = "False"
 
 # sync defaults
 default_source_selection_condition = "any file"

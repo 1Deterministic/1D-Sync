@@ -46,7 +46,9 @@ class Config:
         if not self.validate_logs_folder_maximum_size(self.properties, log):
             return False
 
-        if self.validate_send_email(self.properties, log):
+        if not self.validate_send_email(self.properties, log):
+            return False
+        else:
             if not self.validate_email_only_if_an_error_occur(self.properties, log):
                 return False
 
@@ -58,10 +60,12 @@ class Config:
 
             if not self.validate_email_addressee(self.properties, log):
                 return False
-        else:
-            return False
+
 
         if not self.validate_post_sync_script(self.properties, log):
+            return False
+
+        if not self.validate_run_post_sync_script_only_if_a_sync_occur(self.properties, log):
             return False
 
 
@@ -182,6 +186,16 @@ class Config:
         # no value validation applied
         return True
 
+    def validate_run_post_sync_script_only_if_a_sync_occur(self, json, log):
+        if not "run_post_sync_script_only_if_a_sync_occur" in json:
+            json["run_post_sync_script_only_if_a_sync_occur"] = _defaults.default_run_post_sync_script_only_if_a_sync_occur # if wasn't found in the json, use the default value
+
+        if not _validations.validate_boolean_value(json["run_post_sync_script_only_if_a_sync_occur"]):
+            log.report("error_config_run_post_sync_script_only_if_a_sync_occur", critical=True) # will return error if the value is invalid
+            return False
+
+        return True
+
 
     def run_startup_delay(self, log): # sleeps the specified startup delay
         time.sleep(int(self.properties["startup_delay"]) * 60)
@@ -190,12 +204,17 @@ class Config:
 
     def run_post_sync_script(self, log): # runs the post sync script
         if "post_sync_script" in self.properties:
-            post_sync_script_subprocess = subprocess.Popen(self.properties["post_sync_script"], stdout=subprocess.PIPE, shell=True)
-            (post_sync_script_output, error_code) = post_sync_script_subprocess.communicate()
+            if (
+                    not ast.literal_eval(self.properties["run_post_sync_script_only_if_a_sync_occur"]) or
+                    (ast.literal_eval(self.properties["run_post_sync_script_only_if_a_sync_occur"]) and log.sync_occurred)
+            ):
 
-            log.report("ok_config_post_sync_script_output", detail=self.properties["post_sync_script"])
-            log.report(post_sync_script_output.decode()) # writes the console output in the log file
-            log.report("ok_config_post_sync_script")
+                post_sync_script_subprocess = subprocess.Popen(self.properties["post_sync_script"], stdout=subprocess.PIPE, shell=True)
+                (post_sync_script_output, error_code) = post_sync_script_subprocess.communicate()
+
+                log.report("ok_config_post_sync_script_output", detail=self.properties["post_sync_script"])
+                log.report(post_sync_script_output.decode()) # writes the console output in the log file
+                log.report("ok_config_post_sync_script")
 
         return True
 

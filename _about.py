@@ -5,6 +5,6 @@ Stores information about the program
 '''
 
 name = "1D-Sync"
-version = "2.3-alpha5"
-build_date = "2018/09/26"
+version = "2.3-alpha6"
+build_date = "2018/09/29"
 codename = "Everything Evil"
