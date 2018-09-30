@@ -1,27 +1,57 @@
 # 1D-Sync
 **[Português](#português)**  
+* **[Aviso](#aviso)**
+* **[Introdução](#introdução)**
+* **[Meu caso de uso](#meu-caso-de-uso)**
+* **[Pré requisitos](#pré-requisitos)**
+* **[Utilização](#utilização)**
+* **[Condições de seleção](#condições-de-seleção)**
+
 **[English](#english)**  
+* **[Warning](#warning)**
+* **[Intro](#intro)**
+* **[My use case](#my-use-case)**
+* **[Requirements](#requirements)**
+* **[Utilization](#utilization)**
+* **[Selection conditions](#selection-conditions)**
 
 ## Português
 ### Aviso
 **Cuidado ao ler este readme, pois ele difere entre versões do programa. Veja sempre o arquivo readme incluído na release que você baixou**
 
-## Intro
+## Introdução
 **[1D-Sync](https://github.com/1Deterministic/1D-Sync)** é uma ferramenta automatizada de "sincronização" unidirecional. Com ele é possível efetuar cópias de arquivos entre pastas em intervalos específicos de tempo, suportando diversas configurações e alguns filtros de arquivos. Foi desenvolvido como uma continuação do **[Fantastic-Five-Star-Music-Copier](https://github.com/1Deterministic/Fantastic-Five-Star-Music-Copier)** mas possui recursos extras **(veja [utilização](#utilização))**.
 
 ## Meu caso de uso
 Possuo um servidor de arquivos, um desktop e dois celulares com os quais sincronizo dados. Com o **[1D-Sync](https://github.com/1Deterministic/1D-Sync)**, faço com que o servidor de arquivos copie certos arquivos entre essas pastas automaticamente. Por exemplo, as músicas avaliadas em 5 estrelas são sempre copiadas para um telefone que uso como dispositivo de mídia e também para o telefone que uso no dia-a-dia. Entretanto, como esse segundo possui muito pouco espaço de armazenamento, faço com que o **[1D-Sync](https://github.com/1Deterministic/1D-Sync)** copie arquivos aleatórios até um certo tamanho (1.5GB) e os troque de tempo em tempo, de forma que eu não sinta tanto a falta de espaço. Também copio automaticamente as imagens de câmera e WhatsApp para a pasta sincronizada com meu desktop, entre outros. Para sincronizar essas pastas com os dispositivos eu utilizo o **[syncthing](https://syncthing.net/)**, que já recomendei anteriormente.
 
+## Pré-requisitos
+* **Python 3**
+    * **Linux**: provavelmente já está incluído na sua distribuição. Apenas verifique o comando correto que executa a versão 3 (em algumas distros é `python` e em outras `python3`). Para verificar, rode esses comandos com o argumento **-V** e veja qual versão ele mostra
+    * **Windows**: você pode rodar o instalador disponível no [site oficial](https://www.python.org/downloads/) ou instalar através do **[Chocolatey](https://chocolatey.org/)** com o comando `choco install python`
+
+* **eyeD3**
+    * **Linux**: instalável através do **pip** com o comando `pip install eyed3` ou `pip3 install eyed3`, dependendo da distribuição. Se a sua distro não inclui o **pip** na instalação, você deve instalá-lo antes disso. No **Debian**, por exemplo, o comando é `apt install python3-pip`
+    * **Windows**
+        * **Caso precise da condição de seleção `favorite audio`**: baixe [esta versão **modificada** da biblioteca](https://github.com/1Deterministic/1D-Sync/blob/master/Dependencies/Windows/eyeD3-0.8.4-windows-modified-to-support-non-english-characters.zip), que suporta arquivos/caminhos com caracteres fora do inglês (como palavras acentuadas), extraia o arquivo **.zip** e, com o console dentro da pasta extraída, rode o comando `python setup.py install`. Além disso, instale o pacote **python-magic-bin** com o **pip** através do comando `pip install python-magic-bin`
+        * **Caso não precise**: instale os pacotes **eyed3** e **python-magic-bin** com o **pip** através do comando `pip install eyed3 python-magic-bin`
+
 ## Utilização
-O executável irá rodar indefinidamente, por isso é mais apropriado configurá-lo para rodar em background. Você pode agendar a sua inicialização utilizando alguma ferramenta própria de sua distribuição ou ambiente gráfico ou ainda agendar a inicialização com o sistema utilizando o crontab. 
+O executável irá rodar indefinidamente, por isso é mais apropriado configurá-lo para rodar em background. 
 
-* `crontab -e`
-* adicionar a linha `@reboot /caminho/do/executável/1dsync.exe`
+* Linux:
 
-Não agende sua inicialização para o usuário root, isso pode afetar pastas do sistema caso algum parâmetro de destino esteja errado.
+    Você pode agendar a sua inicialização utilizando alguma ferramenta própria de sua distribuição ou ambiente gráfico ou ainda agendar a inicialização com o sistema utilizando o crontab. 
 
-Lembre-se de dar permissão de execução para o arquivo, o que pode ser feito com
-* `chmod +x /caminho/do/executável/1dsync.exe`
+    * `crontab -e`
+    * adicione a linha `@reboot python /caminho/da/pasta/1dsync.py` ou `@reboot python3 /caminho/da/pasta/1dsync.py`, dependendo da distribuição.
+
+    Não agende sua inicialização para o usuário root, isso pode afetar pastas do sistema caso algum parâmetro de destino esteja errado.
+
+* Windows:
+
+    Você pode agendar a sua inicialização criando um arquivo **.bat** na pasta `Inicializar` do seu usuário. Por execmplo, o arquivo `C:\Users\Usuário\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\1dsync.bat` com o seguinte conteúdo:
+    `start pythonw C:\caminho\da\pasta\1dsync.py`
 
 Edite o arquivo `Config/config.json`, colocando os valores à direita de acordo com suas preferências. **Os valores devem estar entre aspas**:
 
@@ -47,7 +77,7 @@ Edite o arquivo `Config/config.json`, colocando os valores à direita de acordo 
 
 * `email_only_if_an_error_occur`: define se o email será enviado apenas quando houver um erro em alguma sincronia, deve ser **True** ou **False** - [obrigatório se `send_email` for **True**, não possui valor padrão]
 
-* `post_sync_script`: script a ser executado após a sincronização. Rodará uma vez por loop do programa (ou seja, uma vez a cada período de tempo `check_cooldown`), imediatamente antes da gravação do log e envio do email - [opcional, o valor padrão é um comando vazio]
+* `post_sync_script`: script a ser executado após a sincronização. Rodará uma vez por loop do programa (ou seja, uma vez a cada período de tempo `check_cooldown`), imediatamente antes da gravação do log e envio do email. Se você está rodando no Windows e deseja utilizar funções do cmd como `dir`, acrescente ao início da linha o comando `powershell`, seguido do comando. Outra possibilidade é criar um arquivo **.bat** e executá-lo diretamente - [opcional, o valor padrão é um comando vazio]
 
 * `run_post_sync_script_only_if_a_sync_occur`: define se o script pós-sincronização rodará apenas quando alguma sincronia for executada, ignorando as que estão em espera. Deve ser **True** ou **False** - [opcional, o valor padrão é False]
 
@@ -57,7 +87,7 @@ Utilize o arquivo `Syncs/sync.json.example` como template para criar uma sincron
 
 * `enable`: define se esta sincronização está ativa ou não, deve ser **True** ou **False** - [obrigatório]
 
-* `source_path`: caminho para a pasta de origem. Não pode ser a mesma ou uma subpasta de `destination_path` - [obrigatório]
+* `source_path`: caminho para a pasta de origem. Não pode ser a mesma ou uma subpasta de `destination_path`. No Windows, substitua as barras invertidas `\` do caminho por barras invertidas duplas `\\` ou barras normais `/`, do contrário a sintaxe do arquivo estará incorreta - [obrigatório]
 
 * `source_selection_condition`: condição de seleção de arquivos da pasta de origem, **veja [validações](#validações)** - [opcional, o valor padrão é **any file**]
 
@@ -67,7 +97,7 @@ Utilize o arquivo `Syncs/sync.json.example` como template para criar uma sincron
 
 * `source_filelist_shuffle`: define se a lista de arquivos selecionados da origem será embaralhada, deve ser **True** ou **False** - [opcional, o valor padrão é **False**]
 
-* `destination_path`: caminho para a pasta de destino. Não pode ser a mesma ou uma subpasta de `source_path` - [obrigatório]
+* `destination_path`: caminho para a pasta de destino. Não pode ser a mesma ou uma subpasta de `source_path`. No Windows, substitua as barras invertidas `\` do caminho por barras invertidas duplas `\\` ou barras normais `/`, do contrário a sintaxe do arquivo estará incorreta - [obrigatório]
 
 * `destination_selection_condition`: condição de seleção de arquivos da pasta de destino, **veja [validações](#validações)** - [opcional, o valor padrão é **any file**]
 
@@ -91,8 +121,8 @@ Para ter mais de uma sincronização basta criar outro arquivo dentro da pasta `
 
 Os logs serão criados dentro da pasta `Logs`, com o título sendo a data e horário de execução das sincronizações. Não remova essa pasta.
 
-## Validações
-As validações atualmente disponíveis estão a seguir. Para utilizar mais de uma validação, separe-as com um ponto-e-vírgula (`;`). O ponto-e-vírgula (`;`) é equivalente à operação lógica **OU** nas validações.
+## Condições de seleção
+As condições de seleção atualmente disponíveis estão a seguir. Para utilizar mais de uma, separe-as com um ponto-e-vírgula (`;`). O ponto-e-vírgula (`;`) é equivalente à operação lógica **OU**.
 
 * `audio`: selecionará arquivos de áudio com as extensões **mp3**, **ogg**, **flac**, **wma**, **wav** ou **opus**
 
@@ -126,17 +156,34 @@ With it, it's possible to do file copy operations between folders in specified t
 I have a domestic file server, a desktop machine and two smartphones wich I sync data. With **[1D-Sync](https://github.com/1Deterministic/1D-Sync)** I made the server copy certain files between these folders automatically. For instance, the 5 star rating musics are always copied to a phone that I use as a media device and for a phone I use as a daily driver. However, as the second one has very little storage space, I set **[1D-Sync](https://github.com/1Deterministic/1D-Sync)** 
 to copy random files until certain size (1.5GB) and change them from time to time, in a way that I don't feel the short storage space so much. I also set it to copy images from the camera and WhatsApp to the folder synchronized with my desktop, and so on. To sync the folders between those devices I use **[syncthing](https://syncthing.net/)**, wich I previously recommended.
 
+## Requirements
+* **Python 3**
+    * **Linux**: probably its already included in your distro. Just double check the correct command that executes the version 3 (in some distros its `python` and in others its `python3`). To verify, run these commands with the **-V** argument and see what version it shows.
+    * **Windows**: you can run the installer available in the [official website](https://www.python.org/downloads/) or install with **[Chocolatey](https://chocolatey.org/)** with the command `choco install python`
+
+* **eyeD3**
+    * **Linux**: installable through **pip** with the command `pip install eyed3` or `pip3 install eyed3`, depending on your distro. If your distribution doesn't include **pip** by default, you must install it before that. In **Debian**, for instance, the command is `apt install python3-pip`
+    * **Windows**
+        * **If you need the selection condition `favorite audio`**:
+        download [this **modified** version of the library](https://github.com/1Deterministic/1D-Sync/blob/master/Dependencies/Windows/eyeD3-0.8.4-windows-modified-to-support-non-english-characters.zip) that supports files/paths with non english characters, extract the **.zip** file and, with the console in the extracted folder, run the command `python setup.py install`. After that, install the package **python-magic-bin** with **pip** with the command `pip install python-magic-bin`
+        * **If you don't need**: install the packages **eyed3** and **python-magic-bin** with **pip** with the command `pip install eyed3 python-magic-bin`
+
 ## Utilization
-The executable will run indefinitely, so it's more apropriate to make it run in background. You can program its initialization using some tool of your distribution or desktop environment or use crontab.
+The executable will run indefinitely, so it's more apropriate to make it run in background.
 
-* `crontab -e`
-* add the line `@reboot /path/to/executable/1dsync.exe`
+* Linux:
 
-Don't program its initialization to the root user, this can affect system folders if some destination parameter was mistaken.
+    You can schedule its initialization using some tool of your distribution or desktop environment or use crontab.
 
-Remember to give execution permission to the file, wich can be done with
+    * `crontab -e`
+    * add the line `@reboot python /path/to/folder/1dsync.py` ou `@reboot python3 /path/to/folder/1dsync.py`, depending on your distro.
 
-* `chmod +x /path/to/executable/1dsync.exe`
+    Don't schedule its initialization to the root user, this can affect system folders if some destination parameter was mistaken.
+
+* Windows:
+    You can schedule its initialization creating a **.bat** file in the `Startup` folder of your user. For instance, the file `C:\Users\User\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\1dsync.bat` with the following content:
+    `start pythonw C:\path\to\folder\1dsync.py`
+
 
 Edit the file `Config/config.json`, changing the values on the right according to your preferences. **The values must be between quotes**:
 
@@ -162,7 +209,7 @@ Edit the file `Config/config.json`, changing the values on the right according t
 
 * `email_only_if_an_error_occur`: defines if the email will be sent only when a sync error happens, must be **True** or **False** - [required if `send_email` is **True**, doesn't have a default value]
 
-* `post_sync_script`: script to be executed after the synchronization. It will run once per program loop (once every `check_cooldown` time period), immediately before the log write and sending the email - [optional, the default value is an empty command]
+* `post_sync_script`: script to be executed after the synchronization. It will run once per program loop (once every `check_cooldown` time period), immediately before the log write and sending the email. If you're running on Windows and want to use cmd functions like `dir`, add at the beginning of the line the command `powershell`, followed by the command. Another option is to create a **.bat** file and run it directly - [optional, the default value is an empty command]
 
 * `run_post_sync_script_only_if_a_sync_occur`: defines if the post sync script will run only if a sync was executed, ignoring the ones in cooldown. Must be **True** or **False** - [optional, the default value is False]
 
@@ -173,7 +220,7 @@ to create a synchronization. Note that the file, to be considered, must have the
 
 * `enable`: sets if this sync will be active or not, must be **True** or **False** - [required]
 
-* `source_path`: path to the source folder. Cannot be the same or a subdirectory of `destination_path` - [required]
+* `source_path`: path to the source folder. Cannot be the same or a subdirectory of `destination_path`. On Windows, change the inverted slashes `\` from the path to double inverted slashes `\\` or normal slashes `/`, or the syntax will be wrong - [required]
 
 * `source_selection_condition`: selection condition for the files in the source folder, **see [validations](#validations)** - [optional, the default value is **any file**]
 
@@ -183,7 +230,7 @@ to create a synchronization. Note that the file, to be considered, must have the
 
 * `source_filelist_shuffle`: sets if the source file list will be shuffled, must be **True** or **False** - [optional, the default value is **False**]
 
-* `destination_path`: path to the destination folder. Cannot be the same or a subdirectory of `source_path` - [required]
+* `destination_path`: path to the destination folder. Cannot be the same or a subdirectory of `source_path`. On Windows, change the inverted slashes `\` from the path to double inverted slashes `\\` or normal slashes `/`, or the syntax will be wrong - [required]
 
 * `destination_selection_condition`: selection condition for the files in the destination folder, **see [validations](#validations)** - [optional, the default value is **any file**]
 
@@ -207,8 +254,8 @@ To have more than one sync you can just create another file inside the `Syncs` f
 
 The logs will be created inside the `Logs` folder, with the file name being the date and time of the sync execution. Don't remove this folder.
 
-## Validations
-The validations currently available are as follows. To use more than one validation, separate them with a semicolon (`;`). The semicolon (`;`) is equivalent to the logical operator **OR** on the validation.
+## Selection conditions
+The selection conditions currently available are as follows. To use more than one, split them with a semicolon (`;`). The semicolon (`;`) is equivalent to the logical operator **OR**.
 
 * `audio`: will select audio files with the extensions **mp3**, **ogg**, **flac**, **wma**, **wav** or **opus**
 
