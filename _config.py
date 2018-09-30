@@ -213,7 +213,7 @@ class Config:
                 (post_sync_script_output, error_code) = post_sync_script_subprocess.communicate()
 
                 log.report("ok_config_post_sync_script_output", detail=self.properties["post_sync_script"])
-                log.report(post_sync_script_output.decode()) # writes the console output in the log file
+                log.report(post_sync_script_output.decode(errors="ignore")) # writes the console output in the log file
                 log.report("ok_config_post_sync_script")
 
         return True
