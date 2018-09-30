@@ -24,7 +24,7 @@ class Sync:
     def load(self, log): # loads the sync from its path and validates its values
         try:
             log.report("ok_sync_running", detail=self.path)
-            self.properties = json.loads(open(self.path, "r").read(), object_pairs_hook=collections.OrderedDict)
+            self.properties = json.loads(open(self.path, "r", encoding="utf-8").read(), object_pairs_hook=collections.OrderedDict)
         except:
             log.report("error_sync_opening")
             return False

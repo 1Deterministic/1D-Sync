@@ -16,7 +16,7 @@ class Control:
 
     def load(self, log): # loads the schedule file
         try:
-            self.properties = json.loads(open(self.path, "r").read())
+            self.properties = json.loads(open(self.path, "r", encoding="utf-8").read())
         except:
             log.report("error_control_opening", critical=True)
             return False

@@ -23,7 +23,7 @@ class Config:
 
     def load(self, log): # loads the configuration file and validates its values
         try:
-            self.properties = json.loads(open(self.path, "r").read())
+            self.properties = json.loads(open(self.path, "r", encoding="utf-8").read())
         except:
             log.report("error_config_opening", critical=True)
             return False
