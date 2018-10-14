@@ -68,6 +68,8 @@ class Config:
         if not self.validate_run_post_sync_script_only_if_a_sync_occur(self.properties, log):
             return False
 
+        if not self.validate_run_continuously(self.properties, log):
+            return False
 
         log.report("ok_config_json_load")
         return True
@@ -196,6 +198,16 @@ class Config:
 
         return True
 
+    def validate_run_continuously(self, json, log):
+        if not "run_continuously" in json:
+            json["run_continuously"] = _defaults.default_run_continuously # if wasn't found in the json, use the default value
+
+        if not _validations.validate_boolean_value(json["run_continuously"]):
+            log.report("error_config_run_continuously", critical=True) # will return error if the value is invalid
+            return False
+
+        return True
+
 
     def run_startup_delay(self, log): # sleeps the specified startup delay
         time.sleep(int(self.properties["startup_delay"]) * 60)
@@ -261,4 +273,10 @@ class Config:
 
 
     def run_check_cooldown(self): # sleeps the program the specified amount of time
-        time.sleep(int(self.properties["check_cooldown"]) * 60 * 60)
+        if not ast.literal_eval(self.properties["run_continuously"]): # causes the program to exit
+            return False
+
+        time.sleep(int(self.properties["check_cooldown"]) * 60 * 60) # sleeps the specified time and returns to another sync loop
+        return True
+
+

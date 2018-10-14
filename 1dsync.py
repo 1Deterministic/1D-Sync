@@ -69,4 +69,5 @@ if __name__ == "__main__":
         if not config.run_logs_folder_maximum_size(root): # deletes old log files to meet the specified maximum folder size
             raise SystemError # force close if an error occurred
 
-        config.run_check_cooldown() # sleeps the program the specified amount of time
+        if not config.run_check_cooldown(): # sleeps the program the specified amount of time
+            raise SystemExit

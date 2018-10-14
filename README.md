@@ -37,22 +37,6 @@ Possuo um servidor de arquivos, um desktop e dois celulares com os quais sincron
         * **Caso não precise**: instale os pacotes **eyed3** e **python-magic-bin** com o **pip** através do comando `pip install eyed3 python-magic-bin`
 
 ## Utilização
-O executável irá rodar indefinidamente, por isso é mais apropriado configurá-lo para rodar em background. 
-
-* Linux:
-
-    Você pode agendar a sua inicialização utilizando alguma ferramenta própria de sua distribuição ou ambiente gráfico ou ainda agendar a inicialização com o sistema utilizando o crontab. 
-
-    * `crontab -e`
-    * adicione a linha `@reboot python /caminho/da/pasta/1dsync.py` ou `@reboot python3 /caminho/da/pasta/1dsync.py`, dependendo da distribuição.
-
-    Não agende sua inicialização para o usuário root, isso pode afetar pastas do sistema caso algum parâmetro de destino esteja errado.
-
-* Windows:
-
-    Você pode agendar a sua inicialização criando um arquivo **.bat** na pasta `Inicializar` do seu usuário. Por execmplo, o arquivo `C:\Users\Usuário\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\1dsync.bat` com o seguinte conteúdo:
-    `start pythonw C:\caminho\da\pasta\1dsync.py`
-
 Edite o arquivo `Config/config.json`, colocando os valores à direita de acordo com suas preferências. **Os valores devem estar entre aspas**:
 
 * `check_cooldown`: valor numérico de espera, em horas, entre as tentativas de sincronização. **Deve ser um valor numérico inteiro maior do que zero** - [opcional, o valor padrão é **1**]
@@ -80,6 +64,24 @@ Edite o arquivo `Config/config.json`, colocando os valores à direita de acordo 
 * `post_sync_script`: script a ser executado após a sincronização. Rodará uma vez por loop do programa (ou seja, uma vez a cada período de tempo `check_cooldown`), imediatamente antes da gravação do log e envio do email. Se você está rodando no Windows e deseja utilizar funções do cmd como `dir`, acrescente ao início da linha o comando `powershell`, seguido do comando. Outra possibilidade é criar um arquivo **.bat** e executá-lo diretamente - [opcional, o valor padrão é um comando vazio]
 
 * `run_post_sync_script_only_if_a_sync_occur`: define se o script pós-sincronização rodará apenas quando alguma sincronia for executada, ignorando as que estão em espera. Deve ser **True** ou **False** - [opcional, o valor padrão é False]
+
+* `run_continuously`: define se o programa executará em loop ou se encerrará imediatamente após o fim da sincronização, deve ser **True** ou **False** - [opcional, o valor padrão é True]
+
+Uma boa combinação é utilizar `run_continuously` juntamente com a inicialização do sistema, de forma que o programa esteja sempre em rodando em background. Para fazer isso verifique os passos a seguir, de acordo com seu sistema operacional.
+
+* Linux:
+
+    Você pode agendar a sua inicialização utilizando alguma ferramenta própria de sua distribuição ou ambiente gráfico ou ainda agendar a inicialização com o sistema utilizando o crontab. 
+
+    * `crontab -e`
+    * adicione a linha `@reboot python /caminho/da/pasta/1dsync.py` ou `@reboot python3 /caminho/da/pasta/1dsync.py`, dependendo da distribuição.
+
+    Não agende sua inicialização para o usuário root, isso pode afetar pastas do sistema caso algum parâmetro de destino esteja errado.
+
+* Windows:
+
+    Você pode agendar a sua inicialização criando um arquivo **.bat** na pasta `Inicializar` do seu usuário. Por execmplo, o arquivo `C:\Users\Usuário\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\1dsync.bat` com o seguinte conteúdo:
+    `start pythonw C:\caminho\da\pasta\1dsync.py`
 
 O arquivo `Config/control.json` armazena as datas e horários das sincronizações, não é necessário editá-lo. Entretanto, caso queira forçar uma sincronização na próxima tentativa, basta remover a(s) respectivas linhas do arquivo ou trocar sua data agendada.
 
@@ -169,22 +171,6 @@ to copy random files until certain size (1.5GB) and change them from time to tim
         * **If you don't need**: install the packages **eyed3** and **python-magic-bin** with **pip** with the command `pip install eyed3 python-magic-bin`
 
 ## Utilization
-The executable will run indefinitely, so it's more apropriate to make it run in background.
-
-* Linux:
-
-    You can schedule its initialization using some tool of your distribution or desktop environment or use crontab.
-
-    * `crontab -e`
-    * add the line `@reboot python /path/to/folder/1dsync.py` ou `@reboot python3 /path/to/folder/1dsync.py`, depending on your distro.
-
-    Don't schedule its initialization to the root user, this can affect system folders if some destination parameter was mistaken.
-
-* Windows:
-    You can schedule its initialization creating a **.bat** file in the `Startup` folder of your user. For instance, the file `C:\Users\User\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\1dsync.bat` with the following content:
-    `start pythonw C:\path\to\folder\1dsync.py`
-
-
 Edit the file `Config/config.json`, changing the values on the right according to your preferences. **The values must be between quotes**:
 
 * `check_cooldown`: numerical value, in hours, between synchronization attempts. **Must be an integer numerical value greater than zero** - [optional, the default value is **1**]
@@ -212,6 +198,22 @@ Edit the file `Config/config.json`, changing the values on the right according t
 * `post_sync_script`: script to be executed after the synchronization. It will run once per program loop (once every `check_cooldown` time period), immediately before the log write and sending the email. If you're running on Windows and want to use cmd functions like `dir`, add at the beginning of the line the command `powershell`, followed by the command. Another option is to create a **.bat** file and run it directly - [optional, the default value is an empty command]
 
 * `run_post_sync_script_only_if_a_sync_occur`: defines if the post sync script will run only if a sync was executed, ignoring the ones in cooldown. Must be **True** or **False** - [optional, the default value is False]
+
+* `run_continuously`: defines if the program will run in loop or if it will stop immediately after the synchronization loop, must be **True** or **False** - [optional, the default value is True]
+
+A good combination is to use `run_continuously` together with the system initialization, so the program will be always running in background. To achieve this, check the steps below, according with your operating system:
+* Linux:
+
+    You can schedule its initialization using some tool of your distribution or desktop environment or use crontab.
+
+    * `crontab -e`
+    * add the line `@reboot python /path/to/folder/1dsync.py` ou `@reboot python3 /path/to/folder/1dsync.py`, depending on your distro.
+
+    Don't schedule its initialization to the root user, this can affect system folders if some destination parameter was mistaken.
+
+* Windows:
+    You can schedule its initialization creating a **.bat** file in the `Startup` folder of your user. For instance, the file `C:\Users\User\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\1dsync.bat` with the following content:
+    `start pythonw C:\path\to\folder\1dsync.py`
 
 The file `Config/control.json` stores dates and times of the synchronizations, it's not necessary to change it. However, if you want to force a sync to run on the next attempt you can remove the respective line from the file or change it to some chosen date and time.
 
