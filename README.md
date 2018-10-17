@@ -17,7 +17,7 @@
 
 ## Português
 ### Aviso
-**Cuidado ao ler este readme, pois ele difere entre versões do programa. Veja sempre o arquivo readme incluído na release que você baixou**
+**Cuidado ao ler este readme, pois ele difere entre versões do programa. Veja sempre o arquivo readme incluído na release que você baixou. Este readme, em particular, é referente à versão 2.4-alpha2**
 
 ## Introdução
 **[1D-Sync](https://github.com/1Deterministic/1D-Sync)** é uma ferramenta automatizada de "sincronização" unidirecional. Com ele é possível efetuar cópias de arquivos entre pastas em intervalos específicos de tempo, suportando diversas configurações e alguns filtros de arquivos. Foi desenvolvido como uma continuação do **[Fantastic-Five-Star-Music-Copier](https://github.com/1Deterministic/Fantastic-Five-Star-Music-Copier)** mas possui recursos extras **(veja [utilização](#utilização))**.
@@ -30,11 +30,12 @@ Possuo um servidor de arquivos, um desktop e dois celulares com os quais sincron
     * **Linux**: provavelmente já está incluído na sua distribuição. Apenas verifique o comando correto que executa a versão 3 (em algumas distros é `python` e em outras `python3`). Para verificar, rode esses comandos com o argumento **-V** e veja qual versão ele mostra
     * **Windows**: você pode rodar o instalador disponível no [site oficial](https://www.python.org/downloads/) ou instalar através do **[Chocolatey](https://chocolatey.org/)** com o comando `choco install python`
 
+* **python-magic**
+    * Com o **pip** instalado no sistema, rode `pip install python-magic python-magic-bin` ou `pip3 install python-magic python-magic-bin`, dependendo do sistema operacional
+
 * **eyeD3**
     * **Linux**: instalável através do **pip** com o comando `pip install eyed3` ou `pip3 install eyed3`, dependendo da distribuição. Se a sua distro não inclui o **pip** na instalação, você deve instalá-lo antes disso. No **Debian**, por exemplo, o comando é `apt install python3-pip`
-    * **Windows**
-        * **Caso precise da condição de seleção `favorite audio`**: baixe [esta versão **modificada** da biblioteca](https://github.com/1Deterministic/1D-Sync/blob/master/Dependencies/Windows/eyeD3-0.8.4-windows-modified-to-support-non-english-characters.zip), que suporta arquivos/caminhos com caracteres fora do inglês (como palavras acentuadas), extraia o arquivo **.zip** e, com o console dentro da pasta extraída, rode o comando `python setup.py install`. Além disso, instale o pacote **python-magic-bin** com o **pip** através do comando `pip install python-magic-bin`
-        * **Caso não precise**: instale os pacotes **eyed3** e **python-magic-bin** com o **pip** através do comando `pip install eyed3 python-magic-bin`
+    * **Windows**: baixe [esta versão **modificada** da biblioteca](https://github.com/1Deterministic/1D-Sync/raw/master/Dependencies/Windows/eyeD3-0.8.4-windows-modified-to-support-non-english-characters.zip), que suporta arquivos/caminhos com caracteres fora do inglês (como palavras acentuadas), extraia o arquivo **.zip** e, com o console dentro da pasta extraída, rode o comando `python setup.py install`
 
 ## Utilização
 Edite o arquivo `Config/config.json`, colocando os valores à direita de acordo com suas preferências. **Os valores devem estar entre aspas**:
@@ -69,17 +70,14 @@ Edite o arquivo `Config/config.json`, colocando os valores à direita de acordo 
 
 Uma boa combinação é utilizar `run_continuously` juntamente com a inicialização do sistema, de forma que o programa esteja sempre em rodando em background. Para fazer isso verifique os passos a seguir, de acordo com seu sistema operacional.
 
-* Linux:
-
+* **Linux**:
     Você pode agendar a sua inicialização utilizando alguma ferramenta própria de sua distribuição ou ambiente gráfico ou ainda agendar a inicialização com o sistema utilizando o crontab. 
-
     * `crontab -e`
     * adicione a linha `@reboot python /caminho/da/pasta/1dsync.py` ou `@reboot python3 /caminho/da/pasta/1dsync.py`, dependendo da distribuição.
 
     Não agende sua inicialização para o usuário root, isso pode afetar pastas do sistema caso algum parâmetro de destino esteja errado.
 
-* Windows:
-
+* **Windows**:
     Você pode agendar a sua inicialização criando um arquivo **.bat** na pasta `Inicializar` do seu usuário. Por execmplo, o arquivo `C:\Users\Usuário\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\1dsync.bat` com o seguinte conteúdo:
     `start pythonw C:\caminho\da\pasta\1dsync.py`
 
@@ -91,7 +89,7 @@ Utilize o arquivo `Syncs/sync.json.example` como template para criar uma sincron
 
 * `source_path`: caminho para a pasta de origem. Não pode ser a mesma ou uma subpasta de `destination_path`. No Windows, substitua as barras invertidas `\` do caminho por barras invertidas duplas `\\` ou barras normais `/`, do contrário a sintaxe do arquivo estará incorreta - [obrigatório]
 
-* `source_selection_condition`: condição de seleção de arquivos da pasta de origem, **veja [validações](#validações)** - [opcional, o valor padrão é **any file**]
+* `source_selection_condition`: condição de seleção de arquivos da pasta de origem, **veja [condições de seleção](#condições-de-seleção)** - [opcional, o valor padrão é **any file**]
 
 * `source_maximum_age`: idade máxima permitida para que os arquivos sejam selecionados na pasta de origem com base na **data de modificação**, deve ser **any age**, o que permite qualquer idade, **ou um valor numérico inteiro maior que zero**, sendo lido em dias - [opcional, o valor padrão é **any age**]
 
@@ -101,7 +99,7 @@ Utilize o arquivo `Syncs/sync.json.example` como template para criar uma sincron
 
 * `destination_path`: caminho para a pasta de destino. Não pode ser a mesma ou uma subpasta de `source_path`. No Windows, substitua as barras invertidas `\` do caminho por barras invertidas duplas `\\` ou barras normais `/`, do contrário a sintaxe do arquivo estará incorreta - [obrigatório]
 
-* `destination_selection_condition`: condição de seleção de arquivos da pasta de destino, **veja [validações](#validações)** - [opcional, o valor padrão é **any file**]
+* `destination_selection_condition`: condição de seleção de arquivos da pasta de destino, **veja [condições de seleção](#condições-de-seleção)** - [opcional, o valor padrão é **any file**]
 
 * `destination_maximum_age`: idade máxima permitida para que os arquivos sejam selecionados na pasta de destino com base na **data de modificação**, deve ser **any age**, o que permite qualquer idade, **ou um valor numérico inteiro maior que zero**, sendo lido em dias - [opcional, o valor padrão é **any age**]
 
@@ -124,30 +122,32 @@ Para ter mais de uma sincronização basta criar outro arquivo dentro da pasta `
 Os logs serão criados dentro da pasta `Logs`, com o título sendo a data e horário de execução das sincronizações. Não remova essa pasta.
 
 ## Condições de seleção
-As condições de seleção atualmente disponíveis estão a seguir. Para utilizar mais de uma, separe-as com um ponto-e-vírgula (`;`). O ponto-e-vírgula (`;`) é equivalente à operação lógica **OU**.
+As condições de seleção atualmente disponíveis estão a seguir. Para utilizar mais de uma, separe-as com uma barra vertical (`|`). A barra vertical (`|`) é equivalente à operação lógica **OU**.
 
-* `audio`: selecionará arquivos de áudio com as extensões **mp3**, **ogg**, **flac**, **wma**, **wav** ou **opus**
+As condições de seleção são divididas em 4 tipos: **genérica**, **extensão**, **tipo** e **eyed3**
 
-* `favorite audio`: selecionará arquivos de áudio com a extensão **mp3** que possuírem um **rating de 5 estrelas**
 
-* `image`: selecionará arquivos de imagem com as extensões **jpg**, **jpeg**, **png**, **gif** ou **bmp**
+* **Genérica**
+    * `any file`: selecionará **qualquer arquivo**
 
-* `video`: selecionará arquivos de vídeo com as extensões **mp4**, **mpeg**, **wmv**, **mkv**, **mpg** ou **avi**
+    * `none`: não selecionará **nenhum arquivo**. **Cuidado ao usar essa funcionalidade, pode quebrar a deleção de arquivos sobrando e a não sobrescrita de arquivos no destino, por exemplo**.
 
-* `document`: selecionará documentos com as extensões **docx**, **doc**, **rtf**, **odt**, **ott**, **pdf** ou **txt**
+* **Extensão**: seleciona arquivos cuja extensão seja igual à opção recebida. Funciona seguindo o modelo `ext:extensão`, onde `ext:` é o prefixo que ativa esta opção. Por exemplo:
+    * `ext:.txt` selecionará arquivos com a extensão `.txt`
+    * `ext:.mp3` selecionará arquivos com a extensão `.mp3`
 
-* `sheet`: selecionará planilhas com as extensões     **xslx**, **xls**, **ods**, **ots** ou **csv**
+* **Tipo**: seleciona arquivos que pertençam ao tipo definido, independentemente da extensão do arquivo. Funciona seguindo o modelo `type:tipo`, onde `type:` é o prefixo que ativa esta opção. Esta opção é implementada usando **python-magic**.
+Por exemplo:
+    * `type:image` selecionará todos os arquivos do tipo imagem
+    * `type:audio` selecionará todos os arquivos do tipo audio
 
-* `presentation`: selecionará apresentações com as extensões **pptx**, **pps**, **odp** ou **otp**
-
-* `any file`: selecionará **qualquer arquivo**
-
-* `none`: não selecionará **nenhum arquivo**. **Cuidado ao usar essa funcionalidade, pode quebrar a deleção de arquivos sobrando e a não sobrescrita de arquivos no destino, por exemplo**.
+* **eyeD3**: seleciona arquivos mp3 com base em informações obtidas através da biblioteca **eyed3**. Funciona seguindo o modelo `eyed3:tag:valor`, onde `eyed3` é o prefixo que ativa esta opção, `tag` é o nome da tag sendo referenciada e `valor` é o valor desejado que a tag `tag` possua. Por exemplo:
+    * `eyed3:rating:4` selecionará todos os arquivos mp3 que possuam a na tag rating um valor maior ou igual a 4. Esta é a única opção suportada nesta versão.
 
 
 ## English
 ### Warning
-**Be careful when reading this readme because it differs between versions. Always read the readme file included in the release you downloaded**
+**Be careful when reading this readme because it differs between versions. Always read the readme file included in the release you downloaded. This particular readme refers to the version 2.4-alpha2**
 
 ## Intro
 **[1D-Sync](https://github.com/1Deterministic/1D-Sync)** is an automated unidirectional "synchronization" tool. 
@@ -161,14 +161,14 @@ to copy random files until certain size (1.5GB) and change them from time to tim
 ## Requirements
 * **Python 3**
     * **Linux**: probably its already included in your distro. Just double check the correct command that executes the version 3 (in some distros its `python` and in others its `python3`). To verify, run these commands with the **-V** argument and see what version it shows.
-    * **Windows**: you can run the installer available in the [official website](https://www.python.org/downloads/) or install with **[Chocolatey](https://chocolatey.org/)** with the command `choco install python`
+    * **Windows**: you can run the installer available in the [official website](https://www.python.org/downloads/) or install using **[Chocolatey](https://chocolatey.org/)** with the command `choco install python`
+
+* **python-magic**
+    * With **pip** installed, run `pip install python-magic python-magic-bin` or `pip3 install python-magic python-magic-bin`, depending on your system
 
 * **eyeD3**
     * **Linux**: installable through **pip** with the command `pip install eyed3` or `pip3 install eyed3`, depending on your distro. If your distribution doesn't include **pip** by default, you must install it before that. In **Debian**, for instance, the command is `apt install python3-pip`
-    * **Windows**
-        * **If you need the selection condition `favorite audio`**:
-        download [this **modified** version of the library](https://github.com/1Deterministic/1D-Sync/blob/master/Dependencies/Windows/eyeD3-0.8.4-windows-modified-to-support-non-english-characters.zip) that supports files/paths with non english characters, extract the **.zip** file and, with the console in the extracted folder, run the command `python setup.py install`. After that, install the package **python-magic-bin** with **pip** with the command `pip install python-magic-bin`
-        * **If you don't need**: install the packages **eyed3** and **python-magic-bin** with **pip** with the command `pip install eyed3 python-magic-bin`
+    * **Windows**: download [this **modified** version of the library](https://github.com/1Deterministic/1D-Sync/raw/master/Dependencies/Windows/eyeD3-0.8.4-windows-modified-to-support-non-english-characters.zip) that supports files/paths with non english characters, extract the **.zip** file and, with the console in the extracted folder, run the command `python setup.py install`
 
 ## Utilization
 Edit the file `Config/config.json`, changing the values on the right according to your preferences. **The values must be between quotes**:
@@ -202,16 +202,15 @@ Edit the file `Config/config.json`, changing the values on the right according t
 * `run_continuously`: defines if the program will run in loop or if it will stop immediately after the synchronization loop, must be **True** or **False** - [optional, the default value is True]
 
 A good combination is to use `run_continuously` together with the system initialization, so the program will be always running in background. To achieve this, check the steps below, according with your operating system:
-* Linux:
 
+* **Linux**:
     You can schedule its initialization using some tool of your distribution or desktop environment or use crontab.
-
     * `crontab -e`
     * add the line `@reboot python /path/to/folder/1dsync.py` ou `@reboot python3 /path/to/folder/1dsync.py`, depending on your distro.
 
     Don't schedule its initialization to the root user, this can affect system folders if some destination parameter was mistaken.
 
-* Windows:
+* **Windows**:
     You can schedule its initialization creating a **.bat** file in the `Startup` folder of your user. For instance, the file `C:\Users\User\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\1dsync.bat` with the following content:
     `start pythonw C:\path\to\folder\1dsync.py`
 
@@ -224,7 +223,7 @@ to create a synchronization. Note that the file, to be considered, must have the
 
 * `source_path`: path to the source folder. Cannot be the same or a subdirectory of `destination_path`. On Windows, change the inverted slashes `\` from the path to double inverted slashes `\\` or normal slashes `/`, or the syntax will be wrong - [required]
 
-* `source_selection_condition`: selection condition for the files in the source folder, **see [validations](#validations)** - [optional, the default value is **any file**]
+* `source_selection_condition`: selection condition for the files in the source folder, **see [selection conditions](#selection-conditions)** - [optional, the default value is **any file**]
 
 * `source_maximum_age`: maximum allowed age for a file to be selected in the source folder based on the **modified date**, must be **any age**, that allows for any age, **or an integer numerical value greater than zero**, read in days - [optional, the default value is **any age**]
 
@@ -234,7 +233,7 @@ to create a synchronization. Note that the file, to be considered, must have the
 
 * `destination_path`: path to the destination folder. Cannot be the same or a subdirectory of `source_path`. On Windows, change the inverted slashes `\` from the path to double inverted slashes `\\` or normal slashes `/`, or the syntax will be wrong - [required]
 
-* `destination_selection_condition`: selection condition for the files in the destination folder, **see [validations](#validations)** - [optional, the default value is **any file**]
+* `destination_selection_condition`: selection condition for the files in the destination folder, **see [selection conditions](#selection-conditions)** - [optional, the default value is **any file**]
 
 * `destination_maximum_age`: maximum allowed age for a file to be selected in the destination folder based on the **modified date**, must be **any age**, that allows for any age, **or an integer numerical value greater than zero**, read in days - [optional, the default value is **any age**]
 
@@ -257,24 +256,25 @@ To have more than one sync you can just create another file inside the `Syncs` f
 The logs will be created inside the `Logs` folder, with the file name being the date and time of the sync execution. Don't remove this folder.
 
 ## Selection conditions
-The selection conditions currently available are as follows. To use more than one, split them with a semicolon (`;`). The semicolon (`;`) is equivalent to the logical operator **OR**.
+The selection conditions currently available are as follows. To use more than one, split them with a vertical slash (`|`). The vertical slash (`|`) is equivalent to the logical operator **OR**.
 
-* `audio`: will select audio files with the extensions **mp3**, **ogg**, **flac**, **wma**, **wav** or **opus**
+The selection conditions are divided in 4 types: **generic**, **extension**, **type** and **eyed3**
 
-* `favorite audio`: will select audio files with the **mp3** extension that have a **rating of 5 stars**
+* **Generic**
+    * `any file`: will select **any file**
 
-* `image`: will select image files with the extensions **jpg**, **jpeg**, **png**, **gif** or **bmp**
+    * `none`: **will not select any file**. **Be careful when using this function, it may break left files deletion and file override (forcing override even when not asked), for instance**.
 
-* `video`: will select video files with the extensions **mp4**, **mpeg**, **wmv**, **mkv**, **mpg** or **avi**
+* **Extension**: will select files with an extension equal to the option received. Works like the model `ext:extension`, where `ext:` is the prefix that activates this option. For example:
+    * `ext:.txt` will select files the the extension `.txt`
+    * `ext:.mp3` will select files the the extension `.mp3`
 
-* `document`: will select document files with the extensions **docx**, **doc**, **rtf**, **odt**, **ott**, **pdf** or **txt**
+* **Type**: will select files that belong to the defined type, regardless of the file extension. Works like the model `type:filetype`, where `type:` is the prefix that activates this option. This option is implemented using **python-magic** .
+For example:
+    * `type:image` will select image files
+    * `type:audio` will select audio files
 
-* `sheet`: will select sheet files with the extensions     **xslx**, **xls**, **ods**, **ots** or **csv**
-
-* `presentation`: will select presentation files with the extensions **pptx**, **pps**, **odp** or **otp**
-
-* `any file`: will select **any file**
-
-* `none`: **will not select any file**. **Be careful when using this function, it may break left files deletion and file override (forcing override even when not asked), for instance**.
+* **eyeD3**: will select mp3 files based on information received from the **eyed3** library. Works like the model `eyed3:tag:value`, where `eyed3` is the prefix that activates this option, `tag` is the name of the tag being referenced and `value` is the value that the tag `tag` must have. For instance:
+    * `eyed3:rating:4` will select mp3 files with the rating tag greater or equal to 4. This is the only option supported in this version.
 
 ## [1Deterministic](https://github.com/1Deterministic), 2018
