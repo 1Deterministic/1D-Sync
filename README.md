@@ -136,7 +136,7 @@ As condições de seleção são divididas em 4 tipos: **genérica**, **extensã
     * `ext:.txt` selecionará arquivos com a extensão `.txt`
     * `ext:.mp3` selecionará arquivos com a extensão `.mp3`
 
-* **Tipo**: seleciona arquivos que pertençam ao tipo definido, independentemente da extensão do arquivo. Funciona seguindo o modelo `type:tipo`, onde `type:` é o prefixo que ativa esta opção. Esta opção é implementada usando **python-magic**.
+* **Tipo**: seleciona arquivos que pertençam ao tipo definido, independentemente da extensão do arquivo. Funciona seguindo o modelo `type:tipo`, onde `type:` é o prefixo que ativa esta opção. Esta opção é implementada usando **[tipos MIME](https://en.wikipedia.org/wiki/MIME)** e você pode consultar uma lista de tipos possíveis **[aqui](https://www.sitepoint.com/mime-types-complete-list/)**.
 Por exemplo:
     * `type:image` selecionará todos os arquivos do tipo imagem
     * `type:audio` selecionará todos os arquivos do tipo audio
@@ -269,7 +269,7 @@ The selection conditions are divided in 4 types: **generic**, **extension**, **t
     * `ext:.txt` will select files the the extension `.txt`
     * `ext:.mp3` will select files the the extension `.mp3`
 
-* **Type**: will select files that belong to the defined type, regardless of the file extension. Works like the model `type:filetype`, where `type:` is the prefix that activates this option. This option is implemented using **python-magic** .
+* **Type**: will select files that belong to the defined type, regardless of the file extension. Works like the model `type:filetype`, where `type:` is the prefix that activates this option. This option is implemented using **[MIME types](https://en.wikipedia.org/wiki/MIME)** and you can see a list of possible types **[here](https://www.sitepoint.com/mime-types-complete-list/)**.
 For example:
     * `type:image` will select image files
     * `type:audio` will select audio files
