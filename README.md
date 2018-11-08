@@ -2,42 +2,99 @@
 **[Português](#português)**  
 * **[Aviso](#aviso)**
 * **[Introdução](#introdução)**
-* **[Meu caso de uso](#meu-caso-de-uso)**
-* **[Pré requisitos](#pré-requisitos)**
+    * **[Descrição](#descrição)**
+    * **[Meu caso de uso](#meu-caso-de-uso)**
 * **[Utilização](#utilização)**
-* **[Condições de seleção](#condições-de-seleção)**
+    * **[Pré requisitos](#pré-requisitos)**
+    * **[Hierarquia de pastas](#hierarquia-de-pastas)**
+    * **[Configuração geral](#configuração-geral)**
+    * **[Início automático](#início-automático)**
+    * **[Agendamento](#agendamento)**
+    * **[Sincronização](#sincronização)**
+    * **[Registro de execução](#registro-de-execução)**
+    * **[Condições de seleção](#condições-de-seleção)**
+    * **[Expressões lógicas](#expressões-lógicas)**
+    * **[Comparações matemáticas](#comparações-matemáticas)**
 
 **[English](#english)**  
 * **[Warning](#warning)**
 * **[Intro](#intro)**
-* **[My use case](#my-use-case)**
-* **[Requirements](#requirements)**
+    * **[Description](#description)**
+    * **[My use case](#my-use-case)**
 * **[Utilization](#utilization)**
-* **[Selection conditions](#selection-conditions)**
+    * **[Requirements](#requirements)**
+    * **[Directory hierarchy](#directory-hierarchy)**
+    * **[General configuration](#general-configuration)**
+    * **[Auto start](#auto-start)**
+    * **[Scheduling](#scheduling)**
+    * **[Syncing](#syncing)**
+    * **[Execution log](#execution-log)**
+    * **[Selection conditions](#selection-conditions)**
+    * **[Logical expressions](#logical-expressions)**
+    * **[Mathematical comparsions](#mathematical-comparsions)**
 
 ## Português
 ### Aviso
-**Cuidado ao ler este readme, pois ele difere entre versões do programa. Veja sempre o arquivo readme incluído na release que você baixou. Este readme, em particular, é referente à versão 2.4-alpha2**
+**Cuidado ao ler este readme, pois ele difere entre versões do programa. Veja sempre o arquivo readme incluído na release que você baixou. Este readme, em particular, é referente à versão 2.4-alpha3**
 
 ## Introdução
+### Descrição
 **[1D-Sync](https://github.com/1Deterministic/1D-Sync)** é uma ferramenta automatizada de "sincronização" unidirecional. Com ele é possível efetuar cópias de arquivos entre pastas em intervalos específicos de tempo, suportando diversas configurações e alguns filtros de arquivos. Foi desenvolvido como uma continuação do **[Fantastic-Five-Star-Music-Copier](https://github.com/1Deterministic/Fantastic-Five-Star-Music-Copier)** mas possui recursos extras **(veja [utilização](#utilização))**.
 
-## Meu caso de uso
+### Meu caso de uso
 Possuo um servidor de arquivos, um desktop e dois celulares com os quais sincronizo dados. Com o **[1D-Sync](https://github.com/1Deterministic/1D-Sync)**, faço com que o servidor de arquivos copie certos arquivos entre essas pastas automaticamente. Por exemplo, as músicas avaliadas em 5 estrelas são sempre copiadas para um telefone que uso como dispositivo de mídia e também para o telefone que uso no dia-a-dia. Entretanto, como esse segundo possui muito pouco espaço de armazenamento, faço com que o **[1D-Sync](https://github.com/1Deterministic/1D-Sync)** copie arquivos aleatórios até um certo tamanho (1.5GB) e os troque de tempo em tempo, de forma que eu não sinta tanto a falta de espaço. Também copio automaticamente as imagens de câmera e WhatsApp para a pasta sincronizada com meu desktop, entre outros. Para sincronizar essas pastas com os dispositivos eu utilizo o **[syncthing](https://syncthing.net/)**, que já recomendei anteriormente.
 
-## Pré-requisitos
-* **Python 3**
-    * **Linux**: provavelmente já está incluído na sua distribuição. Apenas verifique o comando correto que executa a versão 3 (em algumas distros é `python` e em outras `python3`). Para verificar, rode esses comandos com o argumento **-V** e veja qual versão ele mostra
-    * **Windows**: você pode rodar o instalador disponível no [site oficial](https://www.python.org/downloads/) ou instalar através do **[Chocolatey](https://chocolatey.org/)** com o comando `choco install python`
-
-* **python-magic**
-    * Com o **pip** instalado no sistema, rode `pip install python-magic python-magic-bin` ou `pip3 install python-magic python-magic-bin`, dependendo do sistema operacional
-
-* **eyeD3**
-    * **Linux**: instalável através do **pip** com o comando `pip install eyed3` ou `pip3 install eyed3`, dependendo da distribuição. Se a sua distro não inclui o **pip** na instalação, você deve instalá-lo antes disso. No **Debian**, por exemplo, o comando é `apt install python3-pip`
-    * **Windows**: baixe [esta versão **modificada** da biblioteca](https://github.com/1Deterministic/1D-Sync/raw/master/Dependencies/Windows/eyeD3-0.8.4-windows-modified-to-support-non-english-characters.zip), que suporta arquivos/caminhos com caracteres fora do inglês (como palavras acentuadas), extraia o arquivo **.zip** e, com o console dentro da pasta extraída, rode o comando `python setup.py install`
 
 ## Utilização
+### Pré-requisitos
+* **Python 3**
+    * **Linux**: provavelmente já está incluído na sua distribuição. Apenas verifique o comando correto que executa a versão 3 (em algumas distros é `python` e em outras `python3`). Para verificar, rode esses comandos com o argumento **-V** e veja qual versão ele mostra
+    * **Windows**: você pode rodar o instalador disponível no [site oficial](https://www.python.org/downloads/) ou instalar através do **[Chocolatey](https://chocolatey.org/)** com o comando
+        ```
+        choco install python
+        ```
+
+* **python-magic**
+    * Com o **pip** instalado no sistema, rode 
+        ```
+        pip install python-magic python-magic-bin
+        ```
+        ou 
+        ```
+        pip3 install python-magic python-magic-bin
+        ```
+        dependendo do sistema operacional
+
+* **eyeD3**
+    * **Linux**: instalável através do **pip** com o comando 
+        ```
+        pip install eyed3
+        ```
+        ou
+        ```
+        pip3 install eyed3
+        ```
+
+        dependendo da distribuição. Se a sua distro não inclui o **pip** na instalação, você deve instalá-lo antes disso. No **Debian**, por exemplo, o comando é
+        ```
+        apt install python3-pip
+        ```
+
+    * **Windows**: baixe [esta versão **modificada** da biblioteca](https://github.com/1Deterministic/1D-Sync/raw/master/Dependencies/Windows/eyeD3-0.8.4-windows-modified-to-support-non-english-characters.zip), que suporta arquivos/caminhos com caracteres fora do inglês (como palavras acentuadas), extraia o arquivo **.zip** e, com o console dentro da pasta extraída, rode o comando 
+        ```
+        python setup.py install
+        ```
+
+### Hierarquia de pastas
+* Config: guarda arquivos de configuração
+    * `config.json`: guarda configurações gerais do programa
+    * `control.json`: guarda o agendamento das sincronias
+
+* Logs: guarda os logs de execução do programa. Cada log é nomeado com a data e hora de execução no padrão `Y-M-D h-m-s.txt`
+
+* Syncs: guarda as sincronizações que o programa deve realizar. Cada arquivo `.json` representa uma sincronia diferente e a hierarquia não é relevante, você pode organizar as sincronias dentro de pastas dentro de Syncs, se desejar. Inclui um arquivo modelo `sync.json.example`, que você pode editar para criar uma sincronia (lembre-se de renomeá-lo com a extensão `.json`)
+
+### Configuração geral
 Edite o arquivo `Config/config.json`, colocando os valores à direita de acordo com suas preferências. **Os valores devem estar entre aspas**:
 
 * `check_cooldown`: valor numérico de espera, em horas, entre as tentativas de sincronização. **Deve ser um valor numérico inteiro maior do que zero** - [opcional, o valor padrão é **1**]
@@ -68,21 +125,41 @@ Edite o arquivo `Config/config.json`, colocando os valores à direita de acordo 
 
 * `run_continuously`: define se o programa executará em loop ou se encerrará imediatamente após o fim da sincronização, deve ser **True** ou **False** - [opcional, o valor padrão é True]
 
+### Início automático
 Uma boa combinação é utilizar `run_continuously` juntamente com a inicialização do sistema, de forma que o programa esteja sempre em rodando em background. Para fazer isso verifique os passos a seguir, de acordo com seu sistema operacional.
 
 * **Linux**:
     Você pode agendar a sua inicialização utilizando alguma ferramenta própria de sua distribuição ou ambiente gráfico ou ainda agendar a inicialização com o sistema utilizando o crontab. 
-    * `crontab -e`
-    * adicione a linha `@reboot python /caminho/da/pasta/1dsync.py` ou `@reboot python3 /caminho/da/pasta/1dsync.py`, dependendo da distribuição.
+    * execute o comando 
+        ```
+        crontab -e
+        ```
+    * adicione a linha 
+        ```
+        @reboot python /caminho/da/pasta/1dsync.py
+        ``` 
+        ou 
+        ```
+        @reboot python3 /caminho/da/pasta/1dsync.py
+        ```
+        dependendo da distribuição.
 
     Não agende sua inicialização para o usuário root, isso pode afetar pastas do sistema caso algum parâmetro de destino esteja errado.
 
 * **Windows**:
-    Você pode agendar a sua inicialização criando um arquivo **.bat** na pasta `Inicializar` do seu usuário. Por execmplo, o arquivo `C:\Users\Usuário\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\1dsync.bat` com o seguinte conteúdo:
-    `start pythonw C:\caminho\da\pasta\1dsync.py`
+    Você pode agendar a sua inicialização criando um arquivo **.bat** na pasta `Inicializar` do seu usuário. Por execmplo, o arquivo 
+    ```
+    C:\Users\Usuário\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\1dsync.bat
+    ```
+    com o seguinte conteúdo:
+    ```
+    start pythonw C:\caminho\da\pasta\1dsync.py
+    ```
 
+### Agendamento
 O arquivo `Config/control.json` armazena as datas e horários das sincronizações, não é necessário editá-lo. Entretanto, caso queira forçar uma sincronização na próxima tentativa, basta remover a(s) respectivas linhas do arquivo ou trocar sua data agendada.
 
+### Sincronização
 Utilize o arquivo `Syncs/sync.json.example` como template para criar uma sincronização. Note que o arquivo, para ser considerado, deve possuir a extensão `.json`, então você deve renomeá-lo (recomendável fazer uma cópia desse arquivo e renomear a cópia). **Os valores devem estar entre aspas**:
 
 * `enable`: define se esta sincronização está ativa ou não, deve ser **True** ou **False** - [obrigatório]
@@ -91,8 +168,6 @@ Utilize o arquivo `Syncs/sync.json.example` como template para criar uma sincron
 
 * `source_selection_condition`: condição de seleção de arquivos da pasta de origem, **veja [condições de seleção](#condições-de-seleção)** - [opcional, o valor padrão é **any file**]
 
-* `source_maximum_age`: idade máxima permitida para que os arquivos sejam selecionados na pasta de origem com base na **data de modificação**, deve ser **any age**, o que permite qualquer idade, **ou um valor numérico inteiro maior que zero**, sendo lido em dias - [opcional, o valor padrão é **any age**]
-
 * `source_subfolder_search`: define se serão procurados arquivos nas subpastas da pasta de origem, deve ser **True** ou **False** - [opcional, o valor padrão é **True**]
 
 * `source_filelist_shuffle`: define se a lista de arquivos selecionados da origem será embaralhada, deve ser **True** ou **False** - [opcional, o valor padrão é **False**]
@@ -100,8 +175,6 @@ Utilize o arquivo `Syncs/sync.json.example` como template para criar uma sincron
 * `destination_path`: caminho para a pasta de destino. Não pode ser a mesma ou uma subpasta de `source_path`. No Windows, substitua as barras invertidas `\` do caminho por barras invertidas duplas `\\` ou barras normais `/`, do contrário a sintaxe do arquivo estará incorreta - [obrigatório]
 
 * `destination_selection_condition`: condição de seleção de arquivos da pasta de destino, **veja [condições de seleção](#condições-de-seleção)** - [opcional, o valor padrão é **any file**]
-
-* `destination_maximum_age`: idade máxima permitida para que os arquivos sejam selecionados na pasta de destino com base na **data de modificação**, deve ser **any age**, o que permite qualquer idade, **ou um valor numérico inteiro maior que zero**, sendo lido em dias - [opcional, o valor padrão é **any age**]
 
 * `destination_subfolder_search`: define se serão procurados arquivos nas subpastas da pasta de destino, deve ser **True** ou **False** - [opcional, o valor padrão é **True**]
 
@@ -119,16 +192,26 @@ Utilize o arquivo `Syncs/sync.json.example` como template para criar uma sincron
 
 Para ter mais de uma sincronização basta criar outro arquivo dentro da pasta `Syncs`, atentando para as mesmas regras. Arquivos dentro de pastas também serão lidos, desde que sejam válidos nas mesmas regras.
 
-Os logs serão criados dentro da pasta `Logs`, com o título sendo a data e horário de execução das sincronizações. Não remova essa pasta.
+### Registro de execução
+Os logs de execução registram um histórico da execução do programa para que seja possível identificar um eventual problema e verificar que operações estão sendo feitas. O log inclui as seguintes informações:
 
-## Condições de seleção
-As condições de seleção atualmente disponíveis estão a seguir. Para utilizar mais de uma, separe-as com uma barra vertical (`|`). A barra vertical (`|`) é equivalente à operação lógica **OU**.
+* Nome do programa, versão, codenome e data de construção
+* Status do carregamento dos arquivos
+* Para cada sincronia status das operações, arquivos apagados, pastas apagadas e arquivos copiados
+* Saída do terminal do script pós sincronização
+* Envio do email
+* Atualização do arquivo de controle
 
-As condições de seleção são divididas em 4 tipos: **genérica**, **extensão**, **tipo** e **eyed3**
+### Condições de seleção
+As condições de seleção atualmente disponíveis estão a seguir. 
+
+Você pode utilizar uma expressão lógica simples para montar condições de seleção compostas ou personalizadas. Para uma lista de símbolos e exemplos veja **[expressões lógicas](#expressões-lógicas)**
+
+As condições de seleção são divididas em 5 tipos: **genérica**, **extensão**, **tipo**, **eyed3** e **idade**
 
 
 * **Genérica**
-    * `any file`: selecionará **qualquer arquivo**
+    * `anyfile`: selecionará **qualquer arquivo**
 
     * `none`: não selecionará **nenhum arquivo**. **Cuidado ao usar essa funcionalidade, pode quebrar a deleção de arquivos sobrando e a não sobrescrita de arquivos no destino, por exemplo**.
 
@@ -141,36 +224,137 @@ Por exemplo:
     * `type:image` selecionará todos os arquivos do tipo imagem
     * `type:audio` selecionará todos os arquivos do tipo audio
 
-* **eyeD3**: seleciona arquivos mp3 com base em informações obtidas através da biblioteca **eyed3**. Funciona seguindo o modelo `eyed3:tag:valor`, onde `eyed3` é o prefixo que ativa esta opção, `tag` é o nome da tag sendo referenciada e `valor` é o valor desejado que a tag `tag` possua. Por exemplo:
-    * `eyed3:rating:4` selecionará todos os arquivos mp3 que possuam a na tag rating um valor maior ou igual a 4. Esta é a única opção suportada nesta versão.
+* **eyeD3**: seleciona arquivos mp3 com base em informações obtidas através da biblioteca **eyed3**. Funciona seguindo o modelo `eyed3:tag:valor`, onde `eyed3` é o prefixo que ativa esta opção, `tag` é o nome da tag sendo referenciada, `valor` é o valor desejado que a tag `tag` possua.
+Por exemplo:
+     * `eyed3:artist:Artista` selecionará todos os arquivos mp3 que possuam na tag artist o valor Artista
+
+    As tags suportadas são:
+    * `artist`
+    * `album`
+    * `title`
+    * `rating`
+
+     Para a tag **rating**, `valor` assume o formato `comp:val`, onde `comp` é uma comparação matemática e `val` é o valor de referência com o qual o arquivo será comparado. Por exemplo:
+
+    * `eyed3:rating:>=:4` selecionará todos os arquivos mp3 que possuam a na tag rating um valor maior ou igual a 4.
+    * `eyed3:rating:<:3` selecionará todos os arquivos mp3 que possuam a na tag rating um valor menor que 3.
+    
+    Para uma lista de comparações matemáticas possíveis veja **[comparações matemáticas](#comparações-matemáticas)**
+
+* **Idade**: seleciona arquivos cuja **data de modificação** satisfaça à condição estabelecida. Funciona seguindo o modelo `age:comp:valor` onde `age` é o prefixo que ativa esta opção, `comp` é uma comparação matemática e `valor` é o valor de referência com o qual o arquivo será comparado. Por exemplo:
+    * `age:<=:7` selecionará todos os arquivos que foram modificados há 7 dias ou menos
+
+    * `age:>:365` selecionará todos os arquivos que foram modificados há mais de 365 dias
+
+    Para uma lista de comparações matemáticas possíveis veja **[comparações matemáticas](#comparações-matemáticas)**
+
+
+### Expressões lógicas
+Os símbolos para expressões lógicas estão a seguir. 
+Espaços não são permitidos mas você pode usar o símbolo de soma `+` no lugar deles, ele será considerado um espaço internamente e é permitido pela sintaxe.
+|símbolo|operação                         |
+|-------|---------------------------------|
+| ~     | não lógico                      |
+| ^     | e lógico                        |
+| \|    | ou lógico                       |
+| {     | entrada de pilha de preferência |
+| }     | saída de pilha de preferência   |
+
+As operações serão avaliadas na ordem que estiverem a menos que uma pilha de preferência `()` seja usada.
+
+Exemplos:
+```
+type:text ^ age:<=:7
+
+type:audio | type:image
+
+~{type:image | type:video}
+
+type:audio ^ ~ext:.ogg
+```
+
+Os símbolos não são os mais intuitivos para evitar conflitos com nomes de arquivo e tags.
+
+
+### Comparações matemáticas
+As comparações matemáticas possíveis para as condições de seleção suportadas são:
+|símbolo|operação            |
+|-------|--------------------|
+| =     | igual              |
+| ~     | diferente          |
+| >     | estritamente maior |
+| <     | estritamente menor |
+| >=    | maior ou igual     |
+| <=    | menor ou igual     | 
+
+Note que as condições de seleção somente suportam comparações matemáticas quando especificamente mencionado. As demais condições não suportam tais comparações.
 
 
 ## English
 ### Warning
-**Be careful when reading this readme because it differs between versions. Always read the readme file included in the release you downloaded. This particular readme refers to the version 2.4-alpha2**
+**Be careful when reading this readme because it differs between versions. Always read the readme file included in the release you downloaded. This particular readme refers to the version 2.4-alpha3**
 
 ## Intro
+### Description
 **[1D-Sync](https://github.com/1Deterministic/1D-Sync)** is an automated unidirectional "synchronization" tool. 
 With it, it's possible to do file copy operations between folders in specified time intervals, supporting various configurations and some file filters. It was developed as a continuation of 
 **[Fantastic-Five-Star-Music-Copier](https://github.com/1Deterministic/Fantastic-Five-Star-Music-Copier)** but it has some extra features **(see [utilization](#utilization))**.
 
-## My use case
+### My use case
 I have a domestic file server, a desktop machine and two smartphones wich I sync data. With **[1D-Sync](https://github.com/1Deterministic/1D-Sync)** I made the server copy certain files between these folders automatically. For instance, the 5 star rating musics are always copied to a phone that I use as a media device and for a phone I use as a daily driver. However, as the second one has very little storage space, I set **[1D-Sync](https://github.com/1Deterministic/1D-Sync)** 
 to copy random files until certain size (1.5GB) and change them from time to time, in a way that I don't feel the short storage space so much. I also set it to copy images from the camera and WhatsApp to the folder synchronized with my desktop, and so on. To sync the folders between those devices I use **[syncthing](https://syncthing.net/)**, wich I previously recommended.
 
-## Requirements
-* **Python 3**
-    * **Linux**: probably its already included in your distro. Just double check the correct command that executes the version 3 (in some distros its `python` and in others its `python3`). To verify, run these commands with the **-V** argument and see what version it shows.
-    * **Windows**: you can run the installer available in the [official website](https://www.python.org/downloads/) or install using **[Chocolatey](https://chocolatey.org/)** with the command `choco install python`
-
-* **python-magic**
-    * With **pip** installed, run `pip install python-magic python-magic-bin` or `pip3 install python-magic python-magic-bin`, depending on your system
-
-* **eyeD3**
-    * **Linux**: installable through **pip** with the command `pip install eyed3` or `pip3 install eyed3`, depending on your distro. If your distribution doesn't include **pip** by default, you must install it before that. In **Debian**, for instance, the command is `apt install python3-pip`
-    * **Windows**: download [this **modified** version of the library](https://github.com/1Deterministic/1D-Sync/raw/master/Dependencies/Windows/eyeD3-0.8.4-windows-modified-to-support-non-english-characters.zip) that supports files/paths with non english characters, extract the **.zip** file and, with the console in the extracted folder, run the command `python setup.py install`
 
 ## Utilization
+### Requirements
+* **Python 3**
+    * **Linux**: probably its already included in your distro. Just double check the correct command that executes the version 3 (in some distros its `python` and in others its `python3`). To verify, run these commands with the **-V** argument and see what version it shows.
+    * **Windows**: you can run the installer available in the [official website](https://www.python.org/downloads/) or install using **[Chocolatey](https://chocolatey.org/)** with the command 
+        ```
+        choco install python
+        ```
+
+* **python-magic**
+    * With **pip** installed, run 
+        ```
+        pip install python-magic python-magic-bin
+        ```
+        or
+        ```
+        pip3 install python-magic python-magic-bin
+        ```
+        depending on your system
+
+* **eyeD3**
+    * **Linux**: installable through **pip** with the command
+        ```
+        pip install eyed3
+        ```
+        or
+        ```
+        pip3 install eyed3
+        ```
+        depending on your distro. If your distribution doesn't include **pip** by default, you must install it before that. In **Debian**, for instance, the command is 
+        ```
+        apt install python3-pip
+        ```
+
+    * **Windows**: download [this **modified** version of the library](https://github.com/1Deterministic/1D-Sync/raw/master/Dependencies/Windows/eyeD3-0.8.4-windows-modified-to-support-non-english-characters.zip) that supports files/paths with non english characters, extract the **.zip** file and, with the console in the extracted folder, run the command 
+        ```
+        python setup.py install
+        ```
+
+### Directory hierarchy
+
+* Config: stores configuration files
+    * `config.json`: stores general program configurations
+    * `control.json`: stores the sync schedule
+
+* Logs: stores program execution logs. Each log is named with the date and time of the execution following the model `Y-M-D h-m-s.txt`
+
+* Syncs: stores the syncs that the program will execute. Each `.json` file represents a different sync and the hierarchy is not relevant, you can organize the syncs in folders inside the folder Syncs, if you want. Includes a model file `sync.json.example`, wich you can edit to create a sync (remember to rename it with the extension`.json`)
+
+### General configuration
 Edit the file `Config/config.json`, changing the values on the right according to your preferences. **The values must be between quotes**:
 
 * `check_cooldown`: numerical value, in hours, between synchronization attempts. **Must be an integer numerical value greater than zero** - [optional, the default value is **1**]
@@ -201,21 +385,41 @@ Edit the file `Config/config.json`, changing the values on the right according t
 
 * `run_continuously`: defines if the program will run in loop or if it will stop immediately after the synchronization loop, must be **True** or **False** - [optional, the default value is True]
 
+### Auto start
 A good combination is to use `run_continuously` together with the system initialization, so the program will be always running in background. To achieve this, check the steps below, according with your operating system:
 
 * **Linux**:
     You can schedule its initialization using some tool of your distribution or desktop environment or use crontab.
-    * `crontab -e`
-    * add the line `@reboot python /path/to/folder/1dsync.py` ou `@reboot python3 /path/to/folder/1dsync.py`, depending on your distro.
+    * run the command
+        ```
+        crontab -e
+        ```
+    * add the line 
+        ```
+        @reboot python /path/to/folder/1dsync.py
+        ```
+        ou
+        ```
+        @reboot python3 /path/to/folder/1dsync.py
+        ```
+        depending on your distro.
 
     Don't schedule its initialization to the root user, this can affect system folders if some destination parameter was mistaken.
 
 * **Windows**:
-    You can schedule its initialization creating a **.bat** file in the `Startup` folder of your user. For instance, the file `C:\Users\User\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\1dsync.bat` with the following content:
-    `start pythonw C:\path\to\folder\1dsync.py`
+    You can schedule its initialization creating a **.bat** file in the `Startup` folder of your user. For instance, the file 
+    ```
+    C:\Users\User\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\1dsync.bat
+    ```
+    with the following content:
+    ```
+    start pythonw C:\path\to\folder\1dsync.py
+    ```
 
+### Scheduling
 The file `Config/control.json` stores dates and times of the synchronizations, it's not necessary to change it. However, if you want to force a sync to run on the next attempt you can remove the respective line from the file or change it to some chosen date and time.
 
+### Syncing
 Use the file `Syncs/sync.json.example` as a template 
 to create a synchronization. Note that the file, to be considered, must have the `.json` extension, so you have to rename it (recommended to duplicate this file and rename the copy). **The values must be between quotes**:
 
@@ -225,8 +429,6 @@ to create a synchronization. Note that the file, to be considered, must have the
 
 * `source_selection_condition`: selection condition for the files in the source folder, **see [selection conditions](#selection-conditions)** - [optional, the default value is **any file**]
 
-* `source_maximum_age`: maximum allowed age for a file to be selected in the source folder based on the **modified date**, must be **any age**, that allows for any age, **or an integer numerical value greater than zero**, read in days - [optional, the default value is **any age**]
-
 * `source_subfolder_search`: sets if the program will search for files in subfolders of the source folder, must be **True** or **False** - [optional, the default value is **True**]
 
 * `source_filelist_shuffle`: sets if the source file list will be shuffled, must be **True** or **False** - [optional, the default value is **False**]
@@ -234,8 +436,6 @@ to create a synchronization. Note that the file, to be considered, must have the
 * `destination_path`: path to the destination folder. Cannot be the same or a subdirectory of `source_path`. On Windows, change the inverted slashes `\` from the path to double inverted slashes `\\` or normal slashes `/`, or the syntax will be wrong - [required]
 
 * `destination_selection_condition`: selection condition for the files in the destination folder, **see [selection conditions](#selection-conditions)** - [optional, the default value is **any file**]
-
-* `destination_maximum_age`: maximum allowed age for a file to be selected in the destination folder based on the **modified date**, must be **any age**, that allows for any age, **or an integer numerical value greater than zero**, read in days - [optional, the default value is **any age**]
 
 * `destination_subfolder_search`: sets if the program will search for files in subfolders of the destination folder, must be **True** or **False** - [optional, the default value is **True**]
 
@@ -253,15 +453,25 @@ to create a synchronization. Note that the file, to be considered, must have the
 
 To have more than one sync you can just create another file inside the `Syncs` folder, paying attention to the same rules. Files inside folders will be used too, provided that they follow the same rules.
 
-The logs will be created inside the `Logs` folder, with the file name being the date and time of the sync execution. Don't remove this folder.
+### Execution log
+The execution logs maintain a history of the program execution to be possible to identify an eventual problem and to verify that the operations are being made correctly. The log includes the following information:
 
-## Selection conditions
-The selection conditions currently available are as follows. To use more than one, split them with a vertical slash (`|`). The vertical slash (`|`) is equivalent to the logical operator **OR**.
+* Program name, version, codename and build date
+* File loading status
+* For each sync the status of operations, deleted files, deleted folders and copied files
+* Terminal output of the post-sync script
+* Email sending status
+* Control file update
 
-The selection conditions are divided in 4 types: **generic**, **extension**, **type** and **eyed3**
+### Selection conditions
+The selection conditions currently available are as follows. 
+
+You can use a simple logical expression to create composite or custom selection conditions. For a list of symbols and examples see **[logical expressions](#logical-expressions)**
+
+The selection conditions are divided in 5 types: **generic**, **extension**, **type**, **eyed3** and **age**
 
 * **Generic**
-    * `any file`: will select **any file**
+    * `anyfile`: will select **any file**
 
     * `none`: **will not select any file**. **Be careful when using this function, it may break left files deletion and file override (forcing override even when not asked), for instance**.
 
@@ -270,11 +480,72 @@ The selection conditions are divided in 4 types: **generic**, **extension**, **t
     * `ext:.mp3` will select files the the extension `.mp3`
 
 * **Type**: will select files that belong to the defined type, regardless of the file extension. Works like the model `type:filetype`, where `type:` is the prefix that activates this option. This option is implemented using **[MIME types](https://en.wikipedia.org/wiki/MIME)** and you can see a list of possible types **[here](https://www.sitepoint.com/mime-types-complete-list/)**.
-For example:
+For instance:
     * `type:image` will select image files
     * `type:audio` will select audio files
 
 * **eyeD3**: will select mp3 files based on information received from the **eyed3** library. Works like the model `eyed3:tag:value`, where `eyed3` is the prefix that activates this option, `tag` is the name of the tag being referenced and `value` is the value that the tag `tag` must have. For instance:
-    * `eyed3:rating:4` will select mp3 files with the rating tag greater or equal to 4. This is the only option supported in this version.
+
+    * `eyed3:artist:Artist` will select mp3 files with the artist tag equal to Artist
+
+    The supported tags are:
+    * `artist`
+    * `album`
+    * `title`
+    * `rating`
+
+     For the rating tag, `value` assumes the format `comp:val`, where `comp` is a mathematical comparsion and `val` is the reference value being compared to. For instance:
+
+    * `eyed3:rating:>=:4` will select mp3 files with the rating tag greater or equal to 4
+    * `eyed3:rating:<:3` will select mp3 files with the rating tag lesser than 3
+    
+    For a list of possible mathematical comparsions see **[mathematical comparsions](#mathematical-comparsions)**
+
+* **Age**: will select files that the **modified date** meets the stablished condition. Works  like the model `age:cond:value` where `age` is the prefix that activates this option, `cond` is a mathematical comparsion and `value` is the reference value being compared to. For instance:
+    * `age:<=:7` will select files modified 7 days ago or less.
+
+    * `age:>:365` will select files modified more than 365 days ago
+
+    For a list of possible mathematical comparsions see **[mathematical comparsions](#mathematical-comparsions)**
+
+### Logical expressions
+The symbols for logical expressions are as follows. Spaces are not allowed but you can use the plus symbol `+` instead of them, it will be considered a space internally and its allowed by the syntax.
+|símbolo|operação                         |
+|-------|---------------------------------|
+| ~     | logical not                     |
+| ^     | logical and                     |
+| \|    | logical or                      |
+| {     | preferential stack in           |
+| }     | preferential stack out          |
+
+The operations will be evaluated in the same order of the string unless a preferential stack `()` is used.
+
+Examples:
+
+```
+type:text ^ age:<=:7
+
+type:audio | type:image
+
+~{type:image | type:video}
+
+type:audio ^ ~ext:.ogg
+```
+
+The symbols are not the most intuitive ones to prevent conflicting with filenames and tags.
+
+
+### Mathematical comparsions
+The possible mathematical comparsions for the supported selection conditions are:
+|symbol |comparsion                    |
+|-------|------------------------------|
+| =     | equal                        |
+| ~     | different                    |
+| >     | strictly greater             |
+| <     | strictly lesser              |
+| >=    | greater than or equal to     |
+| <=    | lesser than or equal to      | 
+
+Please note that the selecion conditions only support mathematical comparsions when specificaly mentioned. Other conditions do not support this feature.
 
 ## [1Deterministic](https://github.com/1Deterministic), 2018

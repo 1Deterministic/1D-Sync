@@ -16,6 +16,7 @@ import json
 import random
 import collections
 
+from Slea import slea
 
 class Sync:
     def __init__(self, path):
@@ -38,9 +39,6 @@ class Sync:
         if not self.validate_source_selection_condition(self.properties, log):
             return False
 
-        if not self.validate_source_maximum_age(self.properties, log):
-            return False
-
         if not self.validate_source_subfolder_search(self.properties, log):
             return False
 
@@ -51,9 +49,6 @@ class Sync:
             return False
 
         if not self.validate_destination_selection_condition(self.properties, log):
-            return False
-
-        if not self.validate_destination_maximum_age(self.properties, log):
             return False
 
         if not self.validate_destination_subfolder_search(self.properties, log):
@@ -99,7 +94,6 @@ class Sync:
             source = File_List(
                 self.properties["source_path"],
                 self.properties["source_selection_condition"],
-                self.properties["source_maximum_age"],
                 ast.literal_eval(self.properties["source_subfolder_search"]),
                 ast.literal_eval(self.properties["source_filelist_shuffle"])
             )
@@ -108,7 +102,6 @@ class Sync:
             destination = File_List(
                 self.properties["destination_path"],
                 self.properties["destination_selection_condition"],
-                self.properties["destination_maximum_age"],
                 ast.literal_eval(self.properties["destination_subfolder_search"]),
                 ast.literal_eval(self.properties["destination_filelist_shuffle"])
             )
@@ -189,17 +182,6 @@ class Sync:
 
         return True
 
-    def validate_source_maximum_age(self, json, log):
-        if not "source_maximum_age" in json:
-            json["source_maximum_age"] = _defaults.default_source_maximum_age # if wasn't found in the json, use the default value
-
-        if not _validations.validate_integer_greater_than_zero(json["source_maximum_age"]):
-            if not json["source_maximum_age"] == "any age":
-                log.report("error_sync_source_maximum_age")
-                return False
-
-        return True
-
     def validate_source_subfolder_search(self, json, log):
         if not "source_subfolder_search" in json:
             json["source_subfolder_search"] = _defaults.default_source_subfolder_search # if wasn't found in the json, use the default value
@@ -238,17 +220,6 @@ class Sync:
         if not _validations.validate_selection_condition(json["destination_selection_condition"]):
             log.report("error_sync_destination_selection_condition")
             return False
-
-        return True
-
-    def validate_destination_maximum_age(self, json, log):
-        if not "destination_maximum_age" in json:
-            json["destination_maximum_age"] = _defaults.default_destination_maximum_age # if wasn't found in the json, use the default value
-
-        if not _validations.validate_integer_greater_than_zero(json["destination_maximum_age"]):
-            if not json["destination_maximum_age"] == "any age":
-                log.report("error_sync_destination_maximum_age")
-                return False
 
         return True
 
@@ -325,21 +296,24 @@ class Sync:
 
 
 class File_List: # creates a list of files
-    def __init__(self, path, selection_condition, maximum_age, subfolder_search, filelist_shuffle):
+    def __init__(self, path, selection_condition, subfolder_search, filelist_shuffle):
         self.filelist = []
         self.path = path
         self.selection_condition = selection_condition
-        self.maximum_age = maximum_age
         self.subfolder_search = subfolder_search
         self.filelist_shuffle = filelist_shuffle
 
 
     def fill(self, size_limit, log): # fills the file list
+        # mounts the syntax tree out of the selection confition string
+        # as it is the same condition to all files in this File_List, it can be created once and then reused
+        syntax_tree = slea.get_syntax_tree(self.selection_condition)
+
         for (dirpath, dirnames, filenames) in os.walk(self.path):
             for f in filenames:
                 file = _file.File(os.path.join(dirpath, f))
 
-                if file.evaluate_type(self.selection_condition) and file.evaluate_age(self.maximum_age):
+                if slea.evaluate_syntax_tree(syntax_tree, file.evaluate_condition, ""):
                     self.filelist.append(file)
 
             if not self.subfolder_search:

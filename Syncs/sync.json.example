@@ -2,14 +2,12 @@
     "enable": "True",
     
     "source_path": "/path/to/source",
-    "source_selection_condition": "any file",
-    "source_maximum_age": "any age",
+    "source_selection_condition": "anyfile",
     "source_subfolder_search": "True",
     "source_filelist_shuffle": "False",
 
     "destination_path": "/path/to/destination",
-    "destination_selection_condition": "any file",
-    "destination_maximum_age": "any age",
+    "destination_selection_condition": "anyfile",
     "destination_subfolder_search": "True",
     "destination_filelist_shuffle": "False",
 

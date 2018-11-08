@@ -6,6 +6,8 @@ This implements the basic validations used by the program
 
 import os
 
+from Slea import slea
+
 def validate_path(path):
     return os.path.isdir(path)
 
@@ -24,5 +26,10 @@ def validate_integer_greater_than_zero(value):
     except:
         return False
 
+# possibly add a log entry
 def validate_selection_condition(condition):
-    return True
+    error_code = slea.evaluate_syntax(condition)
+    if error_code == len(condition):
+        return True
+    else:
+        return False

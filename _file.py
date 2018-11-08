@@ -5,7 +5,7 @@ Also implements every action related to files
 
 '''
 
-import _filetypes
+import _defaults
 
 import os
 import shutil
@@ -13,6 +13,9 @@ import eyed3
 import math
 import time
 import filecmp
+import magic
+from Slea import slea
+
 
 class File:
     def __init__(self, path): # reads information about the file on a given path
@@ -20,20 +23,23 @@ class File:
             self.path = path
             self.islink = os.path.islink(path)
             self.size = os.path.getsize(self.path) / 1024000
-            self.age = int(time.strftime("%d", time.gmtime(time.time() - os.path.getmtime(self.path))))
             self.basename = os.path.basename(self.path)
             self.extension = os.path.splitext(self.path)[1]
+            self.age = int(time.strftime("%d", time.gmtime(time.time() - os.path.getmtime(self.path))))
             self.to_copy = True
             self.to_delete = False
+            self.tag = Tag()
+
         except: # erases all information in case of an error
             self.path = ""
             self.islink = False
             self.size = 0.0
-            self.age = 0
             self.basename = ""
             self.extension = ""
+            self.age = 0
             self.to_copy = False
             self.to_delete = False
+            self.tag = Tag()
 
     def is_the_same_file(self, other):
         return filecmp.cmp(self.path, other.path)
@@ -64,7 +70,6 @@ class File:
                 self.path = ""
                 self.islink = False
                 self.size = 0.0
-                self.age = 0
                 self.basename = ""
                 self.extension = ""
                 return True
@@ -74,19 +79,102 @@ class File:
 
         return True
 
-    def evaluate_type(self, filetype):
-        types = filetype.split("|")
-        for t in types:
-            if _filetypes.condition_check(t, self.path):
-                return True
+    def evaluate_condition(self, condition, argument):
+        # argument is an optional argument for slea
+        # it isn't used but the function must have it
 
-        return False
+        # restore spaces
+        actual_condition = condition.replace(_defaults.default_space_symbol_placeholder, " ")
 
-    def evaluate_age(self, age): # tells if this file is younger than the maximum age
-        if age == "any age":
+        # ext
+        if condition.startswith("ext:"):
+            return self.extension == actual_condition.split(":", 1)[1]
+
+        # type
+        elif condition.startswith("type:"):
+            return magic.Magic(mime=True).from_file(self.path).startswith(actual_condition.split(":", 1)[1])
+
+        # eyed3
+        elif condition.startswith("eyed3:"):
+            string = actual_condition.split(":", 1)[1]
+
+            if not self.tag.loaded:
+                if not self.tag.load(self.path):
+                    return False
+
+            if string.startswith("artist:"):
+                return self.tag.artist == string.split(":", 1)[1]
+
+            elif string.startswith("album:"):
+                return self.tag.album == string.split(":", 1)[1]
+
+            elif string.startswith("title:"):
+                return self.tag.title == string.split(":", 1)[1]
+
+            elif string.startswith("rating:"):
+                str = string.split(":", 1)[1]
+
+                cmp = str.split(":", 1)[0]
+                ref = str.split(":", 1)[1]
+                return self.condition_compare_int(self.tag.rating, cmp, ref)
+
+            return False
+
+        # age
+        elif condition.startswith("age:"):
+            string = actual_condition.split(":", 1)[1]
+
+            cmp = string.split(":", 1)[0]
+            ref = string.split(":", 1)[1]
+            return self.condition_compare_int(self.age, cmp, ref)
+
+        # generic
+        elif condition == "anyfile":
             return True
+
+        elif condition == "none":
+            return False
+
+        # could not validate
         else:
-            try:
-                return self.age <= int(age)
-            except:
-                return False
+            return False
+
+    # compares two values and return according to a received condition
+    def condition_compare_int(self, value_a, cmp, value_b):
+        try:
+            a = int(value_a)
+            b = int(value_b)
+
+            if cmp == "=":
+                return a == b
+            if cmp == "~":
+                return not a == b
+            if cmp == ">":
+                return a > b
+            if cmp == "<":
+                return a < b
+            if cmp == ">=":
+                return a >= b
+            if cmp == "<=":
+                return a <= b
+        except:
+            return False
+
+
+class Tag:
+    def __init__(self):
+        self.loaded = False
+
+    def load(self, path):
+        try:
+            self.file = eyed3.load(path)
+
+            self.title = self.file.tag.title;
+            self.album = self.file.tag.album;
+            self.artist = self.file.tag.artist;
+            self.rating = math.ceil(self.file.tag.frame_set[b'POPM'][0].rating / 51)
+
+            self.loaded = True
+            return True
+        except:
+            return False
