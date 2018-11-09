@@ -17,12 +17,11 @@ class Control:
     def load(self, log): # loads the schedule file
         try:
             self.properties = json.loads(open(self.path, "r", encoding="utf-8").read())
+            log.report("ok_control_json_load")
+            return True
         except:
             log.report("error_control_opening", critical=True)
             return False
-
-        log.report("ok_control_json_load")
-        return True
 
     def its_time(self, name): # given a sync name, tells if its time to run it
         return datetime.datetime.now() > datetime.datetime.strptime(self.properties[name], "%Y-%m-%d %H-%M-%S")
