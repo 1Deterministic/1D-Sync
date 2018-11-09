@@ -87,15 +87,15 @@ class File:
         actual_condition = condition.replace(_defaults.default_space_symbol_placeholder, " ")
 
         # ext
-        if condition.startswith("ext:"):
+        if actual_condition.startswith("ext:"):
             return self.extension == actual_condition.split(":", 1)[1]
 
         # type
-        elif condition.startswith("type:"):
+        elif actual_condition.startswith("type:"):
             return magic.Magic(mime=True).from_file(self.path).startswith(actual_condition.split(":", 1)[1])
 
         # eyed3
-        elif condition.startswith("eyed3:"):
+        elif actual_condition.startswith("eyed3:"):
             string = actual_condition.split(":", 1)[1]
 
             if not self.tag.loaded:
@@ -121,7 +121,7 @@ class File:
             return False
 
         # age
-        elif condition.startswith("age:"):
+        elif actual_condition.startswith("age:"):
             string = actual_condition.split(":", 1)[1]
 
             cmp = string.split(":", 1)[0]
@@ -129,10 +129,10 @@ class File:
             return self.condition_compare_int(self.age, cmp, ref)
 
         # generic
-        elif condition == "anyfile":
+        elif actual_condition == "anyfile":
             return True
 
-        elif condition == "none":
+        elif actual_condition == "none":
             return False
 
         # could not validate
