@@ -43,9 +43,6 @@ class Config:
         if not self.validate_log_only_if_a_sync_occur(self.properties, log):
             return False
 
-        if not self.validate_logs_folder_maximum_size(self.properties, log):
-            return False
-
         if not self.validate_send_email(self.properties, log):
             return False
         else:
@@ -121,17 +118,6 @@ class Config:
 
         if not _validations.validate_boolean_value(json["log_only_if_a_sync_occur"]):
             log.report("error_config_log_only_if_a_sync_occur", critical=True) # will return error if the value is invalid
-            return False
-
-        return True
-
-
-    def validate_logs_folder_maximum_size(self, json, log):
-        if not "logs_folder_maximum_size" in json:
-            json["logs_folder_maximum_size"] = _defaults.default_logs_folder_maximum_size # if wasn't found in the json, use the default value
-
-        if not _validations.validate_integer_greater_than_or_equal_to_zero(json["logs_folder_maximum_size"]):
-            log.report("error_config_logs_folder_maximum_size", critical=True) # will return error if the value is invalid
             return False
 
         return True
@@ -247,29 +233,6 @@ class Config:
                 return log.write()
 
         return True
-
-
-    def run_logs_folder_maximum_size(self, root): # deletes old log files to meet the specified maximum folder size
-        def get_folder_size(path):
-            size = 0
-            for (dirpath, dirnames, filenames) in os.walk(path):
-                for f in filenames:
-                    size += os.path.getsize(os.path.join(dirpath, f)) / 1024000
-            return size
-
-        path = os.path.join(root, _paths.logs_folder)
-
-        try:
-            if "logs_folder_maximum_size" in self.properties:
-                if int(self.properties["logs_folder_maximum_size"]) > 0:
-                    files = sorted(os.listdir(path), key=lambda x: os.stat(os.path.join(path, x)).st_mtime) # sorts the files by modified date
-                    for f in files:
-                        if get_folder_size(path) > int(self.properties["logs_folder_maximum_size"]):
-                            if os.path.isfile(os.path.join(path, f)):
-                                os.remove(os.path.join(path, f))
-            return True
-        except:
-            return False
 
 
     def run_check_cooldown(self): # sleeps the program the specified amount of time

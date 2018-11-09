@@ -94,7 +94,10 @@ english = {
     "warning_file_evaluate_no_reference_value": "[WARN.] \tselection condition with no reference value: ",
     "warning_file_evaluate_eyed3_load": "[WARN.] \teyeD3 didn't load the file: ",
     "warning_file_evaluate_no_mathematical_comparsion": "[WARN.] \tselection condition with no mathematical comparsion: ",
-    "warning_file_evaluate_mathematical_comparsion_not_identified": "[WARN.] \tmathematical comparsion not identified: "
+    "warning_file_evaluate_mathematical_comparsion_not_identified": "[WARN.] \tmathematical comparsion not identified: ",
+
+    # Log
+    "message_repeated_lines": "        \tthe previous line was repeated this more times: "
 }
 
 languages = {

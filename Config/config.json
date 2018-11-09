@@ -6,7 +6,6 @@
     "save_log": "True",
     "log_only_if_an_error_occur": "False",
     "log_only_if_a_sync_occur": "False",
-    "logs_folder_maximum_size": "0",
 
     "send_email": "False",
     "email_only_if_an_error_occur": "False",

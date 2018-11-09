@@ -10,7 +10,6 @@ default_startup_delay = "0"
 default_save_log = "True"
 default_log_only_if_an_error_occur = "False"
 default_log_only_if_a_sync_occur = "False"
-default_logs_folder_maximum_size = "10"
 default_send_email = "False"
 default_post_sync_script = ""
 default_run_post_sync_script_only_if_a_sync_occur = "False"
@@ -48,3 +47,6 @@ default_math_compare_strictly_greater = ">"
 default_math_compare_strictly_lesser = "<"
 default_math_compare_greater_than_or_equal_to = ">="
 default_math_compare_lesser_than_or_equal_to = "<="
+
+# log defaults
+default_log_repeated_lines_threshold = 10
