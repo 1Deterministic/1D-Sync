@@ -87,31 +87,31 @@ class File:
         actual_condition = condition.replace(_defaults.default_space_symbol_placeholder, " ")
 
         # ext
-        if actual_condition.startswith("ext:"):
+        if actual_condition.startswith(_defaults.default_ext_condition_chooser):
             return self.extension == actual_condition.split(":", 1)[1]
 
         # type
-        elif actual_condition.startswith("type:"):
+        elif actual_condition.startswith(_defaults.default_type_condition_chooser):
             return magic.Magic(mime=True).from_file(self.path).startswith(actual_condition.split(":", 1)[1])
 
         # eyed3
-        elif actual_condition.startswith("eyed3:"):
+        elif actual_condition.startswith(_defaults.default_eyed3_condition_chooser):
             string = actual_condition.split(":", 1)[1]
 
             if not self.tag.loaded:
                 if not self.tag.load(self.path):
                     return False
 
-            if string.startswith("artist:"):
+            if string.startswith(_defaults.default_eyed3_tag_artist_chooser):
                 return self.tag.artist == string.split(":", 1)[1]
 
-            elif string.startswith("album:"):
+            elif string.startswith(_defaults.default_eyed3_tag_album_chooser):
                 return self.tag.album == string.split(":", 1)[1]
 
-            elif string.startswith("title:"):
+            elif string.startswith(_defaults.default_eyed3_tag_title_chooser):
                 return self.tag.title == string.split(":", 1)[1]
 
-            elif string.startswith("rating:"):
+            elif string.startswith(_defaults.default_eyed3_tag_rating_chooser):
                 str = string.split(":", 1)[1]
 
                 cmp = str.split(":", 1)[0]
@@ -121,7 +121,7 @@ class File:
             return False
 
         # age
-        elif actual_condition.startswith("age:"):
+        elif actual_condition.startswith(_defaults.default_age_condition_chooser):
             string = actual_condition.split(":", 1)[1]
 
             cmp = string.split(":", 1)[0]
@@ -129,10 +129,10 @@ class File:
             return self.condition_compare_int(self.age, cmp, ref)
 
         # generic
-        elif actual_condition == "anyfile":
+        elif actual_condition == _defaults.default_anyfile_condition_chooser:
             return True
 
-        elif actual_condition == "none":
+        elif actual_condition == _defaults.default_none_condition_chooser:
             return False
 
         # could not validate
@@ -145,17 +145,17 @@ class File:
             a = int(value_a)
             b = int(value_b)
 
-            if cmp == "=":
+            if cmp == _defaults.default_math_compare_equal:
                 return a == b
-            if cmp == "~":
+            if cmp == _defaults.default_math_compare_different:
                 return not a == b
-            if cmp == ">":
+            if cmp == _defaults.default_math_compare_strictly_greater:
                 return a > b
-            if cmp == "<":
+            if cmp == _defaults.default_math_compare_strictly_lesser:
                 return a < b
-            if cmp == ">=":
+            if cmp == _defaults.default_math_compare_greater_than_or_equal_to:
                 return a >= b
-            if cmp == "<=":
+            if cmp == _defaults.default_math_compare_lesser_than_or_equal_to:
                 return a <= b
         except:
             return False
