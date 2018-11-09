@@ -241,7 +241,7 @@ class File:
             if comparsion == _defaults.default_math_compare_lesser_than_or_equal_to:
                 return a <= b
         except:
-            log.report("warning_file_evaluate_mathematical_comparsion_not_identified")
+            log.report("warning_file_evaluate_mathematical_comparsion_not_identified", detail=comparsion+":"+value_b)
             return False
 
 
