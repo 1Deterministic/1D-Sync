@@ -259,13 +259,15 @@ Por exemplo:
 ### Expressões lógicas
 Os símbolos para expressões lógicas estão a seguir. 
 Espaços não são permitidos mas você pode usar o símbolo de soma `+` no lugar deles, ele será considerado um espaço internamente e é permitido pela sintaxe.
+
 |símbolo|operação                         |
-|:------|:--------------------------------|
+| ----- | ------------------------------- |
 | ~     | não lógico                      |
 | ^     | e lógico                        |
 | \|    | ou lógico                       |
 | {     | entrada de pilha de preferência |
 | }     | saída de pilha de preferência   |
+
 
 As operações serão avaliadas na ordem que estiverem a menos que uma pilha de preferência `()` seja usada.
 
@@ -285,6 +287,7 @@ Os símbolos não são os mais intuitivos para evitar conflitos com nomes de arq
 
 ### Comparações matemáticas
 As comparações matemáticas possíveis para as condições de seleção suportadas são:
+
 |símbolo|operação            |
 |:------|:-------------------|
 | =     | igual              |
@@ -293,6 +296,7 @@ As comparações matemáticas possíveis para as condições de seleção suport
 | <     | estritamente menor |
 | >=    | maior ou igual     |
 | <=    | menor ou igual     | 
+
 
 Note que as condições de seleção somente suportam comparações matemáticas quando especificamente mencionado. As demais condições não suportam tais comparações.
 
@@ -526,13 +530,15 @@ For instance:
 
 ### Logical expressions
 The symbols for logical expressions are as follows. Spaces are not allowed but you can use the plus symbol `+` instead of them, it will be considered a space internally and its allowed by the syntax.
-|símbolo|operação                         |
-|:------|:--------------------------------|
+
+|symbol |operation                        |
+| ----- | ------------------------------- |
 | ~     | logical not                     |
 | ^     | logical and                     |
 | \|    | logical or                      |
 | {     | preferential stack in           |
 | }     | preferential stack out          |
+
 
 The operations will be evaluated in the same order of the string unless a preferential stack `()` is used.
 
@@ -553,14 +559,16 @@ The symbols are not the most intuitive ones to prevent conflicting with filename
 
 ### Mathematical comparsions
 The possible mathematical comparsions for the supported selection conditions are:
+
 |symbol |comparsion                    |
-|:------|:-----------------------------|
+| ----- | ---------------------------- |
 | =     | equal                        |
 | /=    | different                    |
 | >     | strictly greater             |
 | <     | strictly lesser              |
 | >=    | greater than or equal to     |
 | <=    | lesser than or equal to      | 
+
 
 Please note that the selecion conditions only support mathematical comparsions when specificaly mentioned. Other conditions do not support this feature.
 
