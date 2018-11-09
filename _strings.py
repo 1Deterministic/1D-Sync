@@ -87,7 +87,14 @@ english = {
     "ok_file_copy": "[ OK  ] \tcopied file: ",
     "ok_file_delete": "[ OK  ] \tdeleted file: ",
     "error_file_copy": "[ERROR] \tcould not copy file: ",
-    "error_file_delete": "[ERROR] \tcould not delete file: "
+    "error_file_delete": "[ERROR] \tcould not delete file: ",
+    "warning_selection_condition_operand_not_identified": "[WARN.] \tselection condition not identified: ",
+    "warning_selection_condition_operand": "[WARN.] \tselection condition invalid value: ",
+
+    "warning_file_evaluate_no_reference_value": "[WARN.] \tselection condition with no reference value: ",
+    "warning_file_evaluate_eyed3_load": "[WARN.] \teyeD3 didn't load the file: ",
+    "warning_file_evaluate_no_mathematical_comparsion": "[WARN.] \tselection condition with no mathematical comparsion: ",
+    "warning_file_evaluate_mathematical_comparsion_not_identified": "[WARN.] \tmathematical comparsion not identified: "
 }
 
 languages = {

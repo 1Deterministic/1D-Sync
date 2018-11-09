@@ -313,7 +313,7 @@ class File_List: # creates a list of files
             for f in filenames:
                 file = _file.File(os.path.join(dirpath, f))
 
-                if slea.evaluate_syntax_tree(syntax_tree, file.evaluate_condition, ""):
+                if slea.evaluate_syntax_tree(syntax_tree, file.evaluate_condition, log):
                     self.filelist.append(file)
 
             if not self.subfolder_search:

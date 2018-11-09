@@ -80,84 +80,149 @@ class File:
         return True
 
     def evaluate_condition(self, condition, argument):
-        # argument is an optional argument for slea
-        # it isn't used but the function must have it
+        log = argument
 
-        # restore spaces
-        actual_condition = condition.replace(_defaults.default_space_symbol_placeholder, " ")
+        # some string split can fail
+        try:
+            # restore spaces
+            actual_condition = condition.replace(_defaults.default_space_symbol_placeholder, " ")
 
-        # ext
-        if actual_condition.startswith(_defaults.default_ext_condition_chooser):
-            return self.extension == actual_condition.split(":", 1)[1]
-
-        # type
-        elif actual_condition.startswith(_defaults.default_type_condition_chooser):
-            return magic.Magic(mime=True).from_file(self.path).startswith(actual_condition.split(":", 1)[1])
-
-        # eyed3
-        elif actual_condition.startswith(_defaults.default_eyed3_condition_chooser):
-            string = actual_condition.split(":", 1)[1]
-
-            if not self.tag.loaded:
-                if not self.tag.load(self.path):
+            # ext
+            if actual_condition.startswith(_defaults.default_ext_condition_chooser):
+                reference_value = actual_condition.split(":", 1)[1]
+                if reference_value == "":
+                    log.report("warning_file_evaluate_no_reference_value", detail=condition)
                     return False
 
-            if string.startswith(_defaults.default_eyed3_tag_artist_chooser):
-                return self.tag.artist == string.split(":", 1)[1]
+                return self.extension == actual_condition.split(":", 1)[1]
 
-            elif string.startswith(_defaults.default_eyed3_tag_album_chooser):
-                return self.tag.album == string.split(":", 1)[1]
+            # type
+            elif actual_condition.startswith(_defaults.default_type_condition_chooser):
+                reference_value = actual_condition.split(":", 1)[1]
+                if reference_value == "":
+                    log.report("warning_file_evaluate_no_reference_value", detail=condition)
+                    return False
 
-            elif string.startswith(_defaults.default_eyed3_tag_title_chooser):
-                return self.tag.title == string.split(":", 1)[1]
+                return magic.Magic(mime=True).from_file(self.path).startswith(reference_value)
 
-            elif string.startswith(_defaults.default_eyed3_tag_rating_chooser):
-                str = string.split(":", 1)[1]
+            # eyed3
+            elif actual_condition.startswith(_defaults.default_eyed3_condition_chooser):
+                tag = actual_condition.split(":", 1)[1]
+                if tag == "":
+                    log.report("warning_file_evaluate_no_reference_value", detail=condition)
+                    return False
 
-                cmp = str.split(":", 1)[0]
-                ref = str.split(":", 1)[1]
-                return self.condition_compare_int(self.tag.rating, cmp, ref)
+                if not self.tag.loaded:
+                    # prevents trying to load incompatible files
+                    # maybe improve to using MIME
+                    if not self.extension == ".mp3":
+                        return False
 
-            return False
+                    if not self.tag.load(self.path):
+                        log.report("warning_file_evaluate_eyed3_load", detail=self.path)
+                        return False
 
-        # age
-        elif actual_condition.startswith(_defaults.default_age_condition_chooser):
-            string = actual_condition.split(":", 1)[1]
 
-            cmp = string.split(":", 1)[0]
-            ref = string.split(":", 1)[1]
-            return self.condition_compare_int(self.age, cmp, ref)
+                if tag.startswith(_defaults.default_eyed3_tag_artist_chooser):
+                    reference_value = tag.split(":", 1)[1]
 
-        # generic
-        elif actual_condition == _defaults.default_anyfile_condition_chooser:
-            return True
+                    if reference_value == "":
+                        log.report("warning_file_evaluate_no_reference_value", detail=condition)
+                        return False
 
-        elif actual_condition == _defaults.default_none_condition_chooser:
-            return False
+                    return self.tag.artist == reference_value
 
-        # could not validate
-        else:
+                elif tag.startswith(_defaults.default_eyed3_tag_album_chooser):
+                    reference_value = tag.split(":", 1)[1]
+                    if reference_value == "":
+                        log.report("warning_file_evaluate_no_reference_value", detail=condition)
+                        return False
+
+                    return self.tag.album == reference_value
+
+                elif tag.startswith(_defaults.default_eyed3_tag_title_chooser):
+                    reference_value = tag.split(":", 1)[1]
+                    if reference_value == "":
+                        log.report("warning_file_evaluate_no_reference_value", detail=condition)
+                        return False
+
+                    return self.tag.title == reference_value
+
+                elif tag.startswith(_defaults.default_eyed3_tag_rating_chooser):
+                    mathematical_comparsion = tag.split(":", 1)[1]
+                    if mathematical_comparsion == "":
+                        log.report("warning_file_evaluate_no_mathematical_comparsion", detail=condition)
+                        return False
+
+                    comparsion = mathematical_comparsion.split(":", 1)[0]
+                    if comparsion == "":
+                        log.report("warning_file_evaluate_no_mathematical_comparsion", detail=condition)
+                        return False
+
+                    reference_value = mathematical_comparsion.split(":", 1)[1]
+                    if reference_value == "":
+                        log.report("warning_file_evaluate_no_reference_value", detail=condition)
+                        return False
+
+                    return self.condition_compare_int(self.tag.rating, comparsion, reference_value, log)
+
+                return False
+
+            # age
+            elif actual_condition.startswith(_defaults.default_age_condition_chooser):
+                age = actual_condition.split(":", 1)[1]
+                if age == "":
+                    log.report("warning_file_evaluate_no_mathematical_comparsion", detail=condition)
+                    return False
+
+                comparsion = age.split(":", 1)[0]
+                if comparsion == "":
+                    log.report("warning_file_evaluate_no_mathematical_comparsion", detail=condition)
+                    return False
+
+                reference_value = age.split(":", 1)[1]
+                if reference_value == "":
+                    log.report("warning_file_evaluate_no_reference_value", detail=condition)
+                    return False
+
+                return self.condition_compare_int(self.age, comparsion, reference_value, log)
+
+            # generic
+            elif actual_condition == _defaults.default_anyfile_condition_chooser:
+                return True
+
+            elif actual_condition == _defaults.default_none_condition_chooser:
+                return False
+
+            # could not validate
+            else:
+                log.report("warning_selection_condition_operand_not_identified", detail=condition)
+                return False
+
+        except:
+            log.report("warning_selection_condition_operand", detail=condition)
             return False
 
     # compares two values and return according to a received condition
-    def condition_compare_int(self, value_a, cmp, value_b):
+    def condition_compare_int(self, value_a, comparsion, value_b, log):
         try:
             a = int(value_a)
             b = int(value_b)
 
-            if cmp == _defaults.default_math_compare_equal:
+            if comparsion == _defaults.default_math_compare_equal:
                 return a == b
-            if cmp == _defaults.default_math_compare_different:
+            if comparsion == _defaults.default_math_compare_different:
                 return not a == b
-            if cmp == _defaults.default_math_compare_strictly_greater:
+            if comparsion == _defaults.default_math_compare_strictly_greater:
                 return a > b
-            if cmp == _defaults.default_math_compare_strictly_lesser:
+            if comparsion == _defaults.default_math_compare_strictly_lesser:
                 return a < b
-            if cmp == _defaults.default_math_compare_greater_than_or_equal_to:
+            if comparsion == _defaults.default_math_compare_greater_than_or_equal_to:
                 return a >= b
-            if cmp == _defaults.default_math_compare_lesser_than_or_equal_to:
+            if comparsion == _defaults.default_math_compare_lesser_than_or_equal_to:
                 return a <= b
         except:
+            log.report("warning_file_evaluate_mathematical_comparsion_not_identified")
             return False
 
 
