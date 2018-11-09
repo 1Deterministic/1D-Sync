@@ -187,6 +187,25 @@ class File:
 
                 return self.condition_compare_int(self.age, comparsion, reference_value, log)
 
+            # size
+            elif actual_condition.startswith(_defaults.default_size_condition_chooser):
+                size = actual_condition.split(":", 1)[1]
+                if size == "":
+                    log.report("warning_file_evaluate_no_mathematical_comparsion", detail=condition)
+                    return False
+
+                comparsion = size.split(":", 1)[0]
+                if comparsion == "":
+                    log.report("warning_file_evaluate_no_mathematical_comparsion", detail=condition)
+                    return False
+
+                reference_value = size.split(":", 1)[1]
+                if reference_value == "":
+                    log.report("warning_file_evaluate_no_reference_value", detail=condition)
+                    return False
+
+                return self.condition_compare_int(self.size, comparsion, reference_value, log)
+
             # generic
             elif actual_condition == _defaults.default_anyfile_condition_chooser:
                 return True

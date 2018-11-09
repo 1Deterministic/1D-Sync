@@ -46,7 +46,7 @@ if __name__ == "__main__":
 
                     if (not sync.load(log)) or (not sync.run(control, log)): # loads and runs the sync
                         # will enter here if any of the above operations returns an error
-                        log.error_occurred = True
+                        #log.error_occurred = True
 
                         if not sync.disable(log): # an error in trying to disable the sync will force close the program
                             raise SystemExit

@@ -35,7 +35,7 @@
 
 ## Português
 ### Aviso
-**Cuidado ao ler este readme, pois ele difere entre versões do programa. Veja sempre o arquivo readme incluído na release que você baixou. Este readme, em particular, é referente à versão 2.4-alpha3**
+**Cuidado ao ler este readme, pois ele difere entre versões do programa. Veja sempre o arquivo readme incluído na release que você baixou. Este readme, em particular, é referente à versão 2.4-alpha4**
 
 ## Introdução
 ### Descrição
@@ -207,7 +207,7 @@ As condições de seleção atualmente disponíveis estão a seguir.
 
 Você pode utilizar uma expressão lógica simples para montar condições de seleção compostas ou personalizadas. Para uma lista de símbolos e exemplos veja **[expressões lógicas](#expressões-lógicas)**
 
-As condições de seleção são divididas em 5 tipos: **genérica**, **extensão**, **tipo**, **eyed3** e **idade**
+As condições de seleção são divididas em 5 tipos: **genérica**, **extensão**, **tipo**, **eyed3**, **idade** e **tamanho do arquivo**
 
 
 * **Genérica**
@@ -248,12 +248,19 @@ Por exemplo:
 
     Para uma lista de comparações matemáticas possíveis veja **[comparações matemáticas](#comparações-matemáticas)**
 
+* **Tamanho do arquivo**: seleciona arquivos cujo **tamanho em MB** satisfaça à condição estabelecida. Funciona seguindo o modelo `size:comp:valor` onde `size` é o prefixo que ativa esta opção, `comp` é uma comparação matemática e `valor` é o valor de referência com o qual o arquivo será comparado. Por exemplo:
+    * `size:<=:10` selecionará todos os arquivos com 10MB ou menos
+
+    * `size:>:1000` selecionará todos os arquivos maiores que 1000MB
+
+    Para uma lista de comparações matemáticas possíveis veja **[comparações matemáticas](#comparações-matemáticas)**
+
 
 ### Expressões lógicas
 Os símbolos para expressões lógicas estão a seguir. 
 Espaços não são permitidos mas você pode usar o símbolo de soma `+` no lugar deles, ele será considerado um espaço internamente e é permitido pela sintaxe.
 |símbolo|operação                         |
-|-------|---------------------------------|
+|:------|:--------------------------------|
 | ~     | não lógico                      |
 | ^     | e lógico                        |
 | \|    | ou lógico                       |
@@ -279,9 +286,9 @@ Os símbolos não são os mais intuitivos para evitar conflitos com nomes de arq
 ### Comparações matemáticas
 As comparações matemáticas possíveis para as condições de seleção suportadas são:
 |símbolo|operação            |
-|-------|--------------------|
+|:------|:-------------------|
 | =     | igual              |
-| ~     | diferente          |
+| /=    | diferente          |
 | >     | estritamente maior |
 | <     | estritamente menor |
 | >=    | maior ou igual     |
@@ -289,10 +296,12 @@ As comparações matemáticas possíveis para as condições de seleção suport
 
 Note que as condições de seleção somente suportam comparações matemáticas quando especificamente mencionado. As demais condições não suportam tais comparações.
 
+Note, também, que somente valores **inteiros** são suportados no momento.
+
 
 ## English
 ### Warning
-**Be careful when reading this readme because it differs between versions. Always read the readme file included in the release you downloaded. This particular readme refers to the version 2.4-alpha3**
+**Be careful when reading this readme because it differs between versions. Always read the readme file included in the release you downloaded. This particular readme refers to the version 2.4-alpha4**
 
 ## Intro
 ### Description
@@ -468,7 +477,7 @@ The selection conditions currently available are as follows.
 
 You can use a simple logical expression to create composite or custom selection conditions. For a list of symbols and examples see **[logical expressions](#logical-expressions)**
 
-The selection conditions are divided in 5 types: **generic**, **extension**, **type**, **eyed3** and **age**
+The selection conditions are divided in 5 types: **generic**, **extension**, **type**, **eyed3**, **age** and **file size**
 
 * **Generic**
     * `anyfile`: will select **any file**
@@ -508,10 +517,17 @@ For instance:
 
     For a list of possible mathematical comparsions see **[mathematical comparsions](#mathematical-comparsions)**
 
+* **File size**: will select files that the **size in MB** meets the stablished condition. Works  like the model `size:cond:value` where `size` is the prefix that activates this option, `cond` is a mathematical comparsion and `value` is the reference value being compared to. For instance:
+    * `size:<=:10` will select files with 10MB or less
+
+    * `size:>:1000` will select files larger than 1000MB
+
+    For a list of possible mathematical comparsions see **[mathematical comparsions](#mathematical-comparsions)**
+
 ### Logical expressions
 The symbols for logical expressions are as follows. Spaces are not allowed but you can use the plus symbol `+` instead of them, it will be considered a space internally and its allowed by the syntax.
 |símbolo|operação                         |
-|-------|---------------------------------|
+|:------|:--------------------------------|
 | ~     | logical not                     |
 | ^     | logical and                     |
 | \|    | logical or                      |
@@ -538,14 +554,16 @@ The symbols are not the most intuitive ones to prevent conflicting with filename
 ### Mathematical comparsions
 The possible mathematical comparsions for the supported selection conditions are:
 |symbol |comparsion                    |
-|-------|------------------------------|
+|:------|:-----------------------------|
 | =     | equal                        |
-| ~     | different                    |
+| /=    | different                    |
 | >     | strictly greater             |
 | <     | strictly lesser              |
 | >=    | greater than or equal to     |
 | <=    | lesser than or equal to      | 
 
 Please note that the selecion conditions only support mathematical comparsions when specificaly mentioned. Other conditions do not support this feature.
+
+Also, note that only **integer** values are supported for now.
 
 ## [1Deterministic](https://github.com/1Deterministic), 2018

@@ -15,6 +15,7 @@ class Log:
     def __init__(self, root): # initializes an empty log
         self.path = os.path.join(root, _paths.logs_folder, time.strftime("%Y-%m-%d %H-%M-%S") + ".txt")
         self.error_occurred = False
+        self.warning_occurred = False
         self.sync_occurred = False
         self.content = []
 
@@ -22,9 +23,17 @@ class Log:
         # writes the string associated to the received id
         # detail is used to include extra information in the message
         # critical is used to make sure the log is written right away when a serious error occurred
+
+        if id.startswith("error"):
+            self.error_occurred = True
+
+        if id.startswith("warning"):
+            self.warning_occurred = True
+
         try:
             self.content.append(_strings.strings[id] + detail)
         except:
+            # log the raw string if it was not identified
             self.content.append(id + detail)
 
         if critical:
