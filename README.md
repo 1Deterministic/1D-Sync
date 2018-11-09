@@ -166,7 +166,7 @@ Utilize o arquivo `Syncs/sync.json.example` como template para criar uma sincron
 
 * `source_path`: caminho para a pasta de origem. Não pode ser a mesma ou uma subpasta de `destination_path`. No Windows, substitua as barras invertidas `\` do caminho por barras invertidas duplas `\\` ou barras normais `/`, do contrário a sintaxe do arquivo estará incorreta - [obrigatório]
 
-* `source_selection_condition`: condição de seleção de arquivos da pasta de origem, **veja [condições de seleção](#condições-de-seleção)** - [opcional, o valor padrão é **any file**]
+* `source_selection_condition`: condição de seleção de arquivos da pasta de origem, **veja [condições de seleção](#condições-de-seleção)** - [opcional, o valor padrão é **anyfile**]
 
 * `source_subfolder_search`: define se serão procurados arquivos nas subpastas da pasta de origem, deve ser **True** ou **False** - [opcional, o valor padrão é **True**]
 
@@ -174,7 +174,7 @@ Utilize o arquivo `Syncs/sync.json.example` como template para criar uma sincron
 
 * `destination_path`: caminho para a pasta de destino. Não pode ser a mesma ou uma subpasta de `source_path`. No Windows, substitua as barras invertidas `\` do caminho por barras invertidas duplas `\\` ou barras normais `/`, do contrário a sintaxe do arquivo estará incorreta - [obrigatório]
 
-* `destination_selection_condition`: condição de seleção de arquivos da pasta de destino, **veja [condições de seleção](#condições-de-seleção)** - [opcional, o valor padrão é **any file**]
+* `destination_selection_condition`: condição de seleção de arquivos da pasta de destino, **veja [condições de seleção](#condições-de-seleção)** - [opcional, o valor padrão é **anyfile**]
 
 * `destination_subfolder_search`: define se serão procurados arquivos nas subpastas da pasta de destino, deve ser **True** ou **False** - [opcional, o valor padrão é **True**]
 
@@ -440,7 +440,7 @@ to create a synchronization. Note that the file, to be considered, must have the
 
 * `source_path`: path to the source folder. Cannot be the same or a subdirectory of `destination_path`. On Windows, change the inverted slashes `\` from the path to double inverted slashes `\\` or normal slashes `/`, or the syntax will be wrong - [required]
 
-* `source_selection_condition`: selection condition for the files in the source folder, **see [selection conditions](#selection-conditions)** - [optional, the default value is **any file**]
+* `source_selection_condition`: selection condition for the files in the source folder, **see [selection conditions](#selection-conditions)** - [optional, the default value is **anyfile**]
 
 * `source_subfolder_search`: sets if the program will search for files in subfolders of the source folder, must be **True** or **False** - [optional, the default value is **True**]
 
@@ -448,7 +448,7 @@ to create a synchronization. Note that the file, to be considered, must have the
 
 * `destination_path`: path to the destination folder. Cannot be the same or a subdirectory of `source_path`. On Windows, change the inverted slashes `\` from the path to double inverted slashes `\\` or normal slashes `/`, or the syntax will be wrong - [required]
 
-* `destination_selection_condition`: selection condition for the files in the destination folder, **see [selection conditions](#selection-conditions)** - [optional, the default value is **any file**]
+* `destination_selection_condition`: selection condition for the files in the destination folder, **see [selection conditions](#selection-conditions)** - [optional, the default value is **anyfile**]
 
 * `destination_subfolder_search`: sets if the program will search for files in subfolders of the destination folder, must be **True** or **False** - [optional, the default value is **True**]
 
