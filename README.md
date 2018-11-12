@@ -15,6 +15,7 @@
     * **[Condições de seleção](#condições-de-seleção)**
     * **[Expressões lógicas](#expressões-lógicas)**
     * **[Comparações matemáticas](#comparações-matemáticas)**
+    * **[Interfaces de configuração e sincronia](#interfaces-de-configuração-e-sincronia)**
 
 **[English](#english)**  
 * **[Warning](#warning)**
@@ -32,10 +33,15 @@
     * **[Selection conditions](#selection-conditions)**
     * **[Logical expressions](#logical-expressions)**
     * **[Mathematical comparsions](#mathematical-comparsions)**
+    * **[Config and sync interfaces](#config-and-sync-interfaces)**
+
 
 ## Português
 ### Aviso
-**Cuidado ao ler este readme, pois ele difere entre versões do programa. Veja sempre o arquivo readme incluído na release que você baixou. Este readme, em particular, é referente à versão 2.4-alpha5**
+**Cuidado ao ler este readme, pois ele difere entre versões do programa. Veja sempre o arquivo readme incluído na release que você baixou. Este readme, em particular, é referente às seguintes versões:**
+* **Programa: 2.4**
+* **Interface de configuração: A1**
+* **Interface de sincronia: B0**
 
 ## Introdução
 ### Descrição
@@ -94,8 +100,11 @@ Possuo um servidor de arquivos, um desktop e dois celulares com os quais sincron
 
 * Syncs: guarda as sincronizações que o programa deve realizar. Cada arquivo `.json` representa uma sincronia diferente e a hierarquia não é relevante, você pode organizar as sincronias dentro de pastas dentro de Syncs, se desejar. Inclui um arquivo modelo `sync.json.example`, que você pode editar para criar uma sincronia (lembre-se de renomeá-lo com a extensão `.json`)
 
+
 ### Configuração geral
 Edite o arquivo `Config/config.json`, colocando os valores à direita de acordo com suas preferências. **Os valores devem estar entre aspas**:
+
+* `interface_version`: valor numérico referente à versão da interface de configuração. Você não deve alterar esse valor a menos que haja uma mudança de versão em uma atualização do programa e você esteja utilizando arquivos configurados para a versão anterior, **veja [interfaces de configuração e sincronia](#interfaces-de-configuração-e-sincronia)** - [opcional, o valor padrão é **A0**]
 
 * `check_cooldown`: valor numérico de espera, em horas, entre as tentativas de sincronização. **Deve ser um valor numérico inteiro maior do que zero** - [opcional, o valor padrão é **1**]
 
@@ -160,6 +169,8 @@ O arquivo `Config/control.json` armazena as datas e horários das sincronizaçõ
 ### Sincronização
 Utilize o arquivo `Syncs/sync.json.example` como template para criar uma sincronização. Note que o arquivo, para ser considerado, deve possuir a extensão `.json`, então você deve renomeá-lo (recomendável fazer uma cópia desse arquivo e renomear a cópia). **Os valores devem estar entre aspas**:
 
+* `interface_version`: valor numérico referente à versão da interface de sincronia. Você não deve alterar esse valor a menos que haja uma mudança de versão em uma atualização do programa e você esteja utilizando arquivos configurados para a versão anterior, **veja [interfaces de configuração e sincronia](#interfaces-de-configuração-e-sincronia)** - [opcional, o valor padrão é **A0**]
+
 * `enable`: define se esta sincronização está ativa ou não, deve ser **True** ou **False** - [obrigatório]
 
 * `source_path`: caminho para a pasta de origem. Não pode ser a mesma ou uma subpasta de `destination_path`. No Windows, substitua as barras invertidas `\` do caminho por barras invertidas duplas `\\` ou barras normais `/`, do contrário a sintaxe do arquivo estará incorreta - [obrigatório]
@@ -205,7 +216,7 @@ As condições de seleção atualmente disponíveis estão a seguir.
 
 Você pode utilizar uma expressão lógica simples para montar condições de seleção compostas ou personalizadas. Para uma lista de símbolos e exemplos veja **[expressões lógicas](#expressões-lógicas)**
 
-As condições de seleção são divididas em 5 tipos: **genérica**, **extensão**, **tipo**, **eyed3**, **idade** e **tamanho do arquivo**
+As condições de seleção são divididas em 6 tipos: **genérica**, **extensão**, **tipo**, **eyed3**, **idade** e **tamanho do arquivo**
 
 
 * **Genérica**
@@ -301,9 +312,76 @@ Note que as condições de seleção somente suportam comparações matemáticas
 Note, também, que somente valores **inteiros** são suportados no momento.
 
 
+### Interfaces de configuração e sincronia
+Para evitar eventuais problemas ao utilizar arquivos de configuração de versões anteriores e incompatíveis do programa, os arquivos `Config/config.json` e os arquivos de sincronia (`Syncs/*.json`) incluem a versão de interface utilizada na sua criação. As interfaces estão nas configurações de nome `interface_version` nestes arquivos.
+
+A versão é formada por uma letra e um número que mudam em ordem alfabética e cardinal, respectivamente. A letra mantém um registro das mudanças substanciais e o número mantém o registro das mudanças menores.
+
+Uma mudança na letra significa que a nova versão do programa não é mais compatível com os arquivos usados nas versões anteriores. 
+
+Por outro lado, uma mudança no número indica que algumas opções foram incluídas ou removidas mas o programa ainda pode ser usado, com eventuais novos valores assumindo os valores padrão listados na descrição das opções.
+
+A letra da versão presente nos arquivos deverá ser idêntica à do programa para que ele rode, enquanto o número não precisa ser igual.
+
+Em caso de mudança na letra a execução irá falhar e o log conterá a causa do erro. Você deverá então intervir manualmente e corrigir as discrepâncias, além de atualizar a versão da interface no arquivo.
+
+Em caso de mudança no número você receberá um warning mas a execução deve ocorrer normalmente.
+
+Note que as versões de interface de configuração e de sincronia são independentes entre si, atualizações não necessariamente serão aplicáveis às duas ao mesmo tempo.
+
+#### Interface de configuração
+* Versão atual: A1
+
+* Mudanças entre versões (quebram a compatibilidade):
+
+    * Nenhuma
+
+* Mudanças dentro da mesma versão (mantém compatibilidade):
+
+    * A1 (2.4): `interface_version` foi adicionado mas o valor padrão também funcionará
+
+    * A1 (2.4): `logs_folder_maximum_size` foi removido e pode ser apagado do arquivo
+
+    * A0 (2.3): `startup_delay` foi adicionado mas o valor padrão mantém a execução idêntica
+
+    * A0 (2.3): `log_only_if_a_sync_occur` foi adicionado mas o valor padrão mantém a execução idêntica
+
+    * A0 (2.3): `run_post_sync_script_only_if_a_sync_occur` foi adicionado mas o valor padrão mantém a execução idêntica
+
+    * A0 (2.2): `save_log` foi adicionado mas o valor padrão mantém a execução idêntica
+
+    * A0 (2.2): `send_email` foi adicionado mas o valor padrão mantém a execução idêntica
+
+    * A0 (2.1): `email_only_if_an_error_occur` foi adicionado mas o valor padrão mantém a execução idêntica
+
+    * A0 (2.1): `post_sync_script` foi adicionado mas o valor padrão mantém a execução idêntica
+
+#### Interface de sincronia
+* Versão atual: B0
+
+* Mudanças entre versões (quebram a compatibilidade):
+
+    * B0 (2.4): `source_selection_condition`: a sintaxe dos valores mudou, condições válidas anteriormente não são mais identificadas da mesma maneira
+
+    * B0 (2.4): `destination_selection_condition`: a sintaxe dos valores mudou, condições válidas anteriormente não são mais identificadas da mesma maneira
+
+    * B0 (2.4): `source_maximum_age` foi convertido para uma condição de seleção em `source_selection_condition`, simplesmente não será considerado se presente no arquivo e pode ser removido uma vez que o valor anterior for convertido para uma condição de seleção equivalente
+
+    * B0 (2.4): `destination_maximum_age` foi convertido para uma condição de seleção em `destination_selection_condition`, simplesmente não será considerado se presente no arquivo e pode ser removido uma vez que o valor anterior for convertido para uma condição de seleção equivalente
+
+* Mudanças dentro da mesma versão (mantém compatibilidade):
+
+    * A0 (2.2): `source_maximum_age` foi adicionado mas o valor padrão mantém a execução idêntica
+
+    * A0 (2.2): `destination_maximum_age` foi adicionado mas o valor padrão mantém a execução idêntica
+
+
 ## English
 ### Warning
-**Be careful when reading this readme because it differs between versions. Always read the readme file included in the release you downloaded. This particular readme refers to the version 2.4-alpha5**
+**Be careful when reading this readme because it differs between versions. Always read the readme file included in the release you downloaded. This particular readme refers to the following versions:**
+* **Program: 2.4**
+* **Config interface: A1**
+* **Sync interface: B0**
 
 ## Intro
 ### Description
@@ -367,6 +445,8 @@ to copy random files until certain size (1.5GB) and change them from time to tim
 
 ### General configuration
 Edit the file `Config/config.json`, changing the values on the right according to your preferences. **The values must be between quotes**:
+
+* `interface_version`: numerical value of the config interface version. You should not change this value unless there is a version change in a program update and you're using files configured to the old version, **see [config and sync interfaces](#config-and-sync-interfaces)** - [optional, the default value is **A0**]
 
 * `check_cooldown`: numerical value, in hours, between synchronization attempts. **Must be an integer numerical value greater than zero** - [optional, the default value is **1**]
 
@@ -432,6 +512,8 @@ The file `Config/control.json` stores dates and times of the synchronizations, i
 Use the file `Syncs/sync.json.example` as a template 
 to create a synchronization. Note that the file, to be considered, must have the `.json` extension, so you have to rename it (recommended to duplicate this file and rename the copy). **The values must be between quotes**:
 
+* `interface_version`: numerical value of the sync interface version. You should not change this value unless there is a version change in a program update and you're using files configured to the old version, **see [config and sync interfaces](#config-and-sync-interfaces)** - [optional, the default value is **A0**]
+
 * `enable`: sets if this sync will be active or not, must be **True** or **False** - [required]
 
 * `source_path`: path to the source folder. Cannot be the same or a subdirectory of `destination_path`. On Windows, change the inverted slashes `\` from the path to double inverted slashes `\\` or normal slashes `/`, or the syntax will be wrong - [required]
@@ -477,7 +559,7 @@ The selection conditions currently available are as follows.
 
 You can use a simple logical expression to create composite or custom selection conditions. For a list of symbols and examples see **[logical expressions](#logical-expressions)**
 
-The selection conditions are divided in 5 types: **generic**, **extension**, **type**, **eyed3**, **age** and **file size**
+The selection conditions are divided in 6 types: **generic**, **extension**, **type**, **eyed3**, **age** and **file size**
 
 * **Generic**
     * `anyfile`: will select **any file**
@@ -569,5 +651,69 @@ The possible mathematical comparsions for the supported selection conditions are
 Please note that the selecion conditions only support mathematical comparsions when specificaly mentioned. Other conditions do not support this feature.
 
 Also, note that only **integer** values are supported for now.
+
+### Config and sync interfaces
+To prevent eventual problems in using configuration files from older and incompatible versions of the program, the files `Config/config.json` and the sync files (`Syncs/*.json`) include the interface version used in their creation. The interfaces are in the options named `interface_version` in these files.
+
+The version is formed by one letter and one number that change in alphabetical and cardinal order, respectively. The letter maintains a log of the substantial changes while the number logs minor changes.
+
+A change in the letter means that the new program version is not compatible with the files used in previous versions anymore.
+
+On the other hand, a change in the number means that some options were added or removed but the program can still be used, with eventual new values assuming the default values as mentioned before in the options.
+
+The version letter in the files must be identical to the one of the program for it to run, while the number doesn't have to be the same.
+
+In the case of change in the letter, the execution will fail and the log will register the failure reason. You will have to fix the changes manually and update the version of the interface, too.
+
+In case of change in the number you will receive a warning but the execution should occur normally.
+
+Note that the config and sync interfaces are independent, updates will not necessarily be appliable to both at the same time.
+
+#### Config interface
+* Current version: A1
+
+* Changes between versions (break compatibility):
+
+    * None
+
+* Changes within the same version (maintain compatibility):
+
+    * A1 (2.4): `interface_version` was added but the default value will also work
+
+    * A1 (2.4): `logs_folder_maximum_size` was removed and can be removed from the file
+
+    * A0 (2.3): `startup_delay` was added but the default value keeps the execution identically as before
+
+    * A0 (2.3): `log_only_if_a_sync_occur` was added but the default value keeps the execution identically as before
+
+    * A0 (2.3): `run_post_sync_script_only_if_a_sync_occur` was added but the default value keeps the execution identically as before
+
+    * A0 (2.2): `save_log` was added but the default value keeps the execution identically as before
+
+    * A0 (2.2): `send_email` was added but the default value keeps the execution identically as before
+
+    * A0 (2.1): `email_only_if_an_error_occur` was added but the default value keeps the execution identically as before
+
+    * A0 (2.1): `post_sync_script` was added but the default value keeps the execution identically as before
+
+#### Sync interface
+* Current version: 1
+
+* Changes between versions (break compatibility):
+
+    * B0 (2.4): `source_selection_condition`: the value syntax changed, previously valid values are not identified the same way anymore
+
+    * B0 (2.4): `destination_selection_condition`: the value syntax changed, previously valid values are not identified the same way anymore
+
+    * B0 (2.4): `source_maximum_age` was migrated to a selection condition in `source_selection_condition`, will simply not be considered if present and can be removed from the file once properly converted to a selection condition
+
+    * B0 (2.4): `destination_maximum_age` was migrated to a selection condition in `destination_selection_condition`, will simply not be considered if present and can be removed from the file once properly converted to a selection condition
+
+* Changes within the same version (maintain compatibility):
+
+    * A0 (2.2): `source_maximum_age` was added but the default value keeps the execution identically as before
+
+    * A0 (2.2): `destination_maximum_age` was added but the default value keeps the execution identically as before
+
 
 ## [1Deterministic](https://github.com/1Deterministic), 2018

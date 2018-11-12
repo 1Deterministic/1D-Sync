@@ -9,6 +9,7 @@ Also implements every action related to that file
 import _paths
 import _defaults
 import _validations
+import _about
 
 import os
 import ast
@@ -26,6 +27,9 @@ class Config:
             self.properties = json.loads(open(self.path, "r", encoding="utf-8").read())
         except:
             log.report("error_config_opening", critical=True)
+            return False
+
+        if not self.validate_interface_version(self.properties, log):
             return False
 
         if not self.validate_check_cooldown(self.properties, log):
@@ -71,6 +75,23 @@ class Config:
         log.report("ok_config_json_load")
         return True
 
+
+    def validate_interface_version(self, json, log):
+        if not "interface_version" in json:
+            json["interface_version"] = _defaults.default_config_interface_version # if wasn't found in the json, use the default value
+
+        try:
+            if not json["interface_version"][0] == _about.config_interface_version[0]:
+                log.report("error_config_interface_version_incompatible", critical=True)
+                return False
+
+            if not json["interface_version"] == _about.config_interface_version:
+                log.report("warning_config_interface_mismatch")
+        except:
+            log.report("error_config_interface_version", critical=True)
+            return False
+
+        return True
 
     def validate_check_cooldown(self, json, log):
         if not "check_cooldown" in json:

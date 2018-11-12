@@ -16,6 +16,8 @@ english = {
     "ok_config_post_sync_script_output": "[ OK  ] post sync script output: ",
     "ok_config_post_sync_script": "[ OK  ] post sync script executed",
     "error_config_opening": "[ERROR] could not read the config file, syntax error of missing file",
+    "error_config_interface_version": "[ERROR] \tinterface_version: invalid value",
+    "error_config_interface_version_incompatible": "[ERROR] \tinterface_version: the config file interface version is incompatible and needs manual intervention",
     "error_config_check_cooldown": "[ERROR] \tcheck_cooldown: invalid value",
     "error_config_startup_delay": "[ERROR] \tstartup_delay: invalid value",
     "error_config_save_log": "[ERROR] \tsave_log: invalid value",
@@ -30,6 +32,7 @@ english = {
     "error_config_email_addressee_missing": "[ERROR] \temail_addressee not in .json when send_email is True",
     "error_config_run_post_sync_script_only_if_a_sync_occur": "[ERROR] \trun_post_sync_script_only_if_a_sync_occur: invalid value",
     "error_config_run_continuously": "[ERROR] \trun_continuously: invalid value",
+    "warning_config_interface_mismatch": "[WARN.] \tconfig interface is compatible but it's not the same",
 
     # Control
     "ok_control_json_load": "[ OK  ] control .json loaded",
@@ -49,6 +52,8 @@ english = {
     "ok_sync_disable": "[ OK  ] this sync was disabled\n",
     "ok_sync_finished": "[ OK  ] sync complete!\n",
     "error_sync_opening": "[ERROR] could not read the sync file, probably syntax error",
+    "error_sync_interface_version": "[ERROR] \tinterface_version: invalid value",
+    "error_sync_interface_version_incompatible": "[ERROR] \tinterface_version: the sync file interface version is incompatible and needs manual intervention",
     "error_sync_enable_missing": "[ERROR] \tenable missing",
     "error_sync_enable": "[ERROR] \tenable: invalid value",
     "error_sync_source_path": "[ERROR] \tsource_path: invalid value",
@@ -69,6 +74,7 @@ english = {
     "error_sync_size_limit": "[ERROR] \tsize_limit: invalid value",
     "error_sync_sync_cooldown": "[ERROR] \tsync_cooldown: invalid value",
     "error_sync_disable": "[ERROR] could not disable the sync, stopping the execution\n",
+    "warning_sync_interface_mismatch": "[WARN.] \tsync interface is compatible but it's not the same",
 
     # File_List
     "ok_file_list_load": "[ OK  ] file list loaded: ",

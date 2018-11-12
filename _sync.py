@@ -9,6 +9,7 @@ Also implements every action related to a sync
 import _file
 import _defaults
 import _validations
+import _about
 
 import os
 import ast
@@ -28,6 +29,9 @@ class Sync:
             self.properties = json.loads(open(self.path, "r", encoding="utf-8").read(), object_pairs_hook=collections.OrderedDict)
         except:
             log.report("error_sync_opening")
+            return False
+
+        if not self.validate_interface_version(self.properties, log):
             return False
 
         if not self.validate_enable(self.properties, log):
@@ -149,6 +153,23 @@ class Sync:
         except:
             log.report("error_sync_disable", critical=True)
             return False
+
+    def validate_interface_version(self, json, log):
+        if not "interface_version" in json:
+            json["interface_version"] = _defaults.default_sync_interface_version # if wasn't found in the json, use the default value
+
+        try:
+            if not json["interface_version"][0] == _about.sync_interface_version[0]:
+                log.report("error_sync_interface_version_incompatible", critical=True)
+                return False
+
+            if not json["interface_version"] == _about.sync_interface_version:
+                log.report("warning_sync_interface_mismatch")
+        except:
+            log.report("error_sync_interface_version", critical=True)
+            return False
+
+        return True
 
     def validate_enable(self, json, log):
         if not "enable" in json:
