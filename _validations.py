@@ -28,8 +28,4 @@ def validate_integer_greater_than_zero(value):
 
 # possibly add a log entry
 def validate_selection_condition(condition):
-    error_code = slea.evaluate_syntax(condition)
-    if error_code == len(condition):
-        return True
-    else:
-        return False
+    return slea.evaluate_syntax(condition) == len(condition)

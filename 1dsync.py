@@ -52,9 +52,9 @@ if __name__ == "__main__":
                             raise SystemExit
 
                         email.append_message("[ERROR] " + os.path.join(dirpath, file)) # reports the error in the email
-                        continue # once this problematic sync is successfully disabled, moves to the next one
 
-                    email.append_message("[ OK  ] " + os.path.join(dirpath, file)) # reports the sync success in the email
+                    else:
+                        email.append_message("[ OK  ] " + os.path.join(dirpath, file)) # reports the sync success in the email
 
         config.run_post_sync_script(log) # runs the post sync script
 
