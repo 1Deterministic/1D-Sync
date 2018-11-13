@@ -65,7 +65,7 @@ class Log:
     def write(self): # writes the message to the file system
         try:
             self.file = open(self.path, "w")
-            self.file.write("        " + _about.name + " " + _about.version + " \"" + _about.codename + "\" build date:" + _about.build_date + " interface versions: config=" + _about.config_interface_version + ", sync=" + _about.sync_interface_version + "\n\n")
+            self.file.write("        " + _about.name + " " + _about.version + " \"" + _about.codename + "\" build date:" + _about.build_date + "\n\n")
 
             for c in self.content:
                 self.file.write(c + "\n")

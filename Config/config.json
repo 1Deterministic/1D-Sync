@@ -1,6 +1,4 @@
 {
-    "interface_version": "0"
-
     "check_cooldown": "1",
     
     "startup_delay": "0",

@@ -6,7 +6,6 @@ This release focuses on making selection conditions more versatile by using a lo
 * Added file size selection condition
 * Added option to choose between running continuously or just once and stop the execution
 * Added prevention to logging the same file multiple times
-* Added interface version control to prevent running with incompatible configuration files
 * Dropped the option to limit the size of the Logs folder
 
 2.3 - Everything Evil

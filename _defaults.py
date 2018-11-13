@@ -5,7 +5,6 @@ This stores the values that the optional options (?) will assume if omitted
 '''
 
 # configuration defaults
-default_config_interface_version = "A0"
 default_check_cooldown = "1"
 default_startup_delay = "0"
 default_save_log = "True"
@@ -17,7 +16,6 @@ default_run_post_sync_script_only_if_a_sync_occur = "False"
 default_run_continuously = "True"
 
 # sync defaults
-default_sync_interface_version = "A0"
 default_source_selection_condition = "anyfile"
 default_source_subfolder_search = "True"
 default_source_filelist_shuffle = "False"

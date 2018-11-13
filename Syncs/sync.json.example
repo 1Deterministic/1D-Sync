@@ -1,6 +1,4 @@
 {
-    "interface_version": "1",
-
     "enable": "True",
     
     "source_path": "/path/to/source",
