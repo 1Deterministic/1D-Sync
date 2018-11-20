@@ -1,3 +1,6 @@
+2.5 - ?
+* Added scripts to install as a system service (run as unprivileged user)
+
 2.4 - Fear of the Dark
 This release focuses on making selection conditions more versatile by using a logical expression analyzer (a very simple one, don't expect too much) available as a separate project in https://github.com/1deterministic/Simple-Logical-Expression-Analyzer
 * Added custom selection conditions by logical expression

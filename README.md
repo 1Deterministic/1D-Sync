@@ -36,7 +36,7 @@
 
 ## Português
 ### Aviso
-**Cuidado ao ler este readme, pois ele difere entre versões do programa. Veja sempre o arquivo readme incluído na release que você baixou. Este readme, em particular, é referente à versão 2.4**
+**Cuidado ao ler este readme, pois ele difere entre versões do programa. Veja sempre o arquivo readme incluído na release que você baixou. Este readme, em particular, é referente à versão 2.5-alpha1**
 
 **A versão atual é incompatível com as condições de seleção usadas até a versão 2.3. Você terá que atualizar sua configuração manualmente, caso os arquivos sejam de versões mais antigas. Veja o novo modelo em [condições de seleção](#condições-de-seleção)**
 
@@ -132,7 +132,9 @@ Edite o arquivo `Config/config.json`, colocando os valores à direita de acordo 
 Uma boa combinação é utilizar `run_continuously` juntamente com a inicialização do sistema, de forma que o programa esteja sempre em rodando em background. Para fazer isso verifique os passos a seguir, de acordo com seu sistema operacional.
 
 * **Linux**:
-    Você pode agendar a sua inicialização utilizando alguma ferramenta própria de sua distribuição ou ambiente gráfico ou ainda agendar a inicialização com o sistema utilizando o crontab. 
+    Está incluído na pasta do projeto um script de inicialização usando o systemd em modo usuário. Você deve abrir um terminal na pasta do projeto e rodar o arquivo `systemd-startup.sh`. Ele copiará o projeto para uma pasta oculta na sua home com o nome `.1dsync` e iniciará sempre que você fizer login.
+
+    Você também pode agendar a sua inicialização utilizando alguma ferramenta própria de sua distribuição ou ambiente gráfico ou ainda agendar a inicialização com o sistema utilizando o crontab. 
     * execute o comando 
         ```
         crontab -e
@@ -150,7 +152,9 @@ Uma boa combinação é utilizar `run_continuously` juntamente com a inicializa�
     Não agende sua inicialização para o usuário root, isso pode afetar pastas do sistema caso algum parâmetro de destino esteja errado.
 
 * **Windows**:
-    Você pode agendar a sua inicialização criando um arquivo **.bat** na pasta `Inicializar` do seu usuário. Por execmplo, o arquivo 
+    Você pode agendar a sua inicialização criando um arquivo **.bat** na pasta `Inicializar` do seu usuário. Você pode executar o arquivo `windows-startup.bat` que copiará o projeto para uma pasta dentro da sua pasta de usuário com o nome `.1dsync` (você pode ocultá-la se quiser) e rodará na inicialização da máquina.
+    
+    Você também pode fazer isso manualmente. Por exemplo, criando o arquivo 
     ```
     C:\Users\Usuário\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\1dsync.bat
     ```
@@ -309,7 +313,7 @@ Note, também, que somente valores **inteiros** são suportados no momento.
 
 ## English
 ### Warning
-**Be careful when reading this readme because it differs between versions. Always read the readme file included in the release you downloaded. This particular readme refers to the version 2.4**
+**Be careful when reading this readme because it differs between versions. Always read the readme file included in the release you downloaded. This particular readme refers to the version 2.5-alpha1**
 
 **The current version is incompatible with selection conditions used until 2.3. You will need to update your configuration manually, if the files were from older versions. See the new model in [selection conditions](#selection-conditions)**
 
@@ -406,7 +410,9 @@ Edit the file `Config/config.json`, changing the values on the right according t
 A good combination is to use `run_continuously` together with the system initialization, so the program will be always running in background. To achieve this, check the steps below, according with your operating system:
 
 * **Linux**:
-    You can schedule its initialization using some tool of your distribution or desktop environment or use crontab.
+    An init script for systemd as unprivileged user is included in the project folder. You have to open a terminal window in the project root folder and run the file `systemd-startup.sh`. It will copy the project to a hidden folder on your home with the name `.1dsync` and will run every time you do login.
+
+    You can also schedule its initialization using some tool of your distribution or desktop environment or use crontab.
     * run the command
         ```
         crontab -e
@@ -424,7 +430,9 @@ A good combination is to use `run_continuously` together with the system initial
     Don't schedule its initialization to the root user, this can affect system folders if some destination parameter was mistaken.
 
 * **Windows**:
-    You can schedule its initialization creating a **.bat** file in the `Startup` folder of your user. For instance, the file 
+    You can schedule its initialization creating a **.bat** file in the `Startup` folder of your user. You can run the file `windows-startup.bat` that will copy the project to folder `.1dsync` inside your user folder (you can hide it if you want) and will execute with the system initialization.
+    
+    You can also do it manually. For instance, create the file 
     ```
     C:\Users\User\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\1dsync.bat
     ```
