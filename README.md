@@ -36,7 +36,7 @@
 
 ## Português
 ### Aviso
-**Cuidado ao ler este readme, pois ele difere entre versões do programa. Veja sempre o arquivo readme incluído na release que você baixou. Este readme, em particular, é referente à versão 2.5-alpha1**
+**Cuidado ao ler este readme, pois ele difere entre versões do programa. Veja sempre o arquivo readme incluído na release que você baixou. Este readme, em particular, é referente à versão 2.5-alpha2**
 
 **A versão atual é incompatível com as condições de seleção usadas até a versão 2.3. Você terá que atualizar sua configuração manualmente, caso os arquivos sejam de versões mais antigas. Veja o novo modelo em [condições de seleção](#condições-de-seleção)**
 
@@ -312,7 +312,7 @@ Uma boa combinação é utilizar `run_continuously` juntamente com a inicializa�
 
 ## English
 ### Warning
-**Be careful when reading this readme because it differs between versions. Always read the readme file included in the release you downloaded. This particular readme refers to the version 2.5-alpha1**
+**Be careful when reading this readme because it differs between versions. Always read the readme file included in the release you downloaded. This particular readme refers to the version 2.5-alpha2**
 
 **The current version is incompatible with selection conditions used until 2.3. You will need to update your configuration manually, if the files were from older versions. See the new model in [selection conditions](#selection-conditions)**
 
