@@ -8,13 +8,13 @@
     * **[Pré requisitos](#pré-requisitos)**
     * **[Hierarquia de pastas](#hierarquia-de-pastas)**
     * **[Configuração geral](#configuração-geral)**
-    * **[Início automático](#início-automático)**
     * **[Agendamento](#agendamento)**
     * **[Sincronização](#sincronização)**
     * **[Registro de execução](#registro-de-execução)**
     * **[Condições de seleção](#condições-de-seleção)**
     * **[Expressões lógicas](#expressões-lógicas)**
     * **[Comparações matemáticas](#comparações-matemáticas)**
+    * **[Início automático](#início-automático)**
 
 **[English](#english)**  
 * **[Warning](#warning)**
@@ -25,13 +25,13 @@
     * **[Requirements](#requirements)**
     * **[Directory hierarchy](#directory-hierarchy)**
     * **[General configuration](#general-configuration)**
-    * **[Auto start](#auto-start)**
     * **[Scheduling](#scheduling)**
     * **[Syncing](#syncing)**
     * **[Execution log](#execution-log)**
     * **[Selection conditions](#selection-conditions)**
     * **[Logical expressions](#logical-expressions)**
     * **[Mathematical comparsions](#mathematical-comparsions)**
+    * **[Auto start](#auto-start)**
 
 
 ## Português
@@ -127,41 +127,6 @@ Edite o arquivo `Config/config.json`, colocando os valores à direita de acordo 
 * `run_post_sync_script_only_if_a_sync_occur`: define se o script pós-sincronização rodará apenas quando alguma sincronia for executada, ignorando as que estão em espera. Deve ser **True** ou **False** - [opcional, o valor padrão é False]
 
 * `run_continuously`: define se o programa executará em loop ou se encerrará imediatamente após o fim da sincronização, deve ser **True** ou **False** - [opcional, o valor padrão é True]
-
-### Início automático
-Uma boa combinação é utilizar `run_continuously` juntamente com a inicialização do sistema, de forma que o programa esteja sempre em rodando em background. Para fazer isso verifique os passos a seguir, de acordo com seu sistema operacional.
-
-* **Linux**:
-    Está incluído na pasta do projeto um script de inicialização usando o systemd em modo usuário. Você deve abrir um terminal na pasta do projeto e rodar o arquivo `systemd-startup.sh`. Ele copiará o projeto para uma pasta oculta na sua home com o nome `.1dsync` e iniciará sempre que você fizer login.
-
-    Você também pode agendar a sua inicialização utilizando alguma ferramenta própria de sua distribuição ou ambiente gráfico ou ainda agendar a inicialização com o sistema utilizando o crontab. 
-    * execute o comando 
-        ```
-        crontab -e
-        ```
-    * adicione a linha 
-        ```
-        @reboot python /caminho/da/pasta/1dsync.py
-        ``` 
-        ou 
-        ```
-        @reboot python3 /caminho/da/pasta/1dsync.py
-        ```
-        dependendo da distribuição.
-
-    Não agende sua inicialização para o usuário root, isso pode afetar pastas do sistema caso algum parâmetro de destino esteja errado.
-
-* **Windows**:
-    Você pode agendar a sua inicialização criando um arquivo **.bat** na pasta `Inicializar` do seu usuário. Você pode executar o arquivo `windows-startup.bat` que copiará o projeto para uma pasta dentro da sua pasta de usuário com o nome `.1dsync` (você pode ocultá-la se quiser) e rodará na inicialização da máquina.
-    
-    Você também pode fazer isso manualmente. Por exemplo, criando o arquivo 
-    ```
-    C:\Users\Usuário\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\1dsync.bat
-    ```
-    com o seguinte conteúdo:
-    ```
-    start pythonw C:\caminho\da\pasta\1dsync.py
-    ```
 
 ### Agendamento
 O arquivo `Config/control.json` armazena as datas e horários das sincronizações, não é necessário editá-lo. Entretanto, caso queira forçar uma sincronização na próxima tentativa, basta remover a(s) respectivas linhas do arquivo ou trocar sua data agendada.
@@ -309,6 +274,40 @@ Note que as condições de seleção somente suportam comparações matemáticas
 
 Note, também, que somente valores **inteiros** são suportados no momento.
 
+### Início automático
+Uma boa combinação é utilizar `run_continuously` juntamente com a inicialização do sistema, de forma que o programa esteja sempre em rodando em background. Para fazer isso verifique os passos a seguir, de acordo com seu sistema operacional.
+
+* **Linux**:
+    Está incluído na pasta do projeto um script de inicialização usando o systemd em modo usuário. Você deve abrir um terminal na pasta do projeto e rodar o arquivo `systemd-startup.sh`. Ele copiará o projeto para uma pasta oculta na sua home com o nome `.1dsync` e iniciará sempre que você fizer login.
+
+    Você também pode agendar a sua inicialização utilizando alguma ferramenta própria de sua distribuição ou ambiente gráfico ou ainda agendar a inicialização com o sistema utilizando o crontab. 
+    * execute o comando 
+        ```
+        crontab -e
+        ```
+    * adicione a linha 
+        ```
+        @reboot python /caminho/da/pasta/1dsync.py
+        ``` 
+        ou 
+        ```
+        @reboot python3 /caminho/da/pasta/1dsync.py
+        ```
+        dependendo da distribuição.
+
+    Não agende sua inicialização para o usuário root, isso pode afetar pastas do sistema caso algum parâmetro de destino esteja errado.
+
+* **Windows**:
+    Você pode agendar a sua inicialização criando um arquivo **.bat** na pasta `Inicializar` do seu usuário. Você pode executar o arquivo `windows-startup.bat` que copiará o projeto para uma pasta dentro da sua pasta de usuário com o nome `.1dsync` (**será ocultada por padrão**) e rodará na inicialização da máquina.
+    
+    Você também pode fazer isso manualmente. Por exemplo, criando o arquivo 
+    ```
+    C:\Users\Usuário\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\1dsync.bat
+    ```
+    com o seguinte conteúdo:
+    ```
+    start pythonw C:\caminho\da\pasta\1dsync.py
+    ```
 
 
 ## English
@@ -405,41 +404,6 @@ Edit the file `Config/config.json`, changing the values on the right according t
 * `run_post_sync_script_only_if_a_sync_occur`: defines if the post sync script will run only if a sync was executed, ignoring the ones in cooldown. Must be **True** or **False** - [optional, the default value is False]
 
 * `run_continuously`: defines if the program will run in loop or if it will stop immediately after the synchronization loop, must be **True** or **False** - [optional, the default value is True]
-
-### Auto start
-A good combination is to use `run_continuously` together with the system initialization, so the program will be always running in background. To achieve this, check the steps below, according with your operating system:
-
-* **Linux**:
-    An init script for systemd as unprivileged user is included in the project folder. You have to open a terminal window in the project root folder and run the file `systemd-startup.sh`. It will copy the project to a hidden folder on your home with the name `.1dsync` and will run every time you do login.
-
-    You can also schedule its initialization using some tool of your distribution or desktop environment or use crontab.
-    * run the command
-        ```
-        crontab -e
-        ```
-    * add the line 
-        ```
-        @reboot python /path/to/folder/1dsync.py
-        ```
-        ou
-        ```
-        @reboot python3 /path/to/folder/1dsync.py
-        ```
-        depending on your distro.
-
-    Don't schedule its initialization to the root user, this can affect system folders if some destination parameter was mistaken.
-
-* **Windows**:
-    You can schedule its initialization creating a **.bat** file in the `Startup` folder of your user. You can run the file `windows-startup.bat` that will copy the project to folder `.1dsync` inside your user folder (you can hide it if you want) and will execute with the system initialization.
-    
-    You can also do it manually. For instance, create the file 
-    ```
-    C:\Users\User\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\1dsync.bat
-    ```
-    with the following content:
-    ```
-    start pythonw C:\path\to\folder\1dsync.py
-    ```
 
 ### Scheduling
 The file `Config/control.json` stores dates and times of the synchronizations, it's not necessary to change it. However, if you want to force a sync to run on the next attempt you can remove the respective line from the file or change it to some chosen date and time.
@@ -586,6 +550,39 @@ Please note that the selecion conditions only support mathematical comparsions w
 
 Also, note that only **integer** values are supported for now.
 
+### Auto start
+A good combination is to use `run_continuously` together with the system initialization, so the program will be always running in background. To achieve this, check the steps below, according with your operating system:
 
+* **Linux**:
+    An init script for systemd as unprivileged user is included in the project folder. You have to open a terminal window in the project root folder and run the file `systemd-startup.sh`. It will copy the project to a hidden folder on your home with the name `.1dsync` and will run every time you do login.
+
+    You can also schedule its initialization using some tool of your distribution or desktop environment or use crontab.
+    * run the command
+        ```
+        crontab -e
+        ```
+    * add the line 
+        ```
+        @reboot python /path/to/folder/1dsync.py
+        ```
+        ou
+        ```
+        @reboot python3 /path/to/folder/1dsync.py
+        ```
+        depending on your distro.
+
+    Don't schedule its initialization to the root user, this can affect system folders if some destination parameter was mistaken.
+
+* **Windows**:
+    You can schedule its initialization creating a **.bat** file in the `Startup` folder of your user. You can run the file `windows-startup.bat` that will copy the project to folder `.1dsync` inside your user folder (**will be hidden by default**) and will execute with the system initialization.
+    
+    You can also do it manually. For instance, create the file 
+    ```
+    C:\Users\User\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\1dsync.bat
+    ```
+    with the following content:
+    ```
+    start pythonw C:\path\to\folder\1dsync.py
+    ```
 
 ## [1Deterministic](https://github.com/1Deterministic), 2018
