@@ -56,6 +56,8 @@ if __name__ == "__main__":
                     else:
                         email.append_message("[ OK  ] " + os.path.join(dirpath, file)) # reports the sync success in the email
 
+                log.report("")  # indentation of the log file
+
         config.run_post_sync_script(log) # runs the post sync script
 
         config.send_email(email, log) # sends the email, if necessary

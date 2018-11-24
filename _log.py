@@ -38,29 +38,43 @@ class Log:
 
             if self.repeated_count <= _defaults.default_log_repeated_lines_threshold:
                 try:
-                    self.content.append(_strings.strings[id] + detail)
+                    self.insert(id, detail)
                 except:
                     # log the raw string if it was not identified
-                    self.content.append(id + detail)
+                    self.insert(id, detail)
 
         else:
             if self.repeated_count > _defaults.default_log_repeated_lines_threshold:
-                self.content.append(_strings.strings["message_repeated_lines"] + str(self.repeated_count - _defaults.default_log_repeated_lines_threshold))
+                self.insert("message_repeated_lines", str(self.repeated_count - _defaults.default_log_repeated_lines_threshold))
 
             self.repeated_count = 0
             self.repeated_line = id + detail
 
             try:
-                self.content.append(_strings.strings[id] + detail)
+                self.insert(id, detail)
             except:
                 # log the raw string if it was not identified
-                self.content.append(id + detail)
+                self.insert(id, detail)
 
 
         if critical:
             return self.write()
 
         return True
+
+    def insert(self, id, detail):
+        if id.startswith("ok"):
+            self.content.append(_strings.strings["prefix_ok"] + _strings.strings[id] + detail)
+        elif id.startswith("error"):
+            self.content.append(_strings.strings["prefix_error"] + _strings.strings[id] + detail)
+        elif id.startswith("warning"):
+            self.content.append(_strings.strings["prefix_warning"] + _strings.strings[id] + detail)
+        elif id.startswith("message"):
+                self.content.append(_strings.strings[id] + detail)
+
+        else:
+            self.content.append(id + detail)
+
 
     def write(self): # writes the message to the file system
         try:

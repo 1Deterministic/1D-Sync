@@ -28,7 +28,7 @@ class Sync:
             log.report("ok_sync_running", detail=self.path)
             self.properties = json.loads(open(self.path, "r", encoding="utf-8").read(), object_pairs_hook=collections.OrderedDict)
         except:
-            log.report("error_sync_opening")
+            log.report("error_sync_opening", detail=self.path)
             return False
 
         if not self.validate_enable(self.properties, log):
@@ -157,7 +157,7 @@ class Sync:
             return False
 
         if not _validations.validate_boolean_value(json["enable"]):
-            log.report("error_sync_enable")
+            log.report("error_sync_enable", detail=json["enable"])
             return False
 
         return True
@@ -168,7 +168,7 @@ class Sync:
             return False
 
         if not _validations.validate_path(json["source_path"]):
-            log.report("error_sync_source_path")
+            log.report("error_sync_source_path", detail=json["source_path"])
             return False
 
         return True
@@ -178,7 +178,7 @@ class Sync:
             json["source_selection_condition"] = _defaults.default_source_selection_condition # if wasn't found in the json, use the default value
 
         if not _validations.validate_selection_condition(json["source_selection_condition"]):
-            log.report("error_sync_source_selection_condition")
+            log.report("error_sync_source_selection_condition", detail=json["source_selection_condition"])
             return False
 
         return True
@@ -188,7 +188,7 @@ class Sync:
             json["source_subfolder_search"] = _defaults.default_source_subfolder_search # if wasn't found in the json, use the default value
 
         if not _validations.validate_boolean_value(json["source_subfolder_search"]):
-            log.report("error_sync_source_subfolder_search")
+            log.report("error_sync_source_subfolder_search", detail=json["source_subfolder_search"])
             return False
 
         return True
@@ -198,7 +198,7 @@ class Sync:
             json["source_filelist_shuffle"] = _defaults.default_source_filelist_shuffle # if wasn't found in the json, use the default value
 
         if not _validations.validate_boolean_value(json["source_filelist_shuffle"]):
-            log.report("error_sync_source_filelist_shuffle")
+            log.report("error_sync_source_filelist_shuffle", detail=json["source_filelist_shuffle"])
             return False
 
         return True
@@ -209,7 +209,7 @@ class Sync:
             return False
 
         if not _validations.validate_path(json["destination_path"]):
-            log.report("error_sync_destination_path")
+            log.report("error_sync_destination_path", detail=json["destination_path"])
             return False
 
         return True
@@ -219,7 +219,7 @@ class Sync:
             json["destination_selection_condition"] = _defaults.default_destination_selection_condition # if wasn't found in the json, use the default value
 
         if not _validations.validate_selection_condition(json["destination_selection_condition"]):
-            log.report("error_sync_destination_selection_condition")
+            log.report("error_sync_destination_selection_condition", detail=json["destination_selection_condition"])
             return False
 
         return True
@@ -229,7 +229,7 @@ class Sync:
             json["destination_subfolder_search"] = _defaults.default_destination_subfolder_search # if wasn't found in the json, use the default value
 
         if not _validations.validate_boolean_value(json["destination_subfolder_search"]):
-            log.report("error_sync_destination_subfolder_search")
+            log.report("error_sync_destination_subfolder_search", detail=json["destination_subfolder_search"])
             return False
 
         return True
@@ -239,7 +239,7 @@ class Sync:
             json["destination_filelist_shuffle"] = _defaults.default_destination_filelist_shuffle # if wasn't found in the json, use the default value
 
         if not _validations.validate_boolean_value(json["destination_filelist_shuffle"]):
-            log.report("error_sync_destination_filelist_shuffle")
+            log.report("error_sync_destination_filelist_shuffle", detail=json["destination_filelist_shuffle"])
             return False
 
         return True
@@ -249,7 +249,7 @@ class Sync:
             json["hierarchy_maintenance"] = _defaults.default_hierarchy_maintenance # if wasn't found in the json, use the default value
 
         if not _validations.validate_boolean_value(json["hierarchy_maintenance"]):
-            log.report("error_sync_hierarchy_maintenance")
+            log.report("error_sync_hierarchy_maintenance", detail=json["hierarchy_maintenance"])
             return False
 
         return True
@@ -259,7 +259,7 @@ class Sync:
             json["left_files_deletion"] = _defaults.default_left_files_deletion # if wasn't found in the json, use the default value
 
         if not _validations.validate_boolean_value(json["left_files_deletion"]):
-            log.report("error_sync_left_files_deletion")
+            log.report("error_sync_left_files_deletion", detail=json["left_files_deletion"])
             return False
 
         return True
@@ -269,7 +269,7 @@ class Sync:
             json["file_override"] = _defaults.default_file_override # if wasn't found in the json, use the default value
 
         if not _validations.validate_boolean_value(json["file_override"]):
-            log.report("error_sync_file_override")
+            log.report("error_sync_file_override", detail=json["file_override"])
             return False
 
         return True
@@ -279,7 +279,7 @@ class Sync:
             json["size_limit"] = _defaults.default_size_limit # if wasn't found in the json, use the default value
 
         if not _validations.validate_integer_greater_than_or_equal_to_zero(json["size_limit"]):
-            log.report("error_sync_size_limit")
+            log.report("error_sync_size_limit", detail=json["size_limit"])
             return False
 
         return True
@@ -289,7 +289,7 @@ class Sync:
             json["sync_cooldown"] = _defaults.default_sync_cooldown # if wasn't found in the json, use the default value
 
         if not _validations.validate_integer_greater_than_zero(json["sync_cooldown"]):
-            log.report("error_sync_sync_cooldown")
+            log.report("error_sync_sync_cooldown", detail=json["sync_cooldown"])
             return False
 
         return True
@@ -333,7 +333,7 @@ class File_List: # creates a list of files
                 else:
                     total_size += f.size
 
-        log.report("ok_file_list_load", detail=self.path)
+        log.report("ok_file_list_load")
         return True
 
 

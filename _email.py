@@ -33,11 +33,11 @@ class Email:
             server.send_message(email_msg)
             server.quit()
 
-            log.report("ok_email_send")
+            log.report("ok_email_send", detail=addressee)
             return True
 
         except:
-            log.report("error_email_send")
+            log.report("error_email_send", detail=addressee)
             return False
 
     def append_message(self, text): # appends some text after the current message

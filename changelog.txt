@@ -1,5 +1,7 @@
-2.5 - ?
+2.5 - Ghost River
 * Added scripts to install as a system service (run as unprivileged user)
+* Added details to more places in the log, so it will be easier to find what went wrong
+* Fixed a bug where an undetected mathematical comparsion would not trigger a warning
 
 2.4 - Fear of the Dark
 This release focuses on making selection conditions more versatile by using a logical expression analyzer (a very simple one, don't expect too much) available as a separate project in https://github.com/1deterministic/Simple-Logical-Expression-Analyzer

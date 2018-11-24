@@ -240,6 +240,8 @@ class File:
                 return a >= b
             if comparsion == _defaults.default_math_compare_lesser_than_or_equal_to:
                 return a <= b
+            else:
+                raise Exception
         except:
             log.report("warning_file_evaluate_mathematical_comparsion_not_identified", detail=comparsion+":"+value_b)
             return False
@@ -253,9 +255,9 @@ class Tag:
         try:
             self.file = eyed3.load(path)
 
-            self.title = self.file.tag.title;
-            self.album = self.file.tag.album;
-            self.artist = self.file.tag.artist;
+            self.title = self.file.tag.title
+            self.album = self.file.tag.album
+            self.artist = self.file.tag.artist
             self.rating = math.ceil(self.file.tag.frame_set[b'POPM'][0].rating / 51)
 
             self.loaded = True

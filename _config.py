@@ -78,7 +78,7 @@ class Config:
             json["check_cooldown"] = _defaults.default_check_cooldown # if wasn't found in the json, use the default value
 
         if not _validations.validate_integer_greater_than_zero(json["check_cooldown"]):
-            log.report("error_config_check_cooldown", critical=True)
+            log.report("error_config_check_cooldown", detail=json["check_cooldown"], critical=True)
             return False
 
         return True
@@ -88,7 +88,7 @@ class Config:
             json["startup_delay"] = _defaults.default_startup_delay # if wasn't found in the json, use the default value
 
         if not _validations.validate_integer_greater_than_or_equal_to_zero(json["startup_delay"]):
-            log.report("error_config_startup_delay", critical=True)
+            log.report("error_config_startup_delay", detail=json["startup_delay"], critical=True)
             return False
 
         return True
@@ -98,7 +98,7 @@ class Config:
             json["save_log"] = _defaults.default_save_log # if wasn't found in the json, use the default value
 
         if not _validations.validate_boolean_value(json["save_log"]):
-            log.report("error_config_save_log", critical=True) # will return error if the value is invalid
+            log.report("error_config_save_log", detail=json["save_log"], critical=True) # will return error if the value is invalid
             return False
 
         return True
@@ -108,7 +108,7 @@ class Config:
             json["log_only_if_an_error_occur"] = _defaults.default_log_only_if_an_error_occur # if wasn't found in the json, use the default value
 
         if not _validations.validate_boolean_value(json["log_only_if_an_error_occur"]):
-            log.report("error_config_log_only_if_an_error_occur", critical=True) # will return error if the value is invalid
+            log.report("error_config_log_only_if_an_error_occur", detail=json["log_only_if_an_error_occur"], critical=True) # will return error if the value is invalid
             return False
 
         return True
@@ -118,7 +118,7 @@ class Config:
             json["log_only_if_a_sync_occur"] = _defaults.default_log_only_if_a_sync_occur # if wasn't found in the json, use the default value
 
         if not _validations.validate_boolean_value(json["log_only_if_a_sync_occur"]):
-            log.report("error_config_log_only_if_a_sync_occur", critical=True) # will return error if the value is invalid
+            log.report("error_config_log_only_if_a_sync_occur", detail=json["log_only_if_a_sync_occur"], critical=True) # will return error if the value is invalid
             return False
 
         return True
@@ -128,7 +128,7 @@ class Config:
             json["send_email"] = _defaults.default_send_email # if wasn't found in the json, use the default value
 
         if not _validations.validate_boolean_value(json["send_email"]):
-            log.report("error_config_send_email", critical=True) # will return error if the value is invalid
+            log.report("error_config_send_email", detail=json["send_email"], critical=True) # will return error if the value is invalid
             return False
 
         return True
@@ -139,7 +139,7 @@ class Config:
             return False
 
         if not _validations.validate_boolean_value(json["email_only_if_an_error_occur"]):
-            log.report("error_config_email_only_if_an_error_occur", critical=True) # will return error if the value is invalid
+            log.report("error_config_email_only_if_an_error_occur", detail=json["email_only_if_an_error_occur"], critical=True) # will return error if the value is invalid
             return False
 
         return True
@@ -180,7 +180,7 @@ class Config:
             json["run_post_sync_script_only_if_a_sync_occur"] = _defaults.default_run_post_sync_script_only_if_a_sync_occur # if wasn't found in the json, use the default value
 
         if not _validations.validate_boolean_value(json["run_post_sync_script_only_if_a_sync_occur"]):
-            log.report("error_config_run_post_sync_script_only_if_a_sync_occur", critical=True) # will return error if the value is invalid
+            log.report("error_config_run_post_sync_script_only_if_a_sync_occur", detail=json["run_post_sync_script_only_if_a_sync_occur"], critical=True) # will return error if the value is invalid
             return False
 
         return True
@@ -190,7 +190,7 @@ class Config:
             json["run_continuously"] = _defaults.default_run_continuously # if wasn't found in the json, use the default value
 
         if not _validations.validate_boolean_value(json["run_continuously"]):
-            log.report("error_config_run_continuously", critical=True) # will return error if the value is invalid
+            log.report("error_config_run_continuously", detail=json["run_continuously"], critical=True) # will return error if the value is invalid
             return False
 
         return True
@@ -198,7 +198,7 @@ class Config:
 
     def run_startup_delay(self, log): # sleeps the specified startup delay
         time.sleep(int(self.properties["startup_delay"]) * 60)
-        log.report("ok_config_startup_delay")
+        log.report("ok_config_startup_delay", detail=self.properties["startup_delay"])
         return True
 
     def run_post_sync_script(self, log): # runs the post sync script
@@ -211,9 +211,9 @@ class Config:
                 post_sync_script_subprocess = subprocess.Popen(self.properties["post_sync_script"], stdout=subprocess.PIPE, shell=True)
                 (post_sync_script_output, error_code) = post_sync_script_subprocess.communicate()
 
-                log.report("ok_config_post_sync_script_output", detail=self.properties["post_sync_script"])
+                log.report("ok_config_post_sync_script_output")
                 log.report(post_sync_script_output.decode(errors="ignore")) # writes the console output in the log file
-                log.report("ok_config_post_sync_script")
+                log.report("ok_config_post_sync_script", detail=self.properties["post_sync_script"])
 
         return True
 
