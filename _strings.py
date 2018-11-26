@@ -9,6 +9,8 @@ english = {
     "prefix_ok": "[ OK  ] ",
     "prefix_error": "[ERROR] ",
     "prefix_warning": "[WARN.] ",
+    "prefix_spacing": "        ",
+    "prefix_timestamp_spacing": "          ",
 
     # email
     "email_subject": "1D-Sync Alert Service",

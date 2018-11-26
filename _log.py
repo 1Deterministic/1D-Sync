@@ -11,6 +11,7 @@ import _defaults
 
 import os
 import time
+import datetime
 
 class Log:
     def __init__(self, root): # initializes an empty log
@@ -63,23 +64,26 @@ class Log:
         return True
 
     def insert(self, id, detail):
+        timestamp = datetime.datetime.now().strftime("[%H:%M:%S]")
+
         if id.startswith("ok"):
-            self.content.append(_strings.strings["prefix_ok"] + _strings.strings[id] + detail)
+            self.content.append(timestamp + _strings.strings["prefix_ok"] + _strings.strings[id] + detail)
         elif id.startswith("error"):
-            self.content.append(_strings.strings["prefix_error"] + _strings.strings[id] + detail)
+            self.content.append(timestamp + _strings.strings["prefix_error"] + _strings.strings[id] + detail)
         elif id.startswith("warning"):
-            self.content.append(_strings.strings["prefix_warning"] + _strings.strings[id] + detail)
+            self.content.append(timestamp + _strings.strings["prefix_warning"] + _strings.strings[id] + detail)
         elif id.startswith("message"):
-                self.content.append(_strings.strings[id] + detail)
+            self.content.append(timestamp + _strings.strings[id] + detail)
 
         else:
-            self.content.append(id + detail)
+            # skip timestamp in this case but include some spacing for indentation
+            self.content.append(_strings.strings["prefix_timestamp_spacing"] + _strings.strings["prefix_spacing"] + id.replace("\n", "\n" + _strings.strings["prefix_timestamp_spacing"] + _strings.strings["prefix_spacing"]) + detail)
 
 
     def write(self): # writes the message to the file system
         try:
             self.file = open(self.path, "w")
-            self.file.write("        " + _about.name + " " + _about.version + " \"" + _about.codename + "\" build date:" + _about.build_date + "\n\n")
+            self.file.write(_strings.strings["prefix_timestamp_spacing"] + _strings.strings["prefix_spacing"] + _about.name + " " + _about.version + " \"" + _about.codename + "\" build date:" + _about.build_date + "\n\n")
 
             for c in self.content:
                 self.file.write(c + "\n")
