@@ -38,10 +38,10 @@ class Config:
         if not self.validate_save_log(self.properties, log):
             return False
 
-        if not self.validate_log_only_if_an_error_occur(self.properties, log):
+        if not self.validate_skip_log_if_nothing_happened(self.properties, log):
             return False
 
-        if not self.validate_log_only_if_a_sync_occur(self.properties, log):
+        if not self.validate_skip_log_on_success(self.properties, log):
             return False
 
         if not self.validate_send_email(self.properties, log):
@@ -103,22 +103,22 @@ class Config:
 
         return True
 
-    def validate_log_only_if_an_error_occur(self, json, log):
-        if not "log_only_if_an_error_occur" in json:
-            json["log_only_if_an_error_occur"] = _defaults.default_log_only_if_an_error_occur # if wasn't found in the json, use the default value
+    def validate_skip_log_if_nothing_happened(self, json, log):
+        if not "skip_log_if_nothing_happened" in json:
+            json["skip_log_if_nothing_happened"] = _defaults.default_skip_log_if_nothing_happened # if wasn't found in the json, use the default value
 
-        if not _validations.validate_boolean_value(json["log_only_if_an_error_occur"]):
-            log.report("error_config_log_only_if_an_error_occur", detail=json["log_only_if_an_error_occur"], critical=True) # will return error if the value is invalid
+        if not _validations.validate_boolean_value(json["skip_log_if_nothing_happened"]):
+            log.report("error_config_skip_log_if_nothing_happened", detail=json["skip_log_if_nothing_happened"], critical=True) # will return error if the value is invalid
             return False
 
         return True
 
-    def validate_log_only_if_a_sync_occur(self, json, log):
-        if not "log_only_if_a_sync_occur" in json:
-            json["log_only_if_a_sync_occur"] = _defaults.default_log_only_if_a_sync_occur # if wasn't found in the json, use the default value
+    def validate_skip_log_on_success(self, json, log):
+        if not "skip_log_on_success" in json:
+            json["skip_log_on_success"] = _defaults.default_skip_log_on_success # if wasn't found in the json, use the default value
 
-        if not _validations.validate_boolean_value(json["log_only_if_a_sync_occur"]):
-            log.report("error_config_log_only_if_a_sync_occur", detail=json["log_only_if_a_sync_occur"], critical=True) # will return error if the value is invalid
+        if not _validations.validate_boolean_value(json["skip_log_on_success"]):
+            log.report("error_config_skip_log_on_success", detail=json["skip_log_on_success"], critical=True) # will return error if the value is invalid
             return False
 
         return True
@@ -226,12 +226,17 @@ class Config:
 
     def save_log(self, log): # writes the log file
         if ast.literal_eval(self.properties["save_log"]):
-            if (
-                log.error_occurred or
-                ((not ast.literal_eval(self.properties["log_only_if_an_error_occur"])) and (not ast.literal_eval(self.properties["log_only_if_a_sync_occur"]))) or
-                ((not ast.literal_eval(self.properties["log_only_if_an_error_occur"])) and log.sync_occurred)
-            ):
-                return log.write()
+            if ast.literal_eval(self.properties["skip_log_on_success"]):
+                if log.sync_occurred and not (log.error_occurred or log.warning_occurred):
+                    return True
+
+
+            if ast.literal_eval(self.properties["skip_log_if_nothing_happened"]):
+                if not log.sync_occurred and not (log.error_occurred or log.warning_occurred):
+                    return True
+
+
+            return log.write()
 
         return True
 

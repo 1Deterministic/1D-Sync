@@ -4,8 +4,8 @@
     "startup_delay": "0",
     
     "save_log": "True",
-    "log_only_if_an_error_occur": "False",
-    "log_only_if_a_sync_occur": "False",
+    "skip_log_if_nothing_happened": "False",
+    "skip_log_on_success": "False",
 
     "send_email": "False",
     "email_only_if_an_error_occur": "False",

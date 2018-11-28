@@ -36,7 +36,9 @@
 
 ## Português
 ### Aviso
-**Cuidado ao ler este readme, pois ele difere entre versões do programa. Veja sempre o arquivo readme incluído na release que você baixou. Este readme, em particular, é referente à versão 2.5-alpha2**
+**Cuidado ao ler este readme, pois ele difere entre versões do programa. Veja sempre o arquivo readme incluído na release que você baixou. Este readme, em particular, é referente à versão 2.5-alpha4**
+
+**A versão atual é incompatível com o arquivo de configuração usado até a versão 2.4. Você terá que atualizar sua configuração manualmente, caso o arquivo seja de versões mais antigas. Veja o novo modelo em [configuração geral](#configuração-geral)**
 
 **A versão atual é incompatível com as condições de seleção usadas até a versão 2.3. Você terá que atualizar sua configuração manualmente, caso os arquivos sejam de versões mais antigas. Veja o novo modelo em [condições de seleção](#condições-de-seleção)**
 
@@ -108,9 +110,9 @@ Edite o arquivo `Config/config.json`, colocando os valores à direita de acordo 
 
 * `save_log`: define se o log será salvo, deve ser **True** ou **False** - [opcional, o valor padrão é **True**]
 
-* `log_only_if_an_error_occur`:  define se o log será gravado apenas quando houver um erro, deve ser **True** ou **False** - [opcional, o valor padrão é **False**]
+* `skip_log_if_nothing_happened`:  evitará a gravação do log caso não tenha ocorrido nenhum erro e nenhuma sincronia, deve ser **True** ou **False** - [opcional, o valor padrão é **False**]
 
-* `log_only_if_a_sync__occur`:  define se o log será gravado apenas quando alguma sincronia for executada, ignorando as que estão em espera. `log_only_if_an_error_occur` tem preferência sobre essa opção. Deve ser **True** ou **False** - [opcional, o valor padrão é **False**]
+* `skip_log_on_success`:  evitará a gravação do log caso tenha ocorrido alguma sincronia mas não tenha ocorrido nenhum erro, deve ser **True** ou **False** - [opcional, o valor padrão é **False**]
 
 * `send_email`: define se o email será enviado, deve ser **True** ou **False** - [opcional, o valor padrão é **False**]
 
@@ -312,7 +314,9 @@ Uma boa combinação é utilizar `run_continuously` juntamente com a inicializa�
 
 ## English
 ### Warning
-**Be careful when reading this readme because it differs between versions. Always read the readme file included in the release you downloaded. This particular readme refers to the version 2.5-alpha2**
+**Be careful when reading this readme because it differs between versions. Always read the readme file included in the release you downloaded. This particular readme refers to the version 2.5-alpha4**
+
+**The current version is incompatible with the configuration file used until 2.4. You will need to update your configuration manually, if the file were from older versions. See the new model in [general configuration](#general-configuration)**
 
 **The current version is incompatible with selection conditions used until 2.3. You will need to update your configuration manually, if the files were from older versions. See the new model in [selection conditions](#selection-conditions)**
 
@@ -385,9 +389,9 @@ Edit the file `Config/config.json`, changing the values on the right according t
 
 * `save_log`: defines if the log will be saved, must be **True** or **False** - [optional, the default value is **True**]
 
-* `log_only_if_an_error_occur`:  defines if the log will be written only when an error occurred, must be **True** or **False** - [optional, the default value is **False**]
+* `skip_log_if_nothing_happened`: skips writing the log if no sync occurred and no errors occurred, must be **True** or **False** - [optional, the default value is **False**]
 
-* `log_only_if_a_sync__occur`:  defines if the log will be written only if a sync was executed, ignoring the ones in cooldown. `log_only_if_an_error_occur` has preference over this option. Must be **True** or **False** - [optional, the default value is **False**]
+* `skip_log_on_success`: skips writing the log if some sync occurred but no errors occurred, must be **True** or **False** - [optional, the default value is **False**]
 
 * `send_email`: defines if the email will be sent, must be **True** or **False** - [optional, the default value is **False**]
 
