@@ -1,5 +1,5 @@
 {
-    "check_cooldown": "1",
+    "check_cooldown": "3600",
     
     "startup_delay": "0",
     

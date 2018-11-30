@@ -27,7 +27,7 @@ class Control:
         return datetime.datetime.now() > datetime.datetime.strptime(self.properties[name], "%Y-%m-%d %H-%M-%S")
 
     def schedule(self, name, time): # schedules a sync to occur in time hours from now
-        self.properties[name] = (datetime.datetime.now() + datetime.timedelta(hours=time)).strftime("%Y-%m-%d %H-%M-%S")
+        self.properties[name] = (datetime.datetime.now() + datetime.timedelta(seconds=time)).strftime("%Y-%m-%d %H-%M-%S")
         return True
 
     def write(self, log): # writes the changes back to the schedule file

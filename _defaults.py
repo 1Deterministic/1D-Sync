@@ -5,7 +5,7 @@ This stores the values that the optional options (?) will assume if omitted
 '''
 
 # configuration defaults
-default_check_cooldown = "1"
+default_check_cooldown = "3600"
 default_startup_delay = "0"
 default_save_log = "True"
 default_skip_log_if_nothing_happened = "False"
@@ -26,7 +26,7 @@ default_hierarchy_maintenance = "True"
 default_left_files_deletion = "False"
 default_file_override = "False"
 default_size_limit = "0"
-default_sync_cooldown = "4"
+default_sync_cooldown = "14400"
 
 # condition defaults
 default_space_symbol_placeholder = "+"

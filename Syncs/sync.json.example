@@ -15,6 +15,6 @@
     "left_files_deletion": "False",
     "file_override": "False",
     "size_limit": "0",
-    "sync_cooldown": "4"
+    "sync_cooldown": "14400"
 }
 

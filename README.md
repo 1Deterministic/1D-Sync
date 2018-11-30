@@ -40,7 +40,7 @@
 
 **A versão atual é incompatível com o arquivo de configuração usado até a versão 2.4. Você terá que atualizar sua configuração manualmente, caso o arquivo seja de versões mais antigas. Veja o novo modelo em [configuração geral](#configuração-geral)**
 
-**A versão atual é incompatível com as condições de seleção usadas até a versão 2.3. Você terá que atualizar sua configuração manualmente, caso os arquivos sejam de versões mais antigas. Veja o novo modelo em [condições de seleção](#condições-de-seleção)**
+**A versão atual é incompatível com os arquivos de sincronização usados até a versão 2.4. Você terá que atualizar sua configuração manualmente, caso os arquivos sejam de versões mais antigas. Veja o novo modelo em [sincronização](#sincronização)**
 
 
 ## Introdução
@@ -104,9 +104,9 @@ Possuo um servidor de arquivos, um desktop e dois celulares com os quais sincron
 ### Configuração geral
 Edite o arquivo `Config/config.json`, colocando os valores à direita de acordo com suas preferências. **Os valores devem estar entre aspas**:
 
-* `check_cooldown`: valor numérico de espera, em horas, entre as tentativas de sincronização. **Deve ser um valor numérico inteiro maior do que zero** - [opcional, o valor padrão é **1**]
+* `check_cooldown`: valor numérico de espera, em segundos, entre as tentativas de sincronização. **Deve ser um valor numérico inteiro maior do que zero** - [opcional, o valor padrão é **3600**]
 
-* `startup_delay`: valor numérico de espera, em minutos, do início da execução antes de começar as sincronizações, sendo útil para não sobrecarregar a inicialização do sistema. **Deve ser um valor numérico inteiro maior ou igual a zero** - [opcional, o valor padrão é **0**]
+* `startup_delay`: valor numérico de espera, em segundos, do início da execução antes de começar as sincronizações, sendo útil para não sobrecarregar a inicialização do sistema. **Deve ser um valor numérico inteiro maior ou igual a zero** - [opcional, o valor padrão é **0**]
 
 * `save_log`: define se o log será salvo, deve ser **True** ou **False** - [opcional, o valor padrão é **True**]
 
@@ -162,7 +162,7 @@ Utilize o arquivo `Syncs/sync.json.example` como template para criar uma sincron
 
 * `size_limit`: define o tamanho limite de arquivos na pasta destino, **deve ser um valor numérico inteiro maior ou igual a zero, 0 significa ilimitado e o valor é lido em MB** - [opcional, o valor padrão é **0**]
 
-* `sync_cooldown`: define o intervalo de tempo no qual a sincronização ficará dormente após executar, **deve ser um valor numérico inteiro maior que zero** - [opcional, o valor padrão é **4**]
+* `sync_cooldown`: define o intervalo de tempo, em segundos, no qual a sincronização ficará dormente após executar, **deve ser um valor numérico inteiro maior que zero** - [opcional, o valor padrão é **14400**]
 
 Para ter mais de uma sincronização basta criar outro arquivo dentro da pasta `Syncs`, atentando para as mesmas regras. Arquivos dentro de pastas também serão lidos, desde que sejam válidos nas mesmas regras.
 
@@ -318,7 +318,8 @@ Uma boa combinação é utilizar `run_continuously` juntamente com a inicializa�
 
 **The current version is incompatible with the configuration file used until 2.4. You will need to update your configuration manually, if the file were from older versions. See the new model in [general configuration](#general-configuration)**
 
-**The current version is incompatible with selection conditions used until 2.3. You will need to update your configuration manually, if the files were from older versions. See the new model in [selection conditions](#selection-conditions)**
+**The current version is incompatible with the sync files used until 2.4. You will need to update your configuration manually, if the files were from older versions. See the new model in [syncing](#syncing)**
+
 
 ## Intro
 ### Description
@@ -383,9 +384,9 @@ to copy random files until certain size (1.5GB) and change them from time to tim
 ### General configuration
 Edit the file `Config/config.json`, changing the values on the right according to your preferences. **The values must be between quotes**:
 
-* `check_cooldown`: numerical value, in hours, between synchronization attempts. **Must be an integer numerical value greater than zero** - [optional, the default value is **1**]
+* `check_cooldown`: numerical value, in seconds, between synchronization attempts. **Must be an integer numerical value greater than zero** - [optional, the default value is **3600**]
 
-* `startup_delay`: numerical value, in minutes, to wait before starting the synchronizations, being useful to not overload the system initialization. **Must be an integer numerical value greater than or equal to zero** - [optional, the default value is **0**]
+* `startup_delay`: numerical value, in seconds, to wait before starting the synchronizations, being useful to not overload the system initialization. **Must be an integer numerical value greater than or equal to zero** - [optional, the default value is **0**]
 
 * `save_log`: defines if the log will be saved, must be **True** or **False** - [optional, the default value is **True**]
 
@@ -442,7 +443,7 @@ to create a synchronization. Note that the file, to be considered, must have the
 
 * `size_limit`: sets the size limit of the destination folder, **must be an integer numerical value greater than or equal to zero, 0 means unlimited and the value is read in MB** - [optional, the default value is **0**]
 
-* `sync_cooldown`: sets the time interval where the sync will be sleeping after the execution, **must be an integer numerical value greater than zero** - [optional, the default value is **4**]
+* `sync_cooldown`: sets the time interval, in seconds, where the sync will be sleeping after the execution, **must be an integer numerical value greater than zero** - [optional, the default value is **14400**]
 
 To have more than one sync you can just create another file inside the `Syncs` folder, paying attention to the same rules. Files inside folders will be used too, provided that they follow the same rules.
 
