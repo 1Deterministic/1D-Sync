@@ -47,9 +47,6 @@ class Config:
         if not self.validate_send_email(self.properties, log):
             return False
         else:
-            if not self.validate_email_only_if_an_error_occur(self.properties, log):
-                return False
-
             if not self.validate_email_sender(self.properties, log):
                 return False
 
@@ -59,6 +56,11 @@ class Config:
             if not self.validate_email_addressee(self.properties, log):
                 return False
 
+        if not self.validate_skip_email_on_success(self.properties, log):
+            return False
+
+        if not self.validate_skip_email_if_nothing_happened(self.properties, log):
+            return False
 
         if not self.validate_post_sync_script(self.properties, log):
             return False
@@ -133,13 +135,22 @@ class Config:
 
         return True
 
-    def validate_email_only_if_an_error_occur(self, json, log):
-        if not "email_only_if_an_error_occur" in json:
-            log.report("error_config_email_only_if_an_error_occur_missing", critical=True) # has to be specified
+    def validate_skip_email_on_success(self, json, log):
+        if not "skip_email_on_success" in json:
+            json["skip_email_on_success"] = _defaults.default_skip_email_on_success  # if wasn't found in the json, use the default value
+
+        if not _validations.validate_boolean_value(json["skip_email_on_success"]):
+            log.report("error_config_skip_email_on_success", detail=json["skip_email_on_success"], critical=True) # will return error if the value is invalid
             return False
 
-        if not _validations.validate_boolean_value(json["email_only_if_an_error_occur"]):
-            log.report("error_config_email_only_if_an_error_occur", detail=json["email_only_if_an_error_occur"], critical=True) # will return error if the value is invalid
+        return True
+
+    def validate_skip_email_if_nothing_happened(self, json, log):
+        if not "skip_email_if_nothing_happened" in json:
+            json["skip_email_if_nothing_happened"] = _defaults.default_skip_email_on_success  # if wasn't found in the json, use the default value
+
+        if not _validations.validate_boolean_value(json["skip_email_if_nothing_happened"]):
+            log.report("skip_email_if_nothing_happened", detail=json["skip_email_if_nothing_happened"], critical=True) # will return error if the value is invalid
             return False
 
         return True
@@ -219,9 +230,17 @@ class Config:
 
     def send_email(self, email, log): # sends the email if needed
         if ast.literal_eval(self.properties["send_email"]):
-            if (ast.literal_eval(self.properties["email_only_if_an_error_occur"]) and log.error_occurred) or (not ast.literal_eval(self.properties["email_only_if_an_error_occur"])):
-                email.send(self.properties["email_sender"], self.properties["email_sender_password"], self.properties["email_addressee"], log)
-                # maybe pass out the email send return value
+            if ast.literal_eval(self.properties["skip_email_on_success"]):
+                if log.sync_occurred and not (log.error_occurred or log.warning_occurred):
+                    return True
+
+            if ast.literal_eval(self.properties["skip_email_if_nothing_happened"]):
+                if not log.sync_occurred and not (log.error_occurred or log.warning_occurred):
+                    return True
+
+
+            return email.send(self.properties["email_sender"], self.properties["email_sender_password"], self.properties["email_addressee"], log)
+
         return True
 
     def save_log(self, log): # writes the log file

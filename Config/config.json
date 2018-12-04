@@ -8,10 +8,11 @@
     "skip_log_on_success": "False",
 
     "send_email": "False",
-    "email_only_if_an_error_occur": "False",
     "email_sender": "some email @gmail.com",
     "email_sender_password": "some email password",
     "email_addressee": "another email @any.com",
+    "skip_email_if_nothing_happened": "False",
+    "skip_email_on_success": "False",
     
     "post_sync_script": "# some script",
     "run_post_sync_script_only_if_a_sync_occur": "False",

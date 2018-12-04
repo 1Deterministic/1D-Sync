@@ -5,6 +5,7 @@
 * Added timestamps to the logs
 * Warnings will now be considered as errors when deciding to write the log or not
 * All time values are now in the same unit (seconds)
+* Options tied to malfunctions in config.json are now inverted, making them easier to understand while also removing the need to use precedence of options
 
 2.4 - Fear of the Dark
 This release focuses on making selection conditions more versatile by using a logical expression analyzer (a very simple one, don't expect too much) available as a separate project in https://github.com/1deterministic/Simple-Logical-Expression-Analyzer

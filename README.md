@@ -36,7 +36,7 @@
 
 ## Português
 ### Aviso
-**Cuidado ao ler este readme, pois ele difere entre versões do programa. Veja sempre o arquivo readme incluído na release que você baixou. Este readme, em particular, é referente à versão 2.5-alpha4**
+**Cuidado ao ler este readme, pois ele difere entre versões do programa. Veja sempre o arquivo readme incluído na release que você baixou. Este readme, em particular, é referente à versão 2.5-alpha6**
 
 **A versão atual é incompatível com o arquivo de configuração usado até a versão 2.4. Você terá que atualizar sua configuração manualmente, caso o arquivo seja de versões mais antigas. Veja o novo modelo em [configuração geral](#configuração-geral)**
 
@@ -122,7 +122,9 @@ Edite o arquivo `Config/config.json`, colocando os valores à direita de acordo 
 
 * `email_addressee`: endereço de email para onde os relatórios são enviados - [obrigatório se `send_email` for **True**, não possui valor padrão]
 
-* `email_only_if_an_error_occur`: define se o email será enviado apenas quando houver um erro em alguma sincronia, deve ser **True** ou **False** - [obrigatório se `send_email` for **True**, não possui valor padrão]
+* `skip_email_if_nothing_happened`:  evitará o envio do email caso não tenha ocorrido nenhum erro e nenhuma sincronia, deve ser **True** ou **False** - [opcional, o valor padrão é **False**]
+
+* `skip_email_on_success`:  evitará o envio do email caso tenha ocorrido alguma sincronia mas não tenha ocorrido nenhum erro, deve ser **True** ou **False** - [opcional, o valor padrão é **False**]
 
 * `post_sync_script`: script a ser executado após a sincronização. Rodará uma vez por loop do programa (ou seja, uma vez a cada período de tempo `check_cooldown`), imediatamente antes da gravação do log e envio do email. Se você está rodando no Windows e deseja utilizar funções do cmd como `dir`, acrescente ao início da linha o comando `powershell`, seguido do comando. Outra possibilidade é criar um arquivo **.bat** e executá-lo diretamente - [opcional, o valor padrão é um comando vazio]
 
@@ -314,7 +316,7 @@ Uma boa combinação é utilizar `run_continuously` juntamente com a inicializa�
 
 ## English
 ### Warning
-**Be careful when reading this readme because it differs between versions. Always read the readme file included in the release you downloaded. This particular readme refers to the version 2.5-alpha4**
+**Be careful when reading this readme because it differs between versions. Always read the readme file included in the release you downloaded. This particular readme refers to the version 2.5-alpha6**
 
 **The current version is incompatible with the configuration file used until 2.4. You will need to update your configuration manually, if the file were from older versions. See the new model in [general configuration](#general-configuration)**
 
@@ -402,7 +404,9 @@ Edit the file `Config/config.json`, changing the values on the right according t
 
 * `email_addressee`: email address to where the reports are sent - [required if `send_email` is **True**, doesn't have a default value]
 
-* `email_only_if_an_error_occur`: defines if the email will be sent only when a sync error happens, must be **True** or **False** - [required if `send_email` is **True**, doesn't have a default value]
+* `skip_email_if_nothing_happened`: skips sending the email if no sync occurred and no errors occurred, must be **True** or **False** - [optional, the default value is **False**]
+
+* `skip_email_on_success`: skips sending the email if some sync occurred but no errors occurred, must be **True** or **False** - [optional, the default value is **False**]
 
 * `post_sync_script`: script to be executed after the synchronization. It will run once per program loop (once every `check_cooldown` time period), immediately before the log write and sending the email. If you're running on Windows and want to use cmd functions like `dir`, add at the beginning of the line the command `powershell`, followed by the command. Another option is to create a **.bat** file and run it directly - [optional, the default value is an empty command]
 
