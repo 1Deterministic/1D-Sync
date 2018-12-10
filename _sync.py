@@ -34,6 +34,10 @@ class Sync:
         if not self.validate_enable(self.properties, log):
             return False
 
+        if not ast.literal_eval(self.properties["enable"]):
+            # will skip validating the file if it is disabled
+            return True
+
         if not self.validate_source_path(self.properties, log):
             return False
 
