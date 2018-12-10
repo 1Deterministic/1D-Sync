@@ -36,7 +36,7 @@
 
 ## Português
 ### Aviso
-**Cuidado ao ler este readme, pois ele difere entre versões do programa. Veja sempre o arquivo readme incluído na release que você baixou. Este readme, em particular, é referente à versão 2.5-alpha6**
+**Cuidado ao ler este readme, pois ele difere entre versões do programa. Veja sempre o arquivo readme incluído na release que você baixou. Este readme, em particular, é referente à versão 2.5-alpha7**
 
 **A versão atual é incompatível com o arquivo de configuração usado até a versão 2.4. Você terá que atualizar sua configuração manualmente, caso o arquivo seja de versões mais antigas. Veja o novo modelo em [configuração geral](#configuração-geral)**
 
@@ -155,6 +155,8 @@ Utilize o arquivo `Syncs/sync.json.example` como template para criar uma sincron
 * `destination_subfolder_search`: define se serão procurados arquivos nas subpastas da pasta de destino, deve ser **True** ou **False** - [opcional, o valor padrão é **True**]
 
 * `destination_filelist_shuffle`: define se a lista de arquivos selecionados do destino será embaralhada, deve ser **True** ou **False** - [opcional, o valor padrão é **False**]
+
+* `unaccurate_comparsion`: define se uma técnica de comparação de arquivos mais rápida, porém imprecisa, será usada. Faz com que apenas o nome do arquivo seja comparado, deve ser **True** ou **False** - [opcional, o valor padrão é **False**]
 
 * `hierarchy_maintenance`: define se a hierarquia de pastas será mantida na pasta destino, deve ser **True** ou **False** - [opcional, o valor padrão é **True**]
 
@@ -316,7 +318,7 @@ Uma boa combinação é utilizar `run_continuously` juntamente com a inicializa�
 
 ## English
 ### Warning
-**Be careful when reading this readme because it differs between versions. Always read the readme file included in the release you downloaded. This particular readme refers to the version 2.5-alpha6**
+**Be careful when reading this readme because it differs between versions. Always read the readme file included in the release you downloaded. This particular readme refers to the version 2.5-alpha7**
 
 **The current version is incompatible with the configuration file used until 2.4. You will need to update your configuration manually, if the file were from older versions. See the new model in [general configuration](#general-configuration)**
 
@@ -438,6 +440,8 @@ to create a synchronization. Note that the file, to be considered, must have the
 * `destination_subfolder_search`: sets if the program will search for files in subfolders of the destination folder, must be **True** or **False** - [optional, the default value is **True**]
 
 * `destination_filelist_shuffle`: sets if the destination file list will be shuffled, must be **True** or **False** - [optional, the default value is **False**]
+
+* `unaccurate_comparsion`: sets if a faster but unaccurate file comparsion technique will be used. Only the filenames will be compared if used, must be **True** or **False** - [optional, the default value is **False**]
 
 * `hierarchy_maintenance`: sets if the directory hierarchy will be preserved on the destination folder for the copied files, must be **True** or **False** - [optional, the default value is **True**]
 

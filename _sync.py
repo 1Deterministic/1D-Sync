@@ -58,6 +58,9 @@ class Sync:
         if not self.validate_destination_filelist_shuffle(self.properties, log):
             return False
 
+        if not self.validate_unnacurate_comparison(self.properties, log):
+            return False
+
         if not self.validate_hierarchy_maintenance(self.properties, log):
             return False
 
@@ -115,7 +118,7 @@ class Sync:
                 return False
 
             if ast.literal_eval(self.properties["left_files_deletion"]):
-                if not destination.mark_files_to_delete_except_by(source, ast.literal_eval(self.properties["hierarchy_maintenance"]), log): # marks files in the file list to be removed
+                if not destination.mark_files_to_delete_except_by(source, ast.literal_eval(self.properties["hierarchy_maintenance"]), ast.literal_eval(self.properties["inaccurate_comparison"]), log): # marks files in the file list to be removed
                     return False
 
                 if not destination.remove_marked_files(log): # removes the previously marked files
@@ -125,7 +128,7 @@ class Sync:
                     return False
 
             if not ast.literal_eval(self.properties["file_override"]):
-                if not source.mark_files_to_copy_except_by(destination, ast.literal_eval(self.properties["hierarchy_maintenance"]), log): # unmarks redundant files to prevent overwriting
+                if not source.mark_files_to_copy_except_by(destination, ast.literal_eval(self.properties["hierarchy_maintenance"]), ast.literal_eval(self.properties["inaccurate_comparison"]), log): # unmarks redundant files to prevent overwriting
                     return False
 
             if not source.copy_marked_files(self.properties["destination_path"], ast.literal_eval(self.properties["hierarchy_maintenance"]), log): # copies the marked files
@@ -244,6 +247,17 @@ class Sync:
 
         return True
 
+    def validate_unnacurate_comparison(self, json, log):
+        if not "inaccurate_comparison" in json:
+            json["inaccurate_comparison"] = _defaults.default_inaccurate_comparison # if wasn't found in the json, use the default value
+
+        if not _validations.validate_boolean_value(json["inaccurate_comparison"]):
+            log.report("error_sync_inaccurate_comparison", detail=json["inaccurate_comparison"])
+            return False
+
+        return True
+
+
     def validate_hierarchy_maintenance(self, json, log):
         if not "hierarchy_maintenance" in json:
             json["hierarchy_maintenance"] = _defaults.default_hierarchy_maintenance # if wasn't found in the json, use the default value
@@ -337,7 +351,7 @@ class File_List: # creates a list of files
         return True
 
 
-    def mark_files_to_delete_except_by(self, other, hierarchy_maintenance, log): # marks the leftover files to be removed
+    def mark_files_to_delete_except_by(self, other, hierarchy_maintenance, inaccurate_comparison, log): # marks the leftover files to be removed
         for f_this in self.filelist:
             if not f_this.path == "":
                 f_this.to_delete = True
@@ -346,19 +360,27 @@ class File_List: # creates a list of files
                     if not f_other.path == "":
                         if hierarchy_maintenance:
                             if f_this.path.split(self.path, 1)[1] == f_other.path.split(other.path, 1)[1]:
-                                if f_this.is_the_same_file(f_other):
+                                if inaccurate_comparison:
                                     f_this.to_delete = False
+
+                                elif f_this.is_the_same_file(f_other):
+                                    f_this.to_delete = False
+
                                 break
                         elif f_this.path == os.path.join(self.path, f_other.basename):
-                            if f_this.is_the_same_file(f_other):
+                            if inaccurate_comparison:
                                 f_this.to_delete = False
+
+                            elif f_this.is_the_same_file(f_other):
+                                f_this.to_delete = False
+
                             break
 
         log.report("ok_file_list_mark_files_to_delete")
         return True
 
 
-    def mark_files_to_copy_except_by(self, other, hierarchy_maintenance, log): # unmarks redundant files to prevent being overwrited unnecessarily
+    def mark_files_to_copy_except_by(self, other, hierarchy_maintenance, inaccurate_comparison, log): # unmarks redundant files to prevent being overwrited unnecessarily
         for f_this in self.filelist:
             f_this.to_copy = True
 
@@ -367,12 +389,20 @@ class File_List: # creates a list of files
                     if not f_other.path == "":
                         if hierarchy_maintenance:
                             if f_this.path.split(self.path, 1)[1] == f_other.path.split(other.path, 1)[1]:
-                                if f_this.is_the_same_file(f_other):
+                                if inaccurate_comparison:
                                     f_this.to_copy = False
+
+                                elif f_this.is_the_same_file(f_other):
+                                    f_this.to_copy = False
+
                                 break
                         elif os.path.join(other.path, f_this.basename) == f_other.path:
-                            if f_this.is_the_same_file(f_other):
+                            if inaccurate_comparison:
                                 f_this.to_copy = False
+
+                            elif f_this.is_the_same_file(f_other):
+                                f_this.to_copy = False
+
                             break
 
         log.report("ok_file_list_unmark_redundant_files")

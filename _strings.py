@@ -68,6 +68,7 @@ english = {
     "error_sync_destination_selection_condition": "\tdestination_selection_condition has an invalid value: ",
     "error_sync_destination_subfolder_search": "\tdestination_subfolder_search has an invalid value: ",
     "error_sync_destination_filelist_shuffle": "\tdestination_filelist_shuffle has an invalid value: ",
+    "error_sync_inaccurate_comparison": "\tinaccurate_comparison has an invalid value: ",
     "error_sync_hierarchy_maintenance": "\thierarchy_maintenance has an invalid value: ",
     "error_sync_left_files_deletion": "\tleft_files_deletion has an invalid value: ",
     "error_sync_file_override": "\tfile_override has an invalid value: ",
@@ -98,8 +99,8 @@ english = {
 
     "warning_file_evaluate_no_reference_value": "\tselection condition with no reference value: ",
     "warning_file_evaluate_eyed3_load": "\teyeD3 didn't load the file: ",
-    "warning_file_evaluate_no_mathematical_comparsion": "\tselection condition with no mathematical comparsion: ",
-    "warning_file_evaluate_mathematical_comparsion_not_identified": "\tmathematical comparsion not identified: ",
+    "warning_file_evaluate_no_mathematical_comparison": "\tselection condition with no mathematical comparison: ",
+    "warning_file_evaluate_mathematical_comparison_not_identified": "\tmathematical comparison not identified: ",
 
     # Log
     "message_repeated_lines": "        \tthe previous line was repeated this more times: "

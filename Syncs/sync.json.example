@@ -11,6 +11,7 @@
     "destination_subfolder_search": "True",
     "destination_filelist_shuffle": "False",
 
+    "inaccurate_comparison": "False",
     "hierarchy_maintenance": "True",
     "left_files_deletion": "False",
     "file_override": "False",
