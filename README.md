@@ -30,7 +30,7 @@
     * **[Execution log](#execution-log)**
     * **[Selection conditions](#selection-conditions)**
     * **[Logical expressions](#logical-expressions)**
-    * **[Mathematical comparsions](#mathematical-comparsions)**
+    * **[Mathematical comparisons](#mathematical-comparisons)**
     * **[Auto start](#auto-start)**
 
 
@@ -156,7 +156,7 @@ Utilize o arquivo `Syncs/sync.json.example` como template para criar uma sincron
 
 * `destination_filelist_shuffle`: define se a lista de arquivos selecionados do destino será embaralhada, deve ser **True** ou **False** - [opcional, o valor padrão é **False**]
 
-* `unaccurate_comparsion`: define se uma técnica de comparação de arquivos mais rápida, porém imprecisa, será usada. Faz com que apenas o nome do arquivo seja comparado, deve ser **True** ou **False** - [opcional, o valor padrão é **False**]
+* `inaccurate_comparison`: define se uma técnica de comparação de arquivos mais rápida, porém imprecisa, será usada. Faz com que apenas o nome do arquivo seja comparado, deve ser **True** ou **False** - [opcional, o valor padrão é **False**]
 
 * `hierarchy_maintenance`: define se a hierarquia de pastas será mantida na pasta destino, deve ser **True** ou **False** - [opcional, o valor padrão é **True**]
 
@@ -441,7 +441,7 @@ to create a synchronization. Note that the file, to be considered, must have the
 
 * `destination_filelist_shuffle`: sets if the destination file list will be shuffled, must be **True** or **False** - [optional, the default value is **False**]
 
-* `unaccurate_comparsion`: sets if a faster but unaccurate file comparsion technique will be used. Only the filenames will be compared if used, must be **True** or **False** - [optional, the default value is **False**]
+* `inaccurate_comparison`: sets if a faster but inaccurate file comparison technique will be used. Only the filenames will be compared if used, must be **True** or **False** - [optional, the default value is **False**]
 
 * `hierarchy_maintenance`: sets if the directory hierarchy will be preserved on the destination folder for the copied files, must be **True** or **False** - [optional, the default value is **True**]
 
@@ -496,26 +496,26 @@ For instance:
     * `title`
     * `rating`
 
-     For the rating tag, `value` assumes the format `comp:val`, where `comp` is a mathematical comparsion and `val` is the reference value being compared to. For instance:
+     For the rating tag, `value` assumes the format `comp:val`, where `comp` is a mathematical comparison and `val` is the reference value being compared to. For instance:
 
     * `eyed3:rating:>=:4` will select mp3 files with the rating tag greater or equal to 4
     * `eyed3:rating:<:3` will select mp3 files with the rating tag lesser than 3
     
-    For a list of possible mathematical comparsions see **[mathematical comparsions](#mathematical-comparsions)**
+    For a list of possible mathematical comparisons see **[mathematical comparisons](#mathematical-comparisons)**
 
-* **Age**: will select files that the **modified date** meets the stablished condition. Works  like the model `age:cond:value` where `age` is the prefix that activates this option, `cond` is a mathematical comparsion and `value` is the reference value being compared to. For instance:
+* **Age**: will select files that the **modified date** meets the stablished condition. Works  like the model `age:cond:value` where `age` is the prefix that activates this option, `cond` is a mathematical comparison and `value` is the reference value being compared to. For instance:
     * `age:<=:7` will select files modified 7 days ago or less.
 
     * `age:>:365` will select files modified more than 365 days ago
 
-    For a list of possible mathematical comparsions see **[mathematical comparsions](#mathematical-comparsions)**
+    For a list of possible mathematical comparisons see **[mathematical comparisons](#mathematical-comparisons)**
 
-* **File size**: will select files that the **size in MB** meets the stablished condition. Works  like the model `size:cond:value` where `size` is the prefix that activates this option, `cond` is a mathematical comparsion and `value` is the reference value being compared to. For instance:
+* **File size**: will select files that the **size in MB** meets the stablished condition. Works  like the model `size:cond:value` where `size` is the prefix that activates this option, `cond` is a mathematical comparison and `value` is the reference value being compared to. For instance:
     * `size:<=:10` will select files with 10MB or less
 
     * `size:>:1000` will select files larger than 1000MB
 
-    For a list of possible mathematical comparsions see **[mathematical comparsions](#mathematical-comparsions)**
+    For a list of possible mathematical comparisons see **[mathematical comparisons](#mathematical-comparisons)**
 
 ### Logical expressions
 The symbols for logical expressions are as follows. Spaces are not allowed but you can use the plus symbol `+` instead of them, it will be considered a space internally and its allowed by the syntax.
@@ -546,10 +546,10 @@ type:audio ^ ~ext:.ogg
 The symbols are not the most intuitive ones to prevent conflicting with filenames and tags.
 
 
-### Mathematical comparsions
-The possible mathematical comparsions for the supported selection conditions are:
+### Mathematical comparisons
+The possible mathematical comparisons for the supported selection conditions are:
 
-|symbol |comparsion                    |
+|symbol |comparison                    |
 | ----- | ---------------------------- |
 | =     | equal                        |
 | /=    | different                    |
@@ -559,7 +559,7 @@ The possible mathematical comparsions for the supported selection conditions are
 | <=    | lesser than or equal to      | 
 
 
-Please note that the selecion conditions only support mathematical comparsions when specificaly mentioned. Other conditions do not support this feature.
+Please note that the selecion conditions only support mathematical comparisons when specificaly mentioned. Other conditions do not support this feature.
 
 Also, note that only **integer** values are supported for now.
 
