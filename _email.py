@@ -18,7 +18,7 @@ class Email:
 
         try:
             email_msg = EmailMessage()
-            email_msg.set_content(_strings.strings["email_header"] + self.message)
+            email_msg.set_content(self.message)
 
             email_msg['Subject'] = _strings.strings["email_subject"]
             email_msg['From'] = sender
@@ -40,5 +40,5 @@ class Email:
             log.report("error_email_send", detail=addressee)
             return False
 
-    def append_message(self, text): # appends some text after the current message
-        self.message += text + "\n"
+    def append_message(self, text):
+        self.message += text

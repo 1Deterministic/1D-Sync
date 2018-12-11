@@ -24,9 +24,9 @@ if __name__ == "__main__":
 
     while True:
         log = _log.Log(root) # logs all program operations
-        email = _email.Email() # email sent to the user, if asked
         config = _config.Config(root) # main configuration file
         control = _control.Control(root) # controls the sync schedule
+        email = _email.Email()  # email sent to the user, if asked
 
         if not config.load(log): # loads the main config file
             raise SystemExit # force close if an error occurred
@@ -45,21 +45,14 @@ if __name__ == "__main__":
                     sync = _sync.Sync(os.path.join(dirpath, file))  # initializes the sync
 
                     if (not sync.load(log)) or (not sync.run(control, log)): # loads and runs the sync
-                        # will enter here if any of the above operations returns an error
-                        #log.error_occurred = True
-
                         if not sync.disable(log): # an error in trying to disable the sync will force close the program
                             raise SystemExit
-
-                        email.append_message("[ERROR] " + os.path.join(dirpath, file)) # reports the error in the email
-
-                    else:
-                        email.append_message("[ OK  ] " + os.path.join(dirpath, file)) # reports the sync success in the email
 
                 log.report("")  # indentation of the log file
 
         config.run_post_sync_script(log) # runs the post sync script
 
+        email.append_message(log.get_content())
         config.send_email(email, log) # sends the email, if necessary
 
         if not control.write(log): # writes the schedule file

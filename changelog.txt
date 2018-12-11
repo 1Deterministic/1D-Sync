@@ -8,6 +8,7 @@
 * Options tied to malfunctions in config.json are now inverted, making them easier to understand while also removing the need to use precedence of options
 * Add option to use a faster but inaccurate comparison technique, it will compare filenames only (like the early versions)
 * Fixed a bug when the program would try to validate a disabled sync, possibly logging the failure multiple times
+* The email now contains the complete execution log
 
 2.4 - Fear of the Dark
 This release focuses on making selection conditions more versatile by using a logical expression analyzer (a very simple one, don't expect too much) available as a separate project in https://github.com/1deterministic/Simple-Logical-Expression-Analyzer

@@ -14,7 +14,6 @@ english = {
 
     # email
     "email_subject": "1D-Sync Alert Service",
-    "email_header": "Last sync run status\n\n",
 
     # Config
     "ok_config_json_load": "config .json loaded",
