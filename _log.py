@@ -51,11 +51,7 @@ class Log:
             self.repeated_count = 0
             self.repeated_line = id + detail
 
-            try:
-                self.insert(id, detail)
-            except:
-                # log the raw string if it was not identified
-                self.insert(id, detail)
+            self.insert(id, detail)
 
 
         if critical:
