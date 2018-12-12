@@ -36,7 +36,7 @@
 
 ## Português
 ### Aviso
-**Cuidado ao ler este readme, pois ele difere entre versões do programa. Veja sempre o arquivo readme incluído na release que você baixou. Este readme, em particular, é referente à versão 2.5-alpha9**
+**Cuidado ao ler este readme, pois ele difere entre versões do programa. Veja sempre o arquivo readme incluído na release que você baixou. Este readme, em particular, é referente à versão 2.5**
 
 **A versão atual é incompatível com o arquivo de configuração usado até a versão 2.4. Você terá que atualizar sua configuração manualmente, caso o arquivo seja de versões mais antigas. Veja o novo modelo em [configuração geral](#configuração-geral)**
 
@@ -318,7 +318,7 @@ Uma boa combinação é utilizar `run_continuously` juntamente com a inicializa�
 
 ## English
 ### Warning
-**Be careful when reading this readme because it differs between versions. Always read the readme file included in the release you downloaded. This particular readme refers to the version 2.5-alpha9**
+**Be careful when reading this readme because it differs between versions. Always read the readme file included in the release you downloaded. This particular readme refers to the version 2.5**
 
 **The current version is incompatible with the configuration file used until 2.4. You will need to update your configuration manually, if the file were from older versions. See the new model in [general configuration](#general-configuration)**
 

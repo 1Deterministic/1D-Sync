@@ -253,12 +253,21 @@ class Tag:
 
     def load(self, path):
         try:
+            # a fail here will trigger a warning
             self.file = eyed3.load(path)
 
-            self.title = self.file.tag.title
-            self.album = self.file.tag.album
-            self.artist = self.file.tag.artist
-            self.rating = math.ceil(self.file.tag.frame_set[b'POPM'][0].rating / 51)
+            try: self.title = self.file.tag.title
+            except: self.title = "<none>"
+
+            try: self.album = self.file.tag.album
+            except: self.album = "<none>"
+
+            try:self.artist = self.file.tag.artist
+            except: self.artist = "<none>"
+
+            # this frame set can be missing if the rating is unset
+            try: self.rating = math.ceil(self.file.tag.frame_set[b'POPM'][0].rating / 51)
+            except: self.rating = 0
 
             self.loaded = True
             return True
