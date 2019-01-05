@@ -14,7 +14,8 @@ import time
 import datetime
 
 class Log:
-    def __init__(self, root): # initializes an empty log
+    # initializes an empty log
+    def __init__(self, root): # test in Tests/Unit/test_log.test_init
         self.path = os.path.join(root, _paths.logs_folder, time.strftime("%Y-%m-%d %H-%M-%S") + ".txt")
 
         self.error_occurred = False
@@ -27,7 +28,8 @@ class Log:
         self.repeated_line = ""
         self.repeated_count = 0
 
-    def report(self, id, detail="", critical=False): # reports events in the log
+    # reports events in the log
+    def report(self, id, detail="", critical=False): # test in Tests/Unit/test_log.test_report
         if id.startswith("error"):
             self.error_occurred = True
 
@@ -54,7 +56,8 @@ class Log:
 
         return True
 
-    def insert(self, id, detail):
+    # will insert a line in the log file
+    def insert(self, id, detail): # test in Tests/Unit/test_log.test_insert
         timestamp = datetime.datetime.now().strftime("[%H:%M:%S]")
 
         if id.startswith("ok"):
@@ -63,14 +66,17 @@ class Log:
             self.content.append(timestamp + _strings.strings["prefix_error"] + _strings.strings[id] + detail)
         elif id.startswith("warning"):
             self.content.append(timestamp + _strings.strings["prefix_warning"] + _strings.strings[id] + detail)
+        elif id.startswith("prefix"):
+            self.content.append(timestamp + _strings.strings["prefix_spacing"] + _strings.strings[id] + detail)
         elif id.startswith("message"):
-            self.content.append(timestamp + _strings.strings[id] + detail)
+            self.content.append(timestamp + _strings.strings["prefix_spacing"] + _strings.strings[id] + detail)
 
         else:
             # skip timestamp in this case but include some spacing for indentation
             self.content.append(_strings.strings["prefix_timestamp_spacing"] + _strings.strings["prefix_spacing"] + id.replace("\n", "\n" + _strings.strings["prefix_timestamp_spacing"] + _strings.strings["prefix_spacing"]) + detail)
 
-    def get_content(self):
+    # returns the full log file in the correct format
+    def get_content(self): # test in Tests/Unit/test_log.test_get_content
         string = ""
 
         string += _strings.strings["prefix_timestamp_spacing"] + _strings.strings["prefix_spacing"] + _about.name + " " + _about.version + " \"" + _about.codename + "\" build date:" + _about.build_date + "\n\n"
@@ -79,7 +85,8 @@ class Log:
 
         return string
 
-    def write(self): # writes the message to the file system
+    # writes the message to the file system
+    def write(self): # test in Tests/Unit/test_log.test_write
         try:
             self.file = open(self.path, "w")
             self.file.write(self.get_content())

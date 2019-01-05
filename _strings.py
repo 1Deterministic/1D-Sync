@@ -102,7 +102,7 @@ english = {
     "warning_file_evaluate_mathematical_comparison_not_identified": "\tmathematical comparison not identified: ",
 
     # Log
-    "message_repeated_lines": "        \tthe previous line was repeated this more times: "
+    "message_repeated_lines": "\tthe previous line was repeated this more times: "
 }
 
 languages = {
