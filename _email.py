@@ -10,10 +10,11 @@ import smtplib
 from email.message import EmailMessage
 
 class Email:
-    def __init__(self):
+    def __init__(self): # test in Tests/Unit/test_email.test_init
         self.message = "" # initializes the email with an empty message
 
-    def send(self, sender, password, addressee, log): # sends the email
+    # sends the email
+    def send(self, sender, password, addressee, log): # test in Tests/Unit/test_email.test_send
         server_address = "smtp.gmail.com: 587"
 
         try:
@@ -40,5 +41,5 @@ class Email:
             log.report("error_email_send", detail=addressee)
             return False
 
-    def append_message(self, text):
+    def append_message(self, text): # test in Tests/Unit/test_email.test_append_message
         self.message += text
